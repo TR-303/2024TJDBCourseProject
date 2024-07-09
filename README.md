@@ -1,2 +1,1 @@
-# 2024TJDBCourseProject
-数据库课程设计
+2024TJDBCourseProject
