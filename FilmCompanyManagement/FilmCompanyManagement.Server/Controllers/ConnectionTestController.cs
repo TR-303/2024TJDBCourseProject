@@ -5,13 +5,13 @@ using System;
 
 namespace FilmCompanyManagement.Controllers
 {
-    [Route("api/test")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class DatabaseController : ControllerBase
+    public class TestController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public DatabaseController(IConfiguration configuration)
+        public TestController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
