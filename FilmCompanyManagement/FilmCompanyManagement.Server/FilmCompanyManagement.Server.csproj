@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="EntityFrame\Model\" />
   </ItemGroup>
 
 </Project>
