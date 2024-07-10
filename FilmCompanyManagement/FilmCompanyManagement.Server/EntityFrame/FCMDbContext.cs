@@ -1,4 +1,3 @@
-using FilmCompanyManagement.Server.EntityFrame.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlTypes;
 
@@ -19,16 +18,24 @@ namespace FilmCompanyManagement.Server.EntityFrame
 
 
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Drill> Drills { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Models.File> Files { get; set; }
         public DbSet<PhotoEquipment> PhotoEquipments { get; set; }
         public DbSet<EquipmentLease> EquipmentLeases { get; set; }
         public DbSet<FinishedProduct> FinishedProducts { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Intern> Interns { get; set; }
+        public DbSet<KPI> KPIs { get; set; }
+        public DbSet<Position> Positions { get; set; }
+        public DbSet<Recruiter> Recruiters { get; set; }
 
-        //=================================================================================================
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
