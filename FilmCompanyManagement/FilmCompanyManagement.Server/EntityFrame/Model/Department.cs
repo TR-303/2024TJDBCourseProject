@@ -26,10 +26,10 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public int? ParentDeptId { get; set; } // 上级部门编号，可为空
 
         [ForeignKey("ParentDeptId")]
-        public virtual Department? ParentDepartment { get; set; } // 导航属性，用于树形结构，在项目中找到对接上级部门
+        public virtual Department? ParentDepartment { get; set; } // 父部门
 
         public virtual ICollection<Department>? SubDepartments { get; set; } // 子部门集合
 
-        public virtual ICollection<EmployeeDepartment>? EmployeeDepartments { get; set; } // 导航属性，访问部门中的员工关系
+        public virtual ICollection<EmployeeDepartment>? EmployeeDepartments { get; set; } // 导航属性
     }
 }
