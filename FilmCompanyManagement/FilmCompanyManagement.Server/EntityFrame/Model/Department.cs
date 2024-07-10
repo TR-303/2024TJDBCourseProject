@@ -30,6 +30,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 
         public virtual ICollection<Department>? SubDepartments { get; set; } // 子部门集合
 
-        public virtual ICollection<EmployeeDepartment>? EmployeeDepartments { get; set; } // 导航属性
+        public virtual ICollection<Employee>? Employees { get; set; } // 导航属性 一对多
     }
 }

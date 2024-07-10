@@ -19,6 +19,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public int JudgerId { get; set; } // 评定者ID
         public virtual Employee? Employee { get; set; } // 导航属性，追究评定者信息
 
-        public virtual ICollection<EmployeeKPI>? EmployeeKPIs { get; set; } // 导航属性
+        public virtual Employee? Employees { get; set; } // 导航属性 多对一
     }
 }

@@ -16,6 +16,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public DateTime DateTime { get; set; } //培训时间
         public TimeSpan TimeSpan { get; set; } //培训时长
 
-        public virtual ICollection<EmployeeDrill>? EmployeeDrills { get; set; } // 导航属性
+        public virtual ICollection<Employee>? Employees { get; set; } // 导航属性 多对一
     }
 }

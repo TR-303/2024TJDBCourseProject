@@ -22,7 +22,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Column(TypeName = "nvarchar(500)")] // 将此属性映射为数据库中的nvarchar(500)类型
         public string? Remarks { get; set; } // 备注信息（可空），用于记录额外说明（如请假原因、加班说明等）
 
-        public virtual ICollection<EmployeeAttendance>? EmployeeAttendances { get; set; }// 导航属性，允许访问关联的 EmployeeAttendances 信息
+        public virtual Employee? Employees { get; set; }// 导航属性 多对一
     }
 }
 

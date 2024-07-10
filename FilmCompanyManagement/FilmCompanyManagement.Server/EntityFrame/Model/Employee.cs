@@ -20,10 +20,11 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string? Email { get; set; } // 邮箱
         public decimal Salary { get; set; } // 工资
 
-        public virtual ICollection<EmployeeDepartment>? EmployeeDepartments { get; set; } // 导航属性 
-        public virtual ICollection<EmployeeKPI>? EmployeeKPIs { get; set; } // 导航属性
-        public virtual ICollection<EmployeeAttendance>? EmployeeAttendances { get; set; } // 导航属性
-        public virtual Intern? Intern { get; set; }//实习生一对一
-        public virtual ICollection<EmployeeDrill>? EmployeeDrills { get; set; } // 导航属性
+        //默认对前者为this，即Employee
+        public virtual Department? Departments { get; set; } // 导航属性 多对一
+        public virtual ICollection<KPI>? KPIs { get; set; } // 导航属性 一对多
+        public virtual ICollection<Attendance>? Attendances { get; set; } // 导航属性 一对多
+        public virtual Intern? Intern { get; set; }//实习生 一对一
+        public virtual ICollection<Drill>? EmployeeDrills { get; set; } // 导航属性 一对多
     }
 }

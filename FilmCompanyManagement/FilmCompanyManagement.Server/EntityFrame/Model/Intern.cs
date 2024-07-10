@@ -17,6 +17,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Model
         public DateTime InternshipEndDate { get; set; } // 实习结束日期
         [Column(TypeName = "nvarchar(500)")] // 将此属性映射为数据库中的nvarchar(500)类型
         public string? Remarks { get; set; } // 备注信息（可空），用于记录额外说明
-        public virtual Employee? Employee { get; set; }
+        public virtual Employee? Employee { get; set; } //导航属性 一对一
     }
 }
