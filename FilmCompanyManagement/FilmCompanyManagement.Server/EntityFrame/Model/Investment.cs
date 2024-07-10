@@ -8,9 +8,8 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Key, StringLength(8)]
         public string Id { get; set; }
 
-        [ForeignKey("Customers")]
-        public string C_Id { get; set; }
-        public Customer Customer { get; set; }
+        // 对单关系Customers
+        public Customer? Customer { get; set; }
 
         [Required, Column(TypeName = "Date")]
         public DateTime Date { get; set; }
@@ -19,10 +18,10 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string BillStatus { get; set; }
 
         [StringLength(20)]
-        public string AccountStatus { get; set; }
+        public string? AccountStatus { get; set; }
 
-        [ForeignKey("Bills")]
-        public string Bi_Id { get; set; }
+        // 对单关系Bills
+        [Required]
         public Bill Bill { get; set; }
     }
 }

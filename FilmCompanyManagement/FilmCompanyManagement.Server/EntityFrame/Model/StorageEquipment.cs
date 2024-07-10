@@ -12,12 +12,12 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string Name { get; set; }
 
         [StringLength(20)]
-        public string Model { get; set; }
+        public string? Model { get; set; }
 
         [Required]
         public int Stock { get; set; }
 
-        //对多关系File
+        // 对多关系Files
         public ICollection<File> Files { get; set; }
     }
 }

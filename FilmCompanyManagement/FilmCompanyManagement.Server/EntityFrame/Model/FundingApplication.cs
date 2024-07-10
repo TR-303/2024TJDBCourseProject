@@ -8,8 +8,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Key, StringLength(12)]
         public string Id { get; set; }
 
-        [ForeignKey("Employees")]
-        public string E_Id { get; set; }
+        [Required]
         public Employee Employee { get; set; }
 
         [Required, Column(TypeName = "Date")]
@@ -19,6 +18,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string BillStatus { get; set; }
 
         [StringLength(20)]
-        public string AccountStatus { get; set; }
+        public string? AccountStatus { get; set; }
     }
 }

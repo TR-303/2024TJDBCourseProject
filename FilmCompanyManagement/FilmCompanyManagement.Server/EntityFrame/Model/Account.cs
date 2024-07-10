@@ -11,7 +11,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string Id { get; set; }
 
         [StringLength(20)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required, StringLength(20)]
         public string Type { get; set; }
@@ -20,7 +20,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public decimal Balance { get; set; }
 
         [Column(TypeName = "Date")]
-        public DateTime OpenDate { get; set; }
+        public DateTime? OpenDate { get; set; }
 
         public ICollection<Bill> Bills { get; set; }
     }

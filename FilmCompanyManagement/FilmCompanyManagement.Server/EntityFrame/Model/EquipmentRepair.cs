@@ -8,15 +8,13 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Key, StringLength(12)]
         public string Id { get; set; }
 
-        [ForeignKey("PhotoEquipments")]
-        public string P_Id { get; set; }
+        [Required]
         public PhotoEquipment PhoteEquipment { get; set; }
 
         [StringLength(100)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        [ForeignKey("Bills")]
-        public string B_Id { get; set; }
+        [Required]
         public Bill Bill { get; set; }
     }
 }
