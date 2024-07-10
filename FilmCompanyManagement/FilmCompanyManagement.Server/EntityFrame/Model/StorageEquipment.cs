@@ -1,19 +1,23 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     // 存储设备
     public class StorageEquipment
     {
+        [Key, StringLength(8)]
         public string Id { get; set; }
 
+        [Required, StringLength(20)]
         public string Name { get; set; }
 
-        //型号
+        [StringLength(20)]
         public string Model { get; set; }
 
-        //库存数量
+        [Required]
         public int Stock { get; set; }
 
         //对多关系File
-        public ICollection<StorageEquipment_File> StorageDevice_Files { get; set; }
+        public ICollection<File> Files { get; set; }
     }
 }
