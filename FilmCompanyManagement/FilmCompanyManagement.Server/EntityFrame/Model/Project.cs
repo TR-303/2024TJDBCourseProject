@@ -9,7 +9,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string ProjectID { get; set; }//项目编号
 
         [Required]
-        public Employee Employee { get; set; }//对接管理ID——FK员工id
+        public Employee Manager { get; set; }//对接管理ID——FK员工id
 
         [Required, Column(TypeName = "Date")]
         public DateTime OrderDate { get; set; }//订单日期

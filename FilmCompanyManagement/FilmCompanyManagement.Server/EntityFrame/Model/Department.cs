@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
-    [Table("Department")] // 将此类映射到数据库中的"Department"表
     public class Department
     {
         [Key]
