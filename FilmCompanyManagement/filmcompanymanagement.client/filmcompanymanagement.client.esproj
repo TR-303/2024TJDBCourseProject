@@ -11,6 +11,6 @@
   <ItemGroup>
     <Folder Include="public\" />
     <Folder Include="src\assets\" />
-    <Folder Include="src\components\" />
+    <Folder Include="src\components\1_sign\" />
   </ItemGroup>
 </Project>
