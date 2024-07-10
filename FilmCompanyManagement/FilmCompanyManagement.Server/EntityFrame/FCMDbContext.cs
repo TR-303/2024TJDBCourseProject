@@ -11,12 +11,12 @@ namespace FilmCompanyManagement.Server.EntityFrame
         //=======================================添加数据库对应的表========================================
 
         public DbSet<Bill> Bills { get; set; }
-        public DbSet<StorageDevice> StorageDevices { get; set; }
-        public DbSet<StorageDevice_File> StorageDevice_Files { get; set; }
+        public DbSet<StorageEquipment> StorageDevices { get; set; }
+        public DbSet<StorageEquipment_File> StorageDevice_Files { get; set; }
         public DbSet<Investment> Investments { get; set; }
         public DbSet<FundingApplication> FundingApplications { get; set; }
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<DeviceRepair> DeviceRepairs { get; set; }
+        public DbSet<EquipmentRepair> DeviceRepairs { get; set; }
 
         //=================================================================================================
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,11 +42,10 @@ namespace FilmCompanyManagement.Server.EntityFrame
                     .IsRequired();
 
                 entity.HasOne(e => e.Account).WithMany(a => a.Bills).HasForeignKey(e => e.A_Id);
-                entity.Ignore(e => e.Account);
             });
 
             // 存储设备
-            modelBuilder.Entity<StorageDevice>(entity =>
+            modelBuilder.Entity<StorageEquipment>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id)
@@ -62,20 +61,16 @@ namespace FilmCompanyManagement.Server.EntityFrame
 
                 entity.Property(e => e.Stock)
                     .IsRequired();
-
-                //entity.Ignore(e => e.Files);
             });
 
             // 关系表StorageDevice-File
-            modelBuilder.Entity<StorageDevice_File>(entity =>
+            modelBuilder.Entity<StorageEquipment_File>(entity =>
             {
-                //entity.HasKey(e => new { e.SD_Id, e.F_Id });
+                entity.HasKey(e => new { e.SD_Id, e.F_Id });
 
-                //entity.HasOne(e => e.StorageDevice).WithMany(sd => sd.Files).HasForeignKey(e => e.SD_Id);
-                entity.Ignore(e => e.StorageDevice);
+                entity.HasOne(e => e.StorageDevice).WithMany(sd => sd.StorageDevice_Files).HasForeignKey(e => e.SD_Id);
 
-                //entity.HasOne(e => e.File).WithMany(f => f.StorageDevices).HasForeignKey(e => e.F_Id);
-                //entity.Ignore(e => e.File);
+                entity.HasOne(e => e.File).WithMany().HasForeignKey(e => e.F_Id);
             });
 
             // 投资
@@ -86,8 +81,7 @@ namespace FilmCompanyManagement.Server.EntityFrame
                     .HasMaxLength(8)
                     .IsRequired();
 
-                //entity.HasOne(e=>e.Customer).WithMany(c=>c.Investments).HasForeignKey(e=>e.C_Id);
-                //entity.Ignore(e => e.Customer);
+                entity.HasOne(e=>e.Customer).WithMany(c=>c.Investments).HasForeignKey(e=>e.C_Id);
 
                 entity.Property(e => e.Date)
                     .HasColumnType("date")
@@ -113,8 +107,7 @@ namespace FilmCompanyManagement.Server.EntityFrame
                     .HasMaxLength(12)
                     .IsRequired();
 
-                //entity.HasOne(e => e.Employee).WithMany().HasForeignKey<FundingApplication>(e => e.E_Id);
-                //entity.Ignore(e => e.Employee);
+                entity.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.E_Id);
 
                 entity.Property(e => e.Date)
                     .HasColumnType("date")
@@ -157,20 +150,19 @@ namespace FilmCompanyManagement.Server.EntityFrame
             });
 
             // 设备维修
-            modelBuilder.Entity<DeviceRepair>(entity =>
+            modelBuilder.Entity<EquipmentRepair>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id)
                     .HasMaxLength(12)
                     .IsRequired();
 
-                //entity.HasOne(e=>e.Device).WithMany(d=>d.Repairs).HasForeignKey(e=>e.D_Id);
-                //entity.Ignore(e=>e.Device);
+                entity.HasOne(e=>e.Device).WithMany(d=>d.Repairs).HasForeignKey(e=>e.D_Id);
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(100);
 
-                entity.HasOne(e => e.Bill).WithOne().HasForeignKey<DeviceRepair>(e => e.B_Id);
+                entity.HasOne(e => e.Bill).WithOne().HasForeignKey<EquipmentRepair>(e => e.B_Id);
                 entity.Ignore(e => e.Bill);
             });
         }

@@ -6,7 +6,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 
         // Íâ¼üÒıÓÃCustomers
         public string C_Id { get; set; }
-        //public Customer Customer { get; set; }
+        public Customer Customer { get; set; }
 
         public DateTime Date { get; set; }
 

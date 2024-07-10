@@ -6,7 +6,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 
         // Íâ¼üÒıÓÃEmployees
         public string E_Id { get; set; }
-        //public Employee Employee { get; set; }
+        public Employee Employee { get; set; }
 
         public DateTime Date { get; set; }
 

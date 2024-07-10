@@ -1,7 +1,7 @@
 namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     // 存储设备
-    public class StorageDevice
+    public class StorageEquipment
     {
         public string Id { get; set; }
 
@@ -14,6 +14,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public int Stock { get; set; }
 
         //对多关系File
-        //public ICollection<File> Files { get; set; }
+        public ICollection<StorageEquipment_File> StorageDevice_Files { get; set; }
     }
 }

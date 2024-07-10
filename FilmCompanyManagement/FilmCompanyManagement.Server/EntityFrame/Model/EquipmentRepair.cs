@@ -1,12 +1,12 @@
 namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
-    public class DeviceRepair
+    public class EquipmentRepair
     {
         public string Id { get; set; }
 
         // Íâ¼üÒıÓÃDevices
         public string D_Id { get; set; }
-        //public Device Device { get; set; }
+        public Device Device { get; set; }
 
         public string Description { get; set; }
 
