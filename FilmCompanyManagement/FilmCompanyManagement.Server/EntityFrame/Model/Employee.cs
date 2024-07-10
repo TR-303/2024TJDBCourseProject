@@ -11,13 +11,23 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Column("EmpId")] 
         public int EmpId { get; set; }
 
+        [Required]
         public string? Name { get; set; } // 姓名
+
+        [Required]
         public string? Gender { get; set; } // 性别
+
+        [Required]
         public DateTime DateOfBirth { get; set; } // 生日 
+
+        [Required]
         [ForeignKey("Position")]
         public string? Position { get; set; } // 职位
+
         public string? PhoneNumber { get; set; } // 电话
         public string? Email { get; set; } // 邮箱
+
+        [Required]
         public decimal Salary { get; set; } // 工资
 
         //默认对前者为this，即Employee

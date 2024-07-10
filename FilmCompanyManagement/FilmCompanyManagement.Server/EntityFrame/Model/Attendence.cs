@@ -9,14 +9,23 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Key] // 主键
         public int AttendanceId { get; set; }
 
+        [Required]
         [Column(TypeName = "date")] // 将此属性映射为数据库中的date类型
         public DateTime Date { get; set; } // 记录日期
 
         public TimeSpan? CheckInTime { get; set; } // 上班打卡时间（可空）
         public TimeSpan? CheckOutTime { get; set; } // 下班打卡时间（可空）
+
+        [Required]
         public bool IsLate { get; set; } // 是否迟到
+
+        [Required]
         public bool IsEarlyLeave { get; set; } // 是否早退
+
+        [Required]
         public bool IsOnLeave { get; set; } // 是否请假
+
+        [Required]
         public bool IsOvertime { get; set; } // 是否加班
 
         [Column(TypeName = "nvarchar(500)")] // 将此属性映射为数据库中的nvarchar(500)类型

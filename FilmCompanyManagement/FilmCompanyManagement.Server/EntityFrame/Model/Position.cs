@@ -8,6 +8,8 @@ namespace FilmCompanyManagement.Server.EntityFrame.Model
     {
         [Key]
         public string? PositionTitle { get; set; }
+
+        [Required]
         public decimal Salary { get; set; } 
     }
 }

@@ -10,14 +10,18 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Column("DeptId")]
         public int DeptId { get; set; } // 部门编号
 
+        [Required]
         [Column("DeptName")]
         public string? DeptName { get; set; } // 部门名称
 
+        [Required]
         [Column("DeptLeaderId")]
         public int DeptLeaderId { get; set; } // 部门领导ID
 
+        [Required]
         [Column("TotalEmployees")]
         public int TotalEmployees { get; set; } // 总人数
+
 
         [Column("ContactNumber")]
         public string? ContactNumber { get; set; } // 联系方式
