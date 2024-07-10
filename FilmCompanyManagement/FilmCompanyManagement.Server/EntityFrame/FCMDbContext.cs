@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using FilmCompanyManagement.Server.EntityFrame.Models;
+using FilmCompanyManagement.Server.EntityFrame.Model;
 
 namespace FilmCompanyManagement.Server.EntityFrame
 {
@@ -14,6 +15,11 @@ namespace FilmCompanyManagement.Server.EntityFrame
         public DbSet<EmployeeDepartment> EmployeeDepartments { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
+        public DbSet<Intern> Interns { get; set; }
+        public DbSet<Drill> Drills { get; set; }
+        public DbSet<EmployeeDrill> EmployeeDrills { get; set; }
+        public DbSet<Recruiter> Recruiters { get; set; }
+        public DbSet<Position> Positions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -59,7 +65,21 @@ namespace FilmCompanyManagement.Server.EntityFrame
                 .WithMany(a => a.EmployeeAttendances)
                 .HasForeignKey(ea => ea.AtdId);
 
-            // Optionally, configure other entities and their relationships here...
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Intern)
+                .WithOne(i => i.Employee)
+                .HasForeignKey<Intern>(i => i.InternId);
+
+            modelBuilder.Entity<EmployeeDrill>()
+                .HasOne(ed => ed.Employee)
+                .WithMany(e => e.EmployeeDrills)
+                .HasForeignKey(ed => ed.EmpId);
+
+            modelBuilder.Entity<EmployeeDrill>()
+                .HasOne(ed => ed.Drill)
+                .WithMany(d => d.EmployeeDrills)
+                .HasForeignKey(ed => ed.DrillId);
+
 
             base.OnModelCreating(modelBuilder);
         }
