@@ -29,6 +29,12 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Required, Column(TypeName = "decimal(12, 2)")]
         public decimal Salary { get; set; }//工资
 
+        [Required, StringLength(20)]
+        public string UserName { get; set; }//账户名称
+
+        [Required, StringLength(30)]
+        public string Password { get; set; }//账户密码
+
         public AdvicerIntern? Advicer { get; set; }
         public ICollection<AdvicerIntern> Interns { get; set; }
         public ICollection<Project> Projects { get; set; }
