@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FilmCompanyManagement.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class FCM : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace FilmCompanyManagement.Server.Migrations
 {
     [DbContext(typeof(FCMDbContext))]
-    [Migration("20240711083444_initialCreate")]
-    partial class initialCreate
+    [Migration("20240711092555_FCM")]
+    partial class FCM
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
