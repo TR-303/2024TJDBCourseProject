@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import infopage from "./components/2_all/Infopage.vue"
+    import infopage from "./components/1_sign/Login.vue"
     export default {
         components: {
             infopage
