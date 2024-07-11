@@ -12,7 +12,7 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace FilmCompanyManagement.Server.Migrations
 {
     [DbContext(typeof(FCMDbContext))]
-    [Migration("20240710133718_initialCreate")]
+    [Migration("20240711083444_initialCreate")]
     partial class initialCreate
     {
         /// <inheritdoc />
@@ -326,6 +326,11 @@ namespace FilmCompanyManagement.Server.Migrations
                     b.Property<string>("InternId")
                         .HasColumnType("NVARCHAR2(12)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("NVARCHAR2(30)");
+
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -333,6 +338,11 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(12, 2)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("NVARCHAR2(20)");
 
                     b.HasKey("EmployeeID");
 
