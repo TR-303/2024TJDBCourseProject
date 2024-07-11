@@ -1,3 +1,6 @@
+using FilmCompanyManagement.Server.EntityFrame;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace FilmCompanyManagement.Server
 {
@@ -13,6 +16,9 @@ namespace FilmCompanyManagement.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<FCMDbContext>(options =>
+                options.UseOracle(builder.Configuration.GetConnectionString("FCMConnection")));
 
             var app = builder.Build();
 
@@ -34,7 +40,6 @@ namespace FilmCompanyManagement.Server
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

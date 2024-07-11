@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace FilmCompanyManagement.Server.EntityFrame.Model
+namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     [Table("Position")]
     public class Position
@@ -9,7 +9,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Model
         [Key]
         public string? PositionTitle { get; set; }
 
-        [Required]
-        public decimal Salary { get; set; } 
+        [Required, Column(TypeName = "decimal(12, 2)")]
+        public decimal Salary { get; set; }
     }
 }
