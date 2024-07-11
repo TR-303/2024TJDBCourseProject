@@ -272,6 +272,8 @@ namespace FilmCompanyManagement.Server.Migrations
                     EmployeePhone = table.Column<string>(type: "NVARCHAR2(14)", maxLength: 14, nullable: false),
                     EmployeeEmail = table.Column<string>(type: "NVARCHAR2(50)", maxLength: 50, nullable: false),
                     Salary = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    UserName = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
+                    Password = table.Column<string>(type: "NVARCHAR2(30)", maxLength: 30, nullable: false),
                     DepartmentsDeptId = table.Column<int>(type: "NUMBER(10)", nullable: false),
                     InternAdvicerId = table.Column<string>(type: "NVARCHAR2(12)", nullable: true),
                     InternId = table.Column<string>(type: "NVARCHAR2(12)", nullable: true)
