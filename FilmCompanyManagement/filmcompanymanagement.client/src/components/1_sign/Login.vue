@@ -13,6 +13,14 @@
                     <label for="password">密码：</label>
                     <input type="password" class="input-field" v-model="password" required />
                 </h2>
+                <h2>
+                    <label for="department">部门：</label>
+                    <select class="select" v-model="department">
+                        <option v-for="option in options" :key="option.value" :value="option.value">
+                            {{ option.text }}
+                        </option>
+                    </select>
+                </h2>
                 <button type="submit">登陆</button>
             </form>
         </div>
@@ -20,13 +28,18 @@
 </template>
 
 <script>
-/*import axios from 'axios';
-*/
+    import axios from 'axios'
 export default {
     data() {
         return {
             username: '',
             password: '',
+            department:'',
+            options: [
+                { value: '管理部', text: '管理部' },
+                { value: '财务部', text: '财务部' },
+                { value: '业务部', text: '业务部' },
+            ],
         };
     },
     methods: {
@@ -97,6 +110,11 @@ export default {
     border-radius: 10px;
     text-align: center;
     width: 400px;
+}
+
+.select{
+    width:100px;
+    height:30px;
 }
 
 h1 {
