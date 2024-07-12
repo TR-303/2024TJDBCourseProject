@@ -3,7 +3,7 @@
         <div class="head">
             <div class="head_left">
                 <img class="head_logo" src="../assets/logo.png" />
-                <label class="head_center">摄影公司管理系统</label>
+                <label class="head_center">影视公司管理系统</label>
             </div>
             <div class="head_right">
                 <img class="head_logo" src="../assets/User.jpg" />
@@ -24,24 +24,63 @@
         </ul>
     </div>
     <div id="container" class="container">
-        <div class="window1">
-            <p>1</p>
+        <div id="message_box" class="window1">
+            <p style="font-size: 30px;text-align: center;">通知栏</p>
+            <ul class="ul_message">
+                <li class="li_message" style="font-size: 20px;" v-for="(message, index) in messages" :key="index">{{
+                    message }}</li>
+            </ul>
         </div>
         <div class="window2">
-            <p>2</p>
+            <p style="font-size: 18px;text-align: center;">近期佳作展示</p><br>
+            <div class="image_container">
+                <img class="image" src="../assets/picture2_1.png" />
+                <img class="image" src="../assets/picture2_2.png" />
+            </div>
         </div>
         <div class="window3">
-            <p>3</p>
+            <p style="font-size: 25px;text-align: center;">考勤与绩效评定</p>
+            <p style="font-size: 20px;text-align: center;">{{ currentDateTime }}</p>
+            <button :class="buttonClass(isClicked_1)" @click="handleClick_1" :disabled="isClicked_1">
+                {{ buttonText_1 }}
+            </button>
+            <p v-if="isClicked_1" style="text-align: center;">{{ tips_1 }}</p>
+            <button v-if="isClicked_1" :class="buttonClass(isClicked_2)" @click="handleClick_2" :disabled="isClicked_2">
+                {{ buttonText_2 }}
+            </button>
+            <p v-if="isClicked_2" style="text-align: center;">{{ tips_2 }}</p>
+            <ul class="bottom-text">
+                <li>项目ID:{{ ProjectID }}</li>
+                <li>评定时间:{{ Date }}</li>
+                <li>评估者ID:{{ JudgerEmployeeID }}</li>
+                <li>评定结果:{{ Result }}</li>
+            </ul>
         </div>
     </div>
 </template>
+
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
             name1: 'xiaoming',
             count: 0,
             count2: 0,
+            messages: ['1', '2', '3', '4', '5'],
+            maxNum: 5,  // 通知栏可存储的最大信息数量
+            currentDateTime: '',
+            isClicked_1: false,
+            isClicked_2: false,
+            tips_1: '',
+            tips_2: '',
+            buttonText_1: '签到',
+            buttonText_2: '签退',
+            ProjectID: '123',
+            Date: '2024',
+            JudgerEmployeeID: 'ABC',
+            Result: '1',
         }
     },
     methods: {
@@ -52,15 +91,55 @@ export default {
         // 移除阴影效果
         removeShadow(event) {
             event.target.style.boxShadow = 'none';
+        },
+        addMessage() {
+            // 采用队列结构，先进先出
+            if (this.messages.length >= this.maxNum)
+                this.messages.shift();  // 移除queue第一项
+            this.messages.push(this.getContent());
+        },
+        getContent() {
+            // 返回值为一个字符串
+        },
+        updateDateTime() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        },
+        handleClick_1() {
+            alert("签到成功!");
+            this.isClicked_1 = true;
+            this.buttonText_1 = "已签到";
+            this.tips_1 = `签到时间：${this.currentDateTime}`;
+        },
+        handleClick_2() {
+            alert("签退成功!");
+            this.isClicked_2 = true;
+            this.buttonText_2 = "已签退";
+            this.tips_2 = `签退时间：${this.currentDateTime}`;
+            // 此时签到签退均完成，向管理员传送考勤信息
+        },
+        buttonClass(isClicked) {
+            return isClicked ? 'clicked-button' : 'initial-button';
         }
+    },
+    mounted() {
+        this.updateDateTime();
+        setInterval(this.updateDateTime, 1000);  // 每秒更新一次
     }
 }
 </script>
+
 <style>
 .head {
     display: flex;
     width: 100%;
-    padding: var(--base-size-16, var(--base-size-16));
+    /* padding: var(--base-size-16, var(--base-size-16)); */
     /* gap: var(--base-size-12, 12px); */
     background-color: aqua;
     border: 20px;
@@ -114,7 +193,7 @@ export default {
     border: 1px solid #ccc;
     float: left;
     width: 150px;
-    height: 101vh;
+    height: 100vh;
     background-color: lightskyblue;
     box-sizing: border-box;
 }
@@ -123,15 +202,13 @@ export default {
     grid-area: left-top;
     margin: 5px;
     padding: 10px;
-    text-align: center;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     border: 2px solid black;
     width: 65vw;
-    height: 65vh;
+    height: 62vh;
     box-sizing: border-box;
 }
 
@@ -142,12 +219,10 @@ export default {
     text-align: center;
     border-radius: 5px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: space-between;
     border: 2px solid black;
     width: 65vw;
-    height: 32vh;
+    height: 33vh;
     box-sizing: border-box;
 }
 
@@ -155,15 +230,13 @@ export default {
     grid-area: right;
     margin: 5px;
     padding: 10px;
-    text-align: center;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     border: 2px solid black;
     width: 20vw;
-    height: 99.5vh;
+    height: 98vh;
     box-sizing: border-box;
 }
 
@@ -180,5 +253,58 @@ export default {
     padding-block-start: 0px;
     padding: 0;
     margin: 0;
+}
+
+.ul_message {
+    padding: 10px;
+}
+
+.li_message {
+    margin: 10px;
+}
+
+.image_container {
+    display: flex;
+    justify-content: space-between;
+    width: 52vw;
+    height: 26vh;
+}
+
+.iamge {
+    display: inline-block;
+    margin: 5px;
+    width: 200px;
+    height: 250px;
+}
+
+.initial-button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.clicked-button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.bottom-text {
+    /* 将内容推至容器底部 */
+    margin-top: auto;
+    font-size: 18px;
+    padding: 15px;
 }
 </style>
