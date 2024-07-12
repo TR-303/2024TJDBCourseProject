@@ -6,10 +6,10 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     public class File//文件
     {
         [Key, StringLength(12)]
-        public string FileID { get; set; }//文件ID
+        public string Id { get; set; }//文件ID
 
         [Required, StringLength(50)]
-        public string FileName { get; set; }//文件名
+        public string Name { get; set; }//文件名
 
         [Required, StringLength(20)]
         public string FileType { get; set; }//文件类型
@@ -18,10 +18,10 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string? ContentType { get; set; }//内容类型
 
         [Required]
-        public int FileSize { get; set; }//文件大小
+        public int Size { get; set; }//文件大小
 
         [Required, StringLength(100)]
-        public string FilePath { get; set; }//文件路径
+        public string Path { get; set; }//文件路径
 
         [Required, Column(TypeName = "Date")]
         public DateTime UploadDate { get; set; }//上传日期

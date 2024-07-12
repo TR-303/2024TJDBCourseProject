@@ -6,7 +6,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     public class EquipmentLease//设备租赁
     {
         [Key, StringLength(12)]
-        public string ID { get; set; }//编号
+        public string Id { get; set; }//编号
 
         [Required]
         public Employee Employee { get; set; }//对接管理ID——FK员工id

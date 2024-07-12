@@ -7,7 +7,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     public class Position
     {
         [Key]
-        public string? PositionTitle { get; set; }
+        public string PositionTitle { get; set; }
 
         [Required, Column(TypeName = "decimal(12, 2)")]
         public decimal Salary { get; set; }

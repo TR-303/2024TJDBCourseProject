@@ -15,7 +15,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string? Model { get; set; }
 
         [Required]
-        public int Stock { get; set; }
+        public int Count { get; set; }
 
         // 对多关系Files
         public ICollection<File> Files { get; set; }
