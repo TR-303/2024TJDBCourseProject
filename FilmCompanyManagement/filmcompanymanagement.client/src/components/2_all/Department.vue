@@ -2,9 +2,6 @@
     <div>
         <div class="head">
             <div class="head_left">
-                <label class="head_center" style="height:30px">
-                    目录
-                </label>
                 <img class="head_logo" src="./logo.png" />
                 <label class="head_center">摄影公司管理系统</label>
             </div>
@@ -68,14 +65,14 @@
             jump(event) {
                 console.log(event.target.id)
                 if (event.target.id == 'menu_0')
-                    window.location.href = "./Infopage.vue";
+                    this.$router.push('/Infopage');
                 if (event.target.id == 'menu_1')
-                    window.location.href='/Department.vue';
+                    this.$router.push('/Department');
             }
         }
     }
 </script>
-<style>
+<style scoped>
     .head {
         display: flex;
         width: 100%;
@@ -115,7 +112,7 @@
     .head_left {
         flex: 1 1 auto;
         display: flex;
-        gap: var(--bar-size-8,9%);
+        gap: var(--bar-size-8,8px);
     }
     .head_center {
         font-size: 20px;
@@ -135,7 +132,6 @@
     }
 
     .aside {
-        grid-area: sidebar;
         justify-content: center;
         align-items: center;
         border: 1px solid #ccc;
@@ -155,6 +151,9 @@
     .li_node {
         display: flex;
         align-content: center;
+        background-color: rgba(239, 242, 252, 0.801);
+        margin:8px 0;
+        box-shadow: 0px 0px 10px 1.5px rgba(199, 198, 198, 0.893);
         height: 20px;
         font-size: 20px;
         padding: 10px 0 20px 10px;

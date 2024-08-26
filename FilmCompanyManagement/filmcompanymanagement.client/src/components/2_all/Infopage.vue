@@ -2,15 +2,12 @@
     <div>
         <div class="head">
             <div class="head_left">
-                <label class="head_center" style="height:30px">
-                    目录
-                </label>
-                <img class="head_logo" src="./logo.png"/>
+                <img class="head_logo" src="./logo.png" />
                 <label class="head_center">摄影公司管理系统</label>
             </div>
             <div class="head_right">
-                <img class="head_logo" src="./User.jpg"/>
-<!--                这里获取登入姓名-->
+                <img class="head_logo" src="./User.jpg" />
+                <!--这里c从login。vue中跳转获取登入姓名-->
                 <label class="head_center">你好,{{name1}}</label>
             </div>
         </div>
@@ -25,28 +22,105 @@
             </li>
         </ul>
     </div>
-    <div class="container">
-        <div class="window1">
-            <p>1</p>
+    <div id="container" class="container">
+        <div id="message_box" class="window1">
+            <p style="font-size: 30px;text-align: center;">通知栏</p>
+            <ul class="ul_message">
+                <li class="li_message" style="font-size: 20px;" v-for="(message, index) in messages" :key="index">
+                    {{
+                    message
+                    }}
+                </li>
+            </ul>
         </div>
         <div class="window2">
-            <p>2</p>
+            <p style="font-size: 18px;text-align: center;">近期佳作展示</p><br>
+            <div class="image_container">
+                <img class="image" src="../assets/picture2_1.png" />
+                <img class="image" src="../assets/picture2_2.png" />
+            </div>
         </div>
         <div class="window3">
-            <p>3</p>
+            <p style="font-size: 25px;text-align: center;">考勤与绩效评定</p>
+            <p style="font-size: 20px;text-align: center;">{{ currentDateTime }}</p>
+            <button :class="buttonClass(isClicked_1)" @click="handleClick_1" :disabled="isClicked_1">
+                {{ buttonText_1 }}
+            </button>
+            <p v-if="isClicked_1" style="text-align: center;">{{ tips_1 }}</p>
+            <button v-if="isClicked_1" :class="buttonClass(isClicked_2)" @click="handleClick_2" :disabled="isClicked_2">
+                {{ buttonText_2 }}
+            </button>
+            <p v-if="isClicked_2" style="text-align: center;">{{ tips_2 }}</p>
+            <ul class="bottom-text">
+                <li>项目ID:{{ ProjectID }}</li>
+                <li>评定时间:{{ Date }}</li>
+                <li>评估者ID:{{ JudgerEmployeeID }}</li>
+                <li>评定结果:{{ Result }}</li>
+            </ul>
         </div>
     </div>
 </template>
+
 <script>
-    export default{
-        data(){
-            return{
+    import axios from 'axios';
+
+    export default {
+        data() {
+            return {
                 name1: 'xiaoming',
-                count:0,
+                count: 0,
                 count2: 0,
+                messages: ['1', '2', '3', '4', '5'],
+                maxNum: 5,  // 通知栏可存储的最大信息数量
+                currentDateTime: '',
+                isClicked_1: false,
+                isClicked_2: false,
+                tips_1: '',
+                tips_2: '',
+                buttonText_1: '签到',
+                buttonText_2: '签退',
+                ProjectID: '123',
+                Date: '2024',
+                JudgerEmployeeID: 'ABC',
+                Result: '1',
             }
         },
         methods: {
+            async infomation() {
+                try {
+                    const response = await axios.post("./api/LoginController.cs", {
+                        username: this.username,
+                        password: this.password,
+                        department: this.department,
+                    });
+                    console.log(response);
+                    if (response.data.success) {
+                        // 登录成功，根据用户类型跳转到相应页面
+                        if (response.data == '1') {
+                            // 跳转到管理员页面
+                            if (this.department == '管理部')
+                                this.$router.push('/2_all/Boss_');
+                            // 跳转到财务页面
+                            if (this.department == '财务部')
+                                this.$router.push('/2_all/Accounting');
+                            // 跳转到业务页面
+                            if (this.department == '业务部')
+                                this.$router.push('/2_all/Worker');
+                        }
+                    } else {
+                        // 清空输入栏
+                        this.username = '';
+                        this.password = '';
+                        alert('账号或密码有误，请重新输入！');
+                    }
+                } catch (error) {
+                    if (error.response) {
+                        alert('服务器错误，请稍后重试！');
+                    } else {
+                        alert('网络错误，请检查您的网络连接！');
+                    }
+                }
+            },
             // 添加阴影效果
             addShadow(event) {
                 event.target.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
@@ -55,46 +129,108 @@
             removeShadow(event) {
                 event.target.style.boxShadow = 'none';
             },
+            addMessage() {
+                // 采用队列结构，先进先出
+                if (this.messages.length >= this.maxNum)
+                    this.messages.shift();  // 移除queue第一项
+                this.messages.push(this.getContent());
+            },
+            getContent() {
+                // 返回值为一个字符串
+            },
+            updateDateTime() {
+                const date = new Date();
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+                this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            },
+            handleClick_1() {
+                alert("签到成功!");
+                this.isClicked_1 = true;
+                this.buttonText_1 = "已签到";
+                this.tips_1 = `签到时间：${this.currentDateTime}`;
+            },
+            handleClick_2() {
+                alert("签退成功!");
+                this.isClicked_2 = true;
+                this.buttonText_2 = "已签退";
+                this.tips_2 = `签退时间：${this.currentDateTime}`;
+                // 此时签到签退均完成，向管理员传送考勤信息
+            },
+            buttonClass(isClicked) {
+                return isClicked ? 'clicked-button' : 'initial-button';
+            },
             // 跳转页面
             jump(event) {
-                console.log(event.target.id);
-/*                window.location.href = './Infopage.vue';
-*/          
+                console.log(event.target.id)
+                if (event.target.id == 'menu_0')
+                    this.$router.push('/Infopage');
+                if (event.target.id == 'menu_1')
+                    this.$router.push('/Department');
             }
+        },
+        mounted() {
+            this.updateDateTime();
+            setInterval(this.updateDateTime, 1000);  // 每秒更新一次
         }
     }
 </script>
-<style>
-    .head{
-        display:flex;
-        width:100%;
-        padding:var(--base-size-16,var(--base-size-16));
-        gap:var(--base-size-12,12px);
+
+<style scoped>
+    .head {
+        display: flex;
+        width: 100%;
+        padding: var(--base-size-16, var(--base-size-16)); 
+        gap: var(--base-size-12, 12px); 
         background-color: aqua;
         border: 20px;
-        padding:5px;
+        padding: 5px;
+        padding-right: 180px;
         box-sizing: border-box;
         color: black;
     }
-    .head_left{
-        flex:1 1 auto;
-        display:flex;
-        gap:var(--bar-size-8,9%);
+
+    .head_left {
+        flex: 1 1 auto;
+        display: flex;
+        gap: var(--bar-size-8,9%);
     }
+
     .head_center {
-        font-size:20px;
-        text-align:center;
+        font-size: 20px;
+        text-align: center;
     }
+
     .head_right {
-        float:right;
+        float: right;
         display: flex;
     }
-    .head_logo{
-        width:30px;
-        height:30px;
-        border:0;
-        outline-offset:2px;
+
+    .head_logo {
+        width: 30px;
+        height: 30px;
+        border: 0;
+        outline-offset: 2px;
     }
+
+    .container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        /* 左右两部分 */
+        grid-template-rows: 1fr 1fr;
+        /* 两行 */
+        grid-template-areas:
+            "left-top right"
+            "left-bottom right";
+        grid-gap: 10px;
+        height: 100vh;
+        padding: 10px;
+    }
+
     .aside {
         grid-area: sidebar;
         justify-content: center;
@@ -106,45 +242,18 @@
         background-color: lightskyblue;
         box-sizing: border-box;
     }
-    .container {
-        display: grid;
-        grid-template-columns:2fr 1fr;
-        /* 左右两部分 */
-        grid-template-rows: 1fr 1fr;
-        /* 两行 */
-        grid-template-areas:
-            "left-top right"
-            "left-bottom right";
-        grid-gap: 10px;
-        height: 100vh;
-        padding: 10px;
-    }
-    .li_node{
-        display:flex;
-        align-content:center;
-        height:20px;
-        font-size:20px;
-        padding:10px 0 20px 10px;
-    }
-    .ul_menu{
-        list-style-type: none;
-        padding-block-start:0px;
-        padding: 0;
-        margin: 0;
-    }
+
     .window1 {
         grid-area: left-top;
         margin: 5px;
         padding: 10px;
-        text-align: center;
         border-radius: 5px;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         border: 2px solid black;
-        width: 600px;
-        height: 400px;
+        width: 65vw;
+        height: 62vh;
         box-sizing: border-box;
     }
 
@@ -155,12 +264,10 @@
         text-align: center;
         border-radius: 5px;
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: space-between;
         border: 2px solid black;
-        width: 600px;
-        height: 225px;
+        width: 65vw;
+        height: 33vh;
         box-sizing: border-box;
     }
 
@@ -168,15 +275,84 @@
         grid-area: right;
         margin: 5px;
         padding: 10px;
-        text-align: center;
         border-radius: 5px;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         border: 2px solid black;
-        width: 300px;
-        height: 645px;
+        width: 20vw;
+        height: 98vh;
         box-sizing: border-box;
+    }
+
+    .li_node {
+        display: flex;
+        align-content: center;
+        background-color: rgba(239, 242, 252, 0.801);
+        margin: 8px 0px;
+        box-shadow: 0px 0px 10px 1.5px rgba(199, 198, 198, 0.893);
+        height: 20px;
+        font-size: 20px;
+        padding: 10px 0 20px 10px;
+    }
+
+    .ul_menu {
+        list-style-type: none;
+        padding-block-start: 0px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .ul_message {
+        padding: 10px;
+    }
+
+    .li_message {
+        margin: 10px;
+    }
+
+    .image_container {
+        display: flex;
+        justify-content: space-between;
+        width: 52vw;
+        height: 26vh;
+    }
+
+    .iamge {
+        display: inline-block;
+        margin: 5px;
+        width: 200px;
+        height: 250px;
+    }
+
+    .initial-button {
+        margin: 5px;
+        padding: 10px 20px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    .clicked-button {
+        margin: 5px;
+        padding: 10px 20px;
+        background-color: gray;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    .bottom-text {
+        /* 将内容推至容器底部 */
+        margin-top: auto;
+        font-size: 18px;
+        padding: 15px;
     }
 </style>

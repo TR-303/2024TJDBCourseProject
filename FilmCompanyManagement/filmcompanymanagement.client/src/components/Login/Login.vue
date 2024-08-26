@@ -15,13 +15,13 @@
                 </h2>
                 <h2>
                     <label for="department">部门：</label>
-                    <select class="select" v-model="department">
+                    <select class="select" v-model="department" required>
                         <option v-for="option in options" :key="option.value" :value="option.value">
                             {{ option.text }}
                         </option>
                     </select>
                 </h2>
-                <button type="submit">登陆</button>
+                <button type="submit" >登陆</button>
             </form>
         </div>
     </div>
@@ -29,6 +29,9 @@
 
 <script>
     import axios from 'axios'
+    import { RouterView, useRoute } from 'vue-router';
+    const route = useRoute();
+
 export default {
     data() {
         return {
@@ -45,24 +48,29 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await axios.post('/api/auth/login', {
+                //测试可以跳转
+                this.$router.push('/Department');
+                const response1 = await axios.get('api/Test')
+                const response = await axios.post('api/Login/IsUserUni', {
                     username: this.username,
                     password: this.password,
+                    department:this.department,
                 });
+                console.log(response);
                 if (response.data.success) {
                     // 登录成功，根据用户类型跳转到相应页面
-                    this.usertype = this.username[0];
-                    if (this.usertype == 'B') {
+                    if (response.data == '1') {
                         // 跳转到管理员页面
-                        this.$router.push('/2_all/Boss');
-                    } else if (this.usertype == 'A') {
+                        if (this.department == '管理部')
+                            this.$router.push('/Boss');
                         // 跳转到财务页面
-                        this.$router.push('/2_all/Accounting');
-                    } else if (this.usertype == 'W') {
+                        if (this.department == '财务部')
+                            this.$router.push('/Accounting');
                         // 跳转到业务页面
-                        this.$router.push('/2_all/Worker');
+                        if (this.department == '业务部')
+                            this.$router.push('/Worker');
                     }
-                } else {
+                } else{
                     // 清空输入栏
                     this.username = '';
                     this.password = '';
