@@ -10,7 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="public\" />
-    <Folder Include="src\assets\" />
     <Folder Include="src\router\" />
   </ItemGroup>
 </Project>

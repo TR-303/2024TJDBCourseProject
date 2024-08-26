@@ -2,11 +2,11 @@
     <div>
         <div class="head">
             <div class="head_left">
-                <img class="head_logo" src="./logo.png" />
-                <label class="head_center">摄影公司管理系统</label>
+                <img class="head_logo" src="@/assets/logo.png" />
+                <label class="head_center">摄 影 公 司 管 理 系 统</label>
             </div>
             <div class="head_right">
-                <img class="head_logo" src="./User.jpg" />
+                <img class="head_logo" src="@/assets/User.jpg" />
                 <!--                这里获取登入姓名-->
                 <label class="head_center">你好,{{name1}}</label>
             </div>
@@ -76,9 +76,7 @@
     .head {
         display: flex;
         width: 100%;
-        padding: var(--base-size-16,var(--base-size-16));
-        gap: var(--base-size-12,12px);
-        background-color: aqua;
+        background: linear-gradient(aqua,70%,blue);
         border: 20px;
         padding: 5px;
         box-sizing: border-box;
@@ -112,7 +110,7 @@
     .head_left {
         flex: 1 1 auto;
         display: flex;
-        gap: var(--bar-size-8,8px);
+        gap: var(--bar-size-8,5%);
     }
     .head_center {
         font-size: 20px;
@@ -122,6 +120,7 @@
     .head_right {
         float: right;
         display: flex;
+        margin-right: 10%;
     }
 
     .head_logo {
@@ -134,7 +133,7 @@
     .aside {
         justify-content: center;
         align-items: center;
-        border: 1px solid #ccc;
+        border: 2px solid rgba(239, 242, 252, 0.801);
         float: left;
         width: 150px;
         height: 100vh;
@@ -150,11 +149,12 @@
 
     .li_node {
         display: flex;
-        align-content: center;
-        background-color: rgba(239, 242, 252, 0.801);
-        margin:8px 0;
+        text-align: center;
+        background-color: rgba(229, 242, 252, 0.801);
+        margin: 8px 0;
         box-shadow: 0px 0px 10px 1.5px rgba(199, 198, 198, 0.893);
         height: 20px;
+        cursor: pointer;
         font-size: 20px;
         padding: 10px 0 20px 10px;
     }
