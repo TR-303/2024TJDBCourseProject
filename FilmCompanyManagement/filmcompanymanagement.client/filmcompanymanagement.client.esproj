@@ -11,5 +11,7 @@
   <ItemGroup>
     <Folder Include="public\" />
     <Folder Include="src\router\" />
+    <Folder Include="src\mockjs\" />
+    <Folder Include="src\api\" />
   </ItemGroup>
 </Project>

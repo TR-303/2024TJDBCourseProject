@@ -8,7 +8,7 @@
             <div class="head_right">
                 <img class="head_logo" src="@/assets/User.jpg" />
                 <!--                这里获取登入姓名-->
-                <label class="head_center">你好,{{name1}}</label>
+                <label class="head_center">你好,{{name}}</label>
             </div>
         </div>
     </div>
@@ -40,10 +40,11 @@
     </div>
 </template>
 <script>
+    import axios from 'axios'
     export default{
         data(){
             return{
-                name1: 'xiaoming',
+                name: '',
                 choose: '',
                 options: [
                     { value: '管理部', text: '管理部' },
@@ -68,7 +69,18 @@
                     this.$router.push('/Infopage');
                 if (event.target.id == 'menu_1')
                     this.$router.push('/Department');
+            },
+            //获取数据
+            getdata() {
+                axios.get('/data/userdata').then(result => {
+                    this.name = result.data.name; // 将服务器返回的 name 更新到组件的 name 属性
+                }).catch(error => {
+                    console.error('Error fetching mock data:', error);
+                });
             }
+        },
+        mounted() {
+            this.getdata();
         }
     }
 </script>
