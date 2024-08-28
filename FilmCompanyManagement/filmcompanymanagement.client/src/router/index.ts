@@ -11,11 +11,11 @@ const router = createRouter(
             component: Login
         },
         {
-            path: "/Department",
+            path: "/Department/:id?",
             component: () => import("@/components/2_all/Department.vue")
         },
         {
-            path: "/Infopage",
+            path: "/Infopage/:id?",
             component: InfopageVue  
         }
     ]

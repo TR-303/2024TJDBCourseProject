@@ -47,8 +47,7 @@ export default {
         async login() {
             try {
                 //测试可以跳转
-                this.$router.push('/Department');
-                const response1 = await axios.get('api/Test')
+/*                this.$router.push('/Department');*/
                 const response = await axios.post('api/Login/IsUserUni', {
                     username: this.username,
                     password: this.password,
@@ -57,17 +56,16 @@ export default {
                 console.log(response);
                 if (response.data.success) {
                     // 登录成功，根据用户类型跳转到相应页面
-                    if (response.data == '1') {
-                        // 跳转到管理员页面
-                        if (this.department == '管理部')
-                            this.$router.push('/Boss');
-                        // 跳转到财务页面
-                        if (this.department == '财务部')
-                            this.$router.push('/Accounting');
-                        // 跳转到业务页面
-                        if (this.department == '业务部')
-                            this.$router.push('/Worker');
+                    // 跳转到管理员页面
+                    if (this.department === '管理部') {
+                        this.$router.push({ path: '/Infopage', query: { id: '1' } });
                     }
+                    // 跳转到财务页面
+                    if (this.department == '财务部')
+                        this.$router.push({ path: '/Infopage', query: { id: '2'} });
+                    // 跳转到业务页面
+                    if (this.department == '业务部')
+                        this.$router.push({ path: '/Infopage', query: { id: '3' } });
                 } else{
                     // 清空输入栏
                     this.username = '';

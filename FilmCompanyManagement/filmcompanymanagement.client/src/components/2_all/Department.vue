@@ -45,6 +45,7 @@
         data(){
             return{
                 name: '',
+                id:'2',
                 choose: '',
                 options: [
                     { value: '管理部', text: '管理部' },
@@ -65,21 +66,30 @@
             // 跳转页面
             jump(event) {
                 console.log(event.target.id)
-                if (event.target.id == 'menu_0')
-                    this.$router.push('/Infopage');
-                if (event.target.id == 'menu_1')
-                    this.$router.push('/Department');
+                if (event.target.id == 'menu_0') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/Infopage', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_1') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/Department', query: { id: this.id } });
+                }
             },
             //获取数据
             getdata() {
-                axios.get('/data/userdata').then(result => {
-                    this.name = result.data.name; // 将服务器返回的 name 更新到组件的 name 属性
-                }).catch(error => {
+                axios.post('/data/userdata', {id:this.id}).then(result => {
+                    this.name = result.data.name;// 将服务器返回的 name 更新到组件的 name 属性
+                }).catch(error => { 
                     console.error('Error fetching mock data:', error);
                 });
+            },
+            //获取id
+            getid() {
+                this.id = this.$route.query.id;
             }
         },
         mounted() {
+            this.getid();
             this.getdata();
         }
     }

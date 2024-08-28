@@ -8,7 +8,7 @@
             <div class="head_right">
                 <img class="head_logo" src="@/assets/User.jpg" />
                 <!--                这里获取登入姓名-->
-                <label class="head_center">你好,{{name1}}</label>
+                <label class="head_center">你好,{{name}}</label>
             </div>
         </div>
     </div>
@@ -65,7 +65,8 @@
     export default {
         data() {
             return {
-                name1: 'xiaoming',
+                name: '',
+                id:'',
                 count: 0,
                 count2: 0,
                 messages: ['待定', '待定', '待定', '待定', '待定'],
@@ -147,10 +148,28 @@
                 this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
             },
             handleClick_1() {
-                alert("签到成功!");
-                this.isClicked_1 = true;
-                this.buttonText_1 = "已签到";
-                this.tips_1 = `签到时间：${this.currentDateTime}`;
+                //这里先向服务器传递签到时间
+                axios.post('/data/signdata',{
+                    id: this.id,
+                    time: this.currentDateTime,
+                })
+                    .then(result => {
+                    if (result.data.success) {
+                        alert("签到成功!");
+                        console.log(result.data);
+                        this.isClicked_1 = true;
+                        this.buttonText_1 = "已签到";
+                        this.tips_1 = `签到时间：${result.data.signtime}`;
+                    }
+                    else {
+                        alert("您已签到!");
+                        this.isClicked_1 = true;
+                        this.buttonText_1 = "已签到";
+                        this.tips_1 = `签到时间：${result.data.signtime}`;
+                    }
+                }).catch(error => {
+                    console.error('Error fetching mock data:', error);
+                });
             },
             handleClick_2() {
                 alert("签退成功!");
@@ -166,13 +185,27 @@
             jump(event) {
                 console.log(event.target.id)
                 if (event.target.id == 'menu_0')
-                    this.$router.push('/Infopage');
+                    this.$router.push({ path: '/Infopage', query: { id: this.id } });
                 if (event.target.id == 'menu_1')
-                    this.$router.push('/Department');
+                    this.$router.push({ path: '/Department', query: { id: this.id } });
+            },
+            //获取数据
+            getdata() {
+                axios.post('/data/userdata', { id: this.id }).then(result => {
+                    this.name = result.data.name;// 将服务器返回的 name 更新到组件的 name 属性
+                }).catch(error => {
+                    console.error('Error fetching mock data:', error);
+                });
+            },
+            //获取id
+            getid() {
+                this.id = this.$route.query.id;
             }
         },
         mounted() {
             this.updateDateTime();
+            this.getid();
+            this.getdata();
             setInterval(this.updateDateTime, 1000);  // 每秒更新一次
         }
     }
