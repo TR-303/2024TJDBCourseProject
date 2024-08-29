@@ -3,12 +3,15 @@
         <div class="head">
             <div class="head_left">
                 <img class="head_logo" src="@/assets/logo.png" />
-                <label class="head_center">摄 影 公 司 管 理 系 统</label>
+                <label class="head_center">摄影公司管理系统</label>
             </div>
             <div class="head_right">
                 <img class="head_logo" src="@/assets/User.jpg" />
                 <!--                这里获取登入姓名-->
-                <label class="head_center">你好,{{name}}</label>
+                <label class="head_center">你好,{{name}} </label>
+                <button class="head_button" id="exit" @click="jump($event)">
+                    退出登录
+                </button>
             </div>
         </div>
     </div>
@@ -74,6 +77,10 @@
                     console.log(this.id);
                     this.$router.push({ path: '/Department', query: { id: this.id } });
                 }
+                if (event.target.id == 'exit') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/', query: { id: this.id } });
+                }
             },
             //获取数据
             getdata() {
@@ -124,8 +131,12 @@
         height: 30px;
     }
     .container_head_right {
-        width:50px;
-        display: flex;
+        background-color: deepskyblue;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 13px;
+        width: 70px;
         text-align: center;
         height: 30px;
     }
@@ -143,12 +154,13 @@
         float: right;
         display: flex;
         margin-right: 10%;
+        gap: var(--bar-size-5,0%);
     }
-
     .head_logo {
         width: 30px;
         height: 30px;
         border: 0;
+        margin:0 5px;
         outline-offset: 2px;
     }
 
@@ -201,5 +213,19 @@
         width: 6px;
         height: 10px;
         box-sizing: border-box;
+    }
+    .head_button {
+        margin: 0 10px;
+        background-color: deepskyblue;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        width: 100px;
+    }
+    .head_button:hover {
+        background-color: #1976d2;
+        /* 按钮悬浮效果 */
     }
 </style>
