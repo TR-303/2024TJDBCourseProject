@@ -18,7 +18,12 @@ let signList = [
     { id: '2', issign: '0', signtime: '' },
     { id: '3', issign: '0', signtime: '' },
 ]
-
+let userdataList = [
+    { id: '1', department: '管理部', phone: '12345' },
+    { id: '2', department: '财务部', phone: '67890' },
+    { id: '3', department: '业务部', phone: '13579' },
+    { id: '4', department: '业务部', phone: '22222' },
+] 
 //传了id
 Mock.mock('/data/userdata', 'post', (params) => {
     let user = JSON.parse(params.body);
@@ -63,5 +68,16 @@ Mock.mock('/data/signdata', 'post', (params) => {
             success: 0,
             signtime: signdata.signtime,
         }
+}
+)
+
+//传了department
+Mock.mock('/data/departmentuserdata', 'post',(params)=> {
+    let data = JSON.parse(params.body);
+    const departmentdata = userdataList.filter(item => item.department === data.department);
+    if (departmentdata) {
+        console.log(departmentdata);
+        return departmentdata;
+    }
 }
 )

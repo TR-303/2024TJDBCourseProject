@@ -28,17 +28,21 @@
     <div class="container">
         <div class="container_head">
             <label class="container_head_left">选择部门</label>
-            <select class="container_head_mid" v-model="choose">
+            <select class="container_head_mid" v-model="choose_department">
                 <option v-for="option in options" :key="option.value" :value="option.value">
                     {{ option.text }}
                 </option>
             </select>
-            <button class="container_head_right">
+            <button class="container_head_right" @click="getdatalist()">
                 确定
             </button>
         </div>
         <div>
-            <p>{{choose}}</p>
+            <el-table :data="userdataList" style="width: 100%">
+                <el-table-column prop="department" label="部门" />
+                <el-table-column prop='id' label='员工id' />
+                <el-table-column prop='phone' label='员工电话' />
+            </el-table>
         </div>
     </div>
 </template>
@@ -49,12 +53,13 @@
             return{
                 name: '',
                 id:'2',
-                choose: '',
+                choose_department: '',
                 options: [
                     { value: '管理部', text: '管理部' },
                     { value: '财务部', text: '财务部' },
                     { value: '业务部', text: '业务部' },
                 ],
+                userdataList:[],
             }
         },
         methods: {
@@ -93,6 +98,15 @@
             //获取id
             getid() {
                 this.id = this.$route.query.id;
+            },
+            getdatalist() {
+                axios.post('/data/departmentuserdata', { department: this.choose_department }).then(result => {
+                    console.log(result.data);
+                    this.userdataList = result.data;
+                    console.log(this.userdataList);    
+                }).catch(error => {
+                    console.error('Error fetching mock data:', error);
+                });
             }
         },
         mounted() {
