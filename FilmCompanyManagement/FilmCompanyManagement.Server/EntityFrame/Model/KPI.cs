@@ -7,7 +7,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     public class KPI
     {
         [Key, StringLength(20)]
-        public string? KPIID { get; set; }
+        public string? Id { get; set; }
 
         [Required]
         public Project Project { get; set; }

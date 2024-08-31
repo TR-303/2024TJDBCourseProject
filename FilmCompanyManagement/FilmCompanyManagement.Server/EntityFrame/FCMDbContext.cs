@@ -37,15 +37,11 @@ namespace FilmCompanyManagement.Server.EntityFrame
 
             modelBuilder.Entity<AdvicerIntern>()
                 .HasOne(ai => ai.Advicer)
-                .WithMany(e => e.Interns)
-                .HasForeignKey(ai => ai.AdvicerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(e => e.Interns);
 
             modelBuilder.Entity<AdvicerIntern>()
                 .HasOne(ai => ai.Intern)
-                .WithOne(e => e.Advicer)
-                .HasForeignKey<AdvicerIntern>(ai => ai.InternId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithOne(e => e.Advicer);
 
             modelBuilder.Entity<Project>()
                 .HasMany(p => p.Employees)
@@ -54,6 +50,22 @@ namespace FilmCompanyManagement.Server.EntityFrame
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.Manager)
                 .WithMany(m => m.ManageProjects);
+
+            modelBuilder.Entity<Department>()
+                .HasOne(d => d.Leader)
+                .WithOne();
+
+            modelBuilder.Entity<Department>()
+                .HasMany(d => d.Employees)
+                .WithOne(e => e.Department);
+
+            modelBuilder.Entity<Drill>()
+                .HasOne(d => d.Teacher)
+                .WithMany();
+
+            modelBuilder.Entity<Drill>()
+                .HasMany(d => d.Employees)
+                .WithMany(e => e.Drills);
 
             base.OnModelCreating(modelBuilder);
         }

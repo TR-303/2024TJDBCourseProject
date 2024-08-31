@@ -6,7 +6,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     public class Recruiter
     {
         [Key, StringLength(12)]
-        public string RecruiterId { get; set; }
+        public string Id { get; set; }
 
         [Required, StringLength(20)]
         public string Name { get; set; }
@@ -24,7 +24,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public Position Position { get; set; }
 
         [StringLength(14)]
-        public string? PhoneNumber { get; set; } // 电话
+        public string? Phone { get; set; } // 电话
 
         [StringLength(50)]
         public string? Email { get; set; } // 邮箱

@@ -5,7 +5,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     public class Customer//客户
     {
         [Key, StringLength(20)]
-        public string CustomerID { get; set; }//客户方ID——PK
+        public string Id { get; set; }//客户方ID——PK
 
         [Required, StringLength(20)]
         public string CustomerType { get; set; }//客户类型

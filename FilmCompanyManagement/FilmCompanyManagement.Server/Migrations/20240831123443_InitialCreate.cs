@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FilmCompanyManagement.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class FCM : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +30,7 @@ namespace FilmCompanyManagement.Server.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerID = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     CustomerType = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     CustomerName = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     BusinessType = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
@@ -40,57 +40,21 @@ namespace FilmCompanyManagement.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.CustomerID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Departments",
-                columns: table => new
-                {
-                    DeptId = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    DeptName = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
-                    DeptLeaderId = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    TotalEmployees = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    ContactNumber = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
-                    ParentDeptId = table.Column<int>(type: "NUMBER(10)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Departments", x => x.DeptId);
-                    table.ForeignKey(
-                        name: "FK_Departments_Departments_ParentDeptId",
-                        column: x => x.ParentDeptId,
-                        principalTable: "Departments",
-                        principalColumn: "DeptId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Drills",
-                columns: table => new
-                {
-                    DrillId = table.Column<string>(type: "NVARCHAR2(450)", nullable: false),
-                    TeacherId = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false),
-                    TimeSpan = table.Column<TimeSpan>(type: "INTERVAL DAY(8) TO SECOND(7)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Drills", x => x.DrillId);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PhotoEquipments",
                 columns: table => new
                 {
-                    EquipmentID = table.Column<string>(type: "NVARCHAR2(8)", maxLength: 8, nullable: false),
-                    EquipmentName = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    EquipmentModel = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: true),
-                    CurrentStock = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    Id = table.Column<string>(type: "NVARCHAR2(8)", maxLength: 8, nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
+                    Model = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: true),
+                    Count = table.Column<int>(type: "NUMBER(10)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PhotoEquipments", x => x.EquipmentID);
+                    table.PrimaryKey("PK_PhotoEquipments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,7 +76,7 @@ namespace FilmCompanyManagement.Server.Migrations
                     Id = table.Column<string>(type: "NVARCHAR2(8)", maxLength: 8, nullable: false),
                     Name = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     Model = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: true),
-                    Stock = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    Count = table.Column<int>(type: "NUMBER(10)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,19 +107,19 @@ namespace FilmCompanyManagement.Server.Migrations
                 name: "Files",
                 columns: table => new
                 {
-                    FileID = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
-                    FileName = table.Column<string>(type: "NVARCHAR2(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR2(50)", maxLength: 50, nullable: false),
                     FileType = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     ContentType = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: true),
-                    FileSize = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    FilePath = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
+                    Size = table.Column<int>(type: "NUMBER(10)", nullable: false),
+                    Path = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
                     UploadDate = table.Column<DateTime>(type: "Date", nullable: false),
                     Status = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     StorageEquipmentId = table.Column<string>(type: "NVARCHAR2(8)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Files", x => x.FileID);
+                    table.PrimaryKey("PK_Files", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Files_StorageEquipments_StorageEquipmentId",
                         column: x => x.StorageEquipmentId,
@@ -168,7 +132,7 @@ namespace FilmCompanyManagement.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
-                    PhoteEquipmentEquipmentID = table.Column<string>(type: "NVARCHAR2(8)", nullable: false),
+                    PhoteEquipmentId = table.Column<string>(type: "NVARCHAR2(8)", nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: true),
                     BillId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
                 },
@@ -182,10 +146,10 @@ namespace FilmCompanyManagement.Server.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EquipmentRepairs_PhotoEquipments_PhoteEquipmentEquipmentID",
-                        column: x => x.PhoteEquipmentEquipmentID,
+                        name: "FK_EquipmentRepairs_PhotoEquipments_PhoteEquipmentId",
+                        column: x => x.PhoteEquipmentId,
                         principalTable: "PhotoEquipments",
-                        principalColumn: "EquipmentID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -194,7 +158,7 @@ namespace FilmCompanyManagement.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "NVARCHAR2(8)", maxLength: 8, nullable: false),
-                    CustomerID = table.Column<string>(type: "NVARCHAR2(20)", nullable: true),
+                    CustomerId = table.Column<string>(type: "NVARCHAR2(20)", nullable: true),
                     Date = table.Column<DateTime>(type: "Date", nullable: false),
                     BillStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     AccountStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: true),
@@ -210,38 +174,38 @@ namespace FilmCompanyManagement.Server.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Investments_Customers_CustomerID",
-                        column: x => x.CustomerID,
+                        name: "FK_Investments_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "CustomerID");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "FinishedProducts",
                 columns: table => new
                 {
-                    OrderID = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
-                    OrderType = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
+                    Type = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
                     OrderStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     PaymentStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    FileID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
-                    CustomerID = table.Column<string>(type: "NVARCHAR2(20)", nullable: false)
+                    FileId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    CustomerId = table.Column<string>(type: "NVARCHAR2(20)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FinishedProducts", x => x.OrderID);
+                    table.PrimaryKey("PK_FinishedProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FinishedProducts_Customers_CustomerID",
-                        column: x => x.CustomerID,
+                        name: "FK_FinishedProducts_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "CustomerID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FinishedProducts_Files_FileID",
-                        column: x => x.FileID,
+                        name: "FK_FinishedProducts_Files_FileId",
+                        column: x => x.FileId,
                         principalTable: "Files",
-                        principalColumn: "FileID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -261,44 +225,10 @@ namespace FilmCompanyManagement.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    EmployeeID = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
-                    EmployeeName = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    Gender = table.Column<string>(type: "NVARCHAR2(2)", maxLength: 2, nullable: false),
-                    Position = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    Birthday = table.Column<DateTime>(type: "Date", nullable: false),
-                    EmployeePhone = table.Column<string>(type: "NVARCHAR2(14)", maxLength: 14, nullable: false),
-                    EmployeeEmail = table.Column<string>(type: "NVARCHAR2(50)", maxLength: 50, nullable: false),
-                    Salary = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    UserName = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    Password = table.Column<string>(type: "NVARCHAR2(30)", maxLength: 30, nullable: false),
-                    DepartmentsDeptId = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    InternAdvicerId = table.Column<string>(type: "NVARCHAR2(12)", nullable: true),
-                    InternId = table.Column<string>(type: "NVARCHAR2(12)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.EmployeeID);
-                    table.ForeignKey(
-                        name: "FK_Employees_AdviceIntern_InternAdvicerId_InternId",
-                        columns: x => new { x.InternAdvicerId, x.InternId },
-                        principalTable: "AdviceIntern",
-                        principalColumns: new[] { "AdvicerId", "InternId" });
-                    table.ForeignKey(
-                        name: "FK_Employees_Departments_DepartmentsDeptId",
-                        column: x => x.DepartmentsDeptId,
-                        principalTable: "Departments",
-                        principalColumn: "DeptId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Attendance",
                 columns: table => new
                 {
-                    AttendanceId = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
                     Date = table.Column<DateTime>(type: "Date", nullable: false),
                     CheckInTime = table.Column<TimeSpan>(type: "INTERVAL DAY(8) TO SECOND(7)", nullable: true),
                     CheckOutTime = table.Column<TimeSpan>(type: "INTERVAL DAY(8) TO SECOND(7)", nullable: true),
@@ -307,67 +237,105 @@ namespace FilmCompanyManagement.Server.Migrations
                     IsOnLeave = table.Column<bool>(type: "NUMBER(1)", nullable: false),
                     IsOvertime = table.Column<bool>(type: "NUMBER(1)", nullable: false),
                     Remarks = table.Column<string>(type: "NVARCHAR2(500)", maxLength: 500, nullable: true),
-                    EmployeesEmployeeID = table.Column<string>(type: "NVARCHAR2(12)", nullable: true)
+                    EmployeeId = table.Column<string>(type: "NVARCHAR2(12)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attendance", x => x.AttendanceId);
-                    table.ForeignKey(
-                        name: "FK_Attendance_Employees_EmployeesEmployeeID",
-                        column: x => x.EmployeesEmployeeID,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeID");
+                    table.PrimaryKey("PK_Attendance", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DrillEmployee",
+                name: "Departments",
                 columns: table => new
                 {
-                    EmployeeDrillsDrillId = table.Column<string>(type: "NVARCHAR2(450)", nullable: false),
-                    EmployeesEmployeeID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
+                    Id = table.Column<string>(type: "NVARCHAR2(8)", maxLength: 8, nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR2(30)", maxLength: 30, nullable: false),
+                    LeaderId = table.Column<string>(type: "NVARCHAR2(12)", nullable: true),
+                    TotalEmployees = table.Column<int>(type: "NUMBER(10)", nullable: false),
+                    ContactNumber = table.Column<string>(type: "NVARCHAR2(14)", maxLength: 14, nullable: true),
+                    ParentDeptId = table.Column<string>(type: "NVARCHAR2(8)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DrillEmployee", x => new { x.EmployeeDrillsDrillId, x.EmployeesEmployeeID });
+                    table.PrimaryKey("PK_Departments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DrillEmployee_Drills_EmployeeDrillsDrillId",
-                        column: x => x.EmployeeDrillsDrillId,
-                        principalTable: "Drills",
-                        principalColumn: "DrillId",
+                        name: "FK_Departments_Departments_ParentDeptId",
+                        column: x => x.ParentDeptId,
+                        principalTable: "Departments",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
+                    Gender = table.Column<string>(type: "NVARCHAR2(2)", maxLength: 2, nullable: false),
+                    Position = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
+                    Birthday = table.Column<DateTime>(type: "Date", nullable: false),
+                    Phone = table.Column<string>(type: "NVARCHAR2(14)", maxLength: 14, nullable: false),
+                    Email = table.Column<string>(type: "NVARCHAR2(50)", maxLength: 50, nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    UserName = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
+                    Password = table.Column<string>(type: "NVARCHAR2(30)", maxLength: 30, nullable: false),
+                    DepartmentId = table.Column<string>(type: "NVARCHAR2(8)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Drills",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
+                    TeacherId = table.Column<string>(type: "NVARCHAR2(12)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false),
+                    TimeSpan = table.Column<TimeSpan>(type: "INTERVAL DAY(8) TO SECOND(7)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Drills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DrillEmployee_Employees_EmployeesEmployeeID",
-                        column: x => x.EmployeesEmployeeID,
+                        name: "FK_Drills_Employees_TeacherId",
+                        column: x => x.TeacherId,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "EquipmentLeases",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
-                    EmployeeID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
+                    EmployeeId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "Date", nullable: false),
                     OrderStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     PaymentStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    CustomerID = table.Column<string>(type: "NVARCHAR2(20)", nullable: false)
+                    CustomerId = table.Column<string>(type: "NVARCHAR2(20)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EquipmentLeases", x => x.ID);
+                    table.PrimaryKey("PK_EquipmentLeases", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EquipmentLeases_Customers_CustomerID",
-                        column: x => x.CustomerID,
+                        name: "FK_EquipmentLeases_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "CustomerID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EquipmentLeases_Employees_EmployeeID",
-                        column: x => x.EmployeeID,
+                        name: "FK_EquipmentLeases_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -376,7 +344,7 @@ namespace FilmCompanyManagement.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
-                    EmployeeID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
                     Date = table.Column<DateTime>(type: "Date", nullable: false),
                     BillStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     AccountStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: true)
@@ -385,10 +353,10 @@ namespace FilmCompanyManagement.Server.Migrations
                 {
                     table.PrimaryKey("PK_FundingApplications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FundingApplications_Employees_EmployeeID",
-                        column: x => x.EmployeeID,
+                        name: "FK_FundingApplications_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -396,27 +364,27 @@ namespace FilmCompanyManagement.Server.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    ProjectID = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
-                    ManagerEmployeeID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
+                    ManagerId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
                     OrderStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     PaymentStatus = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    CustomerID = table.Column<string>(type: "NVARCHAR2(20)", nullable: false)
+                    CustomerId = table.Column<string>(type: "NVARCHAR2(20)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Projects", x => x.ProjectID);
+                    table.PrimaryKey("PK_Projects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Projects_Customers_CustomerID",
-                        column: x => x.CustomerID,
+                        name: "FK_Projects_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "CustomerID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Projects_Employees_ManagerEmployeeID",
-                        column: x => x.ManagerEmployeeID,
+                        name: "FK_Projects_Employees_ManagerId",
+                        column: x => x.ManagerId,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -424,26 +392,26 @@ namespace FilmCompanyManagement.Server.Migrations
                 name: "Recruiters",
                 columns: table => new
                 {
-                    RecruiterId = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR2(12)", maxLength: 12, nullable: false),
                     Name = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
                     Gender = table.Column<string>(type: "NVARCHAR2(2)", maxLength: 2, nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false),
                     Resume = table.Column<string>(type: "NVARCHAR2(500)", maxLength: 500, nullable: true),
                     PositionTitle = table.Column<string>(type: "NVARCHAR2(450)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "NVARCHAR2(14)", maxLength: 14, nullable: true),
+                    Phone = table.Column<string>(type: "NVARCHAR2(14)", maxLength: 14, nullable: true),
                     Email = table.Column<string>(type: "NVARCHAR2(50)", maxLength: 50, nullable: true),
-                    InterviewerEmployeeID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    InterviewerId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
                     InterviewStage = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: true),
                     State = table.Column<bool>(type: "NUMBER(1)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Recruiters", x => x.RecruiterId);
+                    table.PrimaryKey("PK_Recruiters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Recruiters_Employees_InterviewerEmployeeID",
-                        column: x => x.InterviewerEmployeeID,
+                        name: "FK_Recruiters_Employees_InterviewerId",
+                        column: x => x.InterviewerId,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Recruiters_Position_PositionTitle",
@@ -454,26 +422,50 @@ namespace FilmCompanyManagement.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeProject",
+                name: "DrillEmployee",
                 columns: table => new
                 {
-                    EmployeesEmployeeID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
-                    ProjectsProjectID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
+                    DrillsId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    EmployeesId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeProject", x => new { x.EmployeesEmployeeID, x.ProjectsProjectID });
+                    table.PrimaryKey("PK_DrillEmployee", x => new { x.DrillsId, x.EmployeesId });
                     table.ForeignKey(
-                        name: "FK_EmployeeProject_Employees_EmployeesEmployeeID",
-                        column: x => x.EmployeesEmployeeID,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeID",
+                        name: "FK_DrillEmployee_Drills_DrillsId",
+                        column: x => x.DrillsId,
+                        principalTable: "Drills",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeProject_Projects_ProjectsProjectID",
-                        column: x => x.ProjectsProjectID,
+                        name: "FK_DrillEmployee_Employees_EmployeesId",
+                        column: x => x.EmployeesId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeProject",
+                columns: table => new
+                {
+                    EmployeesId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    ProjectsId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeProject", x => new { x.EmployeesId, x.ProjectsId });
+                    table.ForeignKey(
+                        name: "FK_EmployeeProject_Employees_EmployeesId",
+                        column: x => x.EmployeesId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployeeProject_Projects_ProjectsId",
+                        column: x => x.ProjectsId,
                         principalTable: "Projects",
-                        principalColumn: "ProjectID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -481,23 +473,23 @@ namespace FilmCompanyManagement.Server.Migrations
                 name: "FileProject",
                 columns: table => new
                 {
-                    FilesFileID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
-                    ProjectsProjectID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
+                    FilesId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    ProjectsId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FileProject", x => new { x.FilesFileID, x.ProjectsProjectID });
+                    table.PrimaryKey("PK_FileProject", x => new { x.FilesId, x.ProjectsId });
                     table.ForeignKey(
-                        name: "FK_FileProject_Files_FilesFileID",
-                        column: x => x.FilesFileID,
+                        name: "FK_FileProject_Files_FilesId",
+                        column: x => x.FilesId,
                         principalTable: "Files",
-                        principalColumn: "FileID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FileProject_Projects_ProjectsProjectID",
-                        column: x => x.ProjectsProjectID,
+                        name: "FK_FileProject_Projects_ProjectsId",
+                        column: x => x.ProjectsId,
                         principalTable: "Projects",
-                        principalColumn: "ProjectID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -505,26 +497,26 @@ namespace FilmCompanyManagement.Server.Migrations
                 name: "KPI",
                 columns: table => new
                 {
-                    KPIID = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
-                    ProjectID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR2(20)", maxLength: 20, nullable: false),
+                    ProjectId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false),
                     Date = table.Column<DateTime>(type: "Date", nullable: false),
                     Result = table.Column<bool>(type: "NUMBER(1)", nullable: false),
-                    JudgerEmployeeID = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
+                    JudgerId = table.Column<string>(type: "NVARCHAR2(12)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KPI", x => x.KPIID);
+                    table.PrimaryKey("PK_KPI", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_KPI_Employees_JudgerEmployeeID",
-                        column: x => x.JudgerEmployeeID,
+                        name: "FK_KPI_Employees_JudgerId",
+                        column: x => x.JudgerId,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_KPI_Projects_ProjectID",
-                        column: x => x.ProjectID,
+                        name: "FK_KPI_Projects_ProjectId",
+                        column: x => x.ProjectId,
                         principalTable: "Projects",
-                        principalColumn: "ProjectID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -535,9 +527,9 @@ namespace FilmCompanyManagement.Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Attendance_EmployeesEmployeeID",
+                name: "IX_Attendance_EmployeeId",
                 table: "Attendance",
-                column: "EmployeesEmployeeID");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bills_AccountId",
@@ -545,39 +537,46 @@ namespace FilmCompanyManagement.Server.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Departments_LeaderId",
+                table: "Departments",
+                column: "LeaderId",
+                unique: true,
+                filter: "\"LeaderId\" IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Departments_ParentDeptId",
                 table: "Departments",
                 column: "ParentDeptId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DrillEmployee_EmployeesEmployeeID",
+                name: "IX_DrillEmployee_EmployeesId",
                 table: "DrillEmployee",
-                column: "EmployeesEmployeeID");
+                column: "EmployeesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeProject_ProjectsProjectID",
+                name: "IX_Drills_TeacherId",
+                table: "Drills",
+                column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeeProject_ProjectsId",
                 table: "EmployeeProject",
-                column: "ProjectsProjectID");
+                column: "ProjectsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_DepartmentsDeptId",
+                name: "IX_Employees_DepartmentId",
                 table: "Employees",
-                column: "DepartmentsDeptId");
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_InternAdvicerId_InternId",
-                table: "Employees",
-                columns: new[] { "InternAdvicerId", "InternId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EquipmentLeases_CustomerID",
+                name: "IX_EquipmentLeases_CustomerId",
                 table: "EquipmentLeases",
-                column: "CustomerID");
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EquipmentLeases_EmployeeID",
+                name: "IX_EquipmentLeases_EmployeeId",
                 table: "EquipmentLeases",
-                column: "EmployeeID");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EquipmentRepairs_BillId",
@@ -585,14 +584,14 @@ namespace FilmCompanyManagement.Server.Migrations
                 column: "BillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EquipmentRepairs_PhoteEquipmentEquipmentID",
+                name: "IX_EquipmentRepairs_PhoteEquipmentId",
                 table: "EquipmentRepairs",
-                column: "PhoteEquipmentEquipmentID");
+                column: "PhoteEquipmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FileProject_ProjectsProjectID",
+                name: "IX_FileProject_ProjectsId",
                 table: "FileProject",
-                column: "ProjectsProjectID");
+                column: "ProjectsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Files_StorageEquipmentId",
@@ -600,19 +599,19 @@ namespace FilmCompanyManagement.Server.Migrations
                 column: "StorageEquipmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinishedProducts_CustomerID",
+                name: "IX_FinishedProducts_CustomerId",
                 table: "FinishedProducts",
-                column: "CustomerID");
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinishedProducts_FileID",
+                name: "IX_FinishedProducts_FileId",
                 table: "FinishedProducts",
-                column: "FileID");
+                column: "FileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FundingApplications_EmployeeID",
+                name: "IX_FundingApplications_EmployeeId",
                 table: "FundingApplications",
-                column: "EmployeeID");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Investments_BillId",
@@ -620,34 +619,34 @@ namespace FilmCompanyManagement.Server.Migrations
                 column: "BillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Investments_CustomerID",
+                name: "IX_Investments_CustomerId",
                 table: "Investments",
-                column: "CustomerID");
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_KPI_JudgerEmployeeID",
+                name: "IX_KPI_JudgerId",
                 table: "KPI",
-                column: "JudgerEmployeeID");
+                column: "JudgerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_KPI_ProjectID",
+                name: "IX_KPI_ProjectId",
                 table: "KPI",
-                column: "ProjectID");
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_CustomerID",
+                name: "IX_Projects_CustomerId",
                 table: "Projects",
-                column: "CustomerID");
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_ManagerEmployeeID",
+                name: "IX_Projects_ManagerId",
                 table: "Projects",
-                column: "ManagerEmployeeID");
+                column: "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recruiters_InterviewerEmployeeID",
+                name: "IX_Recruiters_InterviewerId",
                 table: "Recruiters",
-                column: "InterviewerEmployeeID");
+                column: "InterviewerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recruiters_PositionTitle",
@@ -659,28 +658,41 @@ namespace FilmCompanyManagement.Server.Migrations
                 table: "AdviceIntern",
                 column: "AdvicerId",
                 principalTable: "Employees",
-                principalColumn: "EmployeeID",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AdviceIntern_Employees_InternId",
                 table: "AdviceIntern",
                 column: "InternId",
                 principalTable: "Employees",
-                principalColumn: "EmployeeID",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Attendance_Employees_EmployeeId",
+                table: "Attendance",
+                column: "EmployeeId",
+                principalTable: "Employees",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Departments_Employees_LeaderId",
+                table: "Departments",
+                column: "LeaderId",
+                principalTable: "Employees",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AdviceIntern_Employees_AdvicerId",
-                table: "AdviceIntern");
+                name: "FK_Departments_Employees_LeaderId",
+                table: "Departments");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_AdviceIntern_Employees_InternId",
-                table: "AdviceIntern");
+            migrationBuilder.DropTable(
+                name: "AdviceIntern");
 
             migrationBuilder.DropTable(
                 name: "Attendance");
@@ -744,9 +756,6 @@ namespace FilmCompanyManagement.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "AdviceIntern");
 
             migrationBuilder.DropTable(
                 name: "Departments");

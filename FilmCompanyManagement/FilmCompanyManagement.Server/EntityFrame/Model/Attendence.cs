@@ -7,7 +7,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     public class Attendance
     {
         [Key, StringLength(12)]
-        public string AttendanceId { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [Column(TypeName = "Date")] // 将此属性映射为数据库中的date类型
@@ -31,7 +31,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [StringLength(500)] // 将此属性映射为数据库中的nvarchar(500)类型
         public string? Remarks { get; set; } // 备注信息（可空），用于记录额外说明（如请假原因、加班说明等）
 
-        public virtual Employee? Employees { get; set; }// 导航属性 多对一
+        public virtual Employee? Employee { get; set; }// 导航属性 多对一
     }
 }
 
