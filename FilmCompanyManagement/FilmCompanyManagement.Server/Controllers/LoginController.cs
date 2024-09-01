@@ -24,12 +24,23 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> IsUserUni(string user_id)
+        public async Task<bool> IsUserUni(string userName)
         {
             var userExists = await _context.Employees
-                                           .AnyAsync(e => e.UserName == user_id);
+                                           .AnyAsync(e => e.UserName == userName);
             return userExists;
         }
 
+        [HttpPost]
+        public async Task<int> UserLogin(string userName, string password, string department)
+        {
+            var loginUser = await _context.Employees
+                                           .SingleAsync(e => e.UserName == userName);
+            if (loginUser == null)
+                return -1;//账户不存在
+            if (loginUser.Password == password)
+                return 1;//登入成功
+            return 0;//密码错误
+        }
     }
 }
