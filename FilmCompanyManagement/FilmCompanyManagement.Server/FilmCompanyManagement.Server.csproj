@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\LoginController.cs" />
+    <Compile Remove="Controllers\NotificationController.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Controllers\NotificationController.cs" />
     <None Include="Controllers\LoginController.cs" />
   </ItemGroup>
 

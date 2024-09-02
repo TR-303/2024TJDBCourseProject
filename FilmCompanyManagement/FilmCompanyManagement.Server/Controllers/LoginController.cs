@@ -26,16 +26,14 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<bool> IsUserUni(string userName)
         {
-            var userExists = await _context.Employees
-                                           .AnyAsync(e => e.UserName == userName);
+            var userExists = await _context.Employees.AnyAsync(e => e.UserName == userName);
             return userExists;
         }
 
         [HttpPost]
         public async Task<int> UserLogin(string userName, string password, string department)
         {
-            var loginUser = await _context.Employees
-                                           .SingleAsync(e => e.UserName == userName);
+            var loginUser = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
             if (loginUser == null)
                 return -1;//账户不存在
             if (loginUser.Password == password)
