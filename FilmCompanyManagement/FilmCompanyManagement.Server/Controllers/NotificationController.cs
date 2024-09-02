@@ -26,7 +26,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<List<Project>> GetUnfinishedProjects(string userName)
         {
-            var unfinishedProjects = await _context.Projects.Where(p => p.Manager.UserName == userName).ToListAsync()
+            var unfinishedProjects = await _context.Projects.Where(p => p.Manager.UserName == userName).ToListAsync();
             return unfinishedProjects;
         }
 
@@ -34,16 +34,16 @@ namespace FilmCompanyManagement.Controllers
         public async Task<List<Drill>> GetUnfinishedDrills(string userName)
         {
             var user = await _context.Employees.
-                Where(d => d.Manager.UserName == userName).SingleAsync()
+                Where(d => d.Manager.UserName == userName).SingleAsync();
             var unfinishedDrills = await _context.Drills.
-                Where(d => (d.Employees.Contains(user) || d.Teacher == user) && DateTime.Now - d.DateTime < d.TimeSpan).ToListAsync()
+                Where(d => (d.Employees.Contains(user) || d.Teacher == user) && DateTime.Now - d.DateTime < d.TimeSpan).ToListAsync();
             return unfinishedDrills;
         }
 
         [HttpPost]
         public async Task<List<FundingApplication>> GetFundingApplications(string userName)
         {
-            var fundingApplications = await _context.FundingApplications.Where(fa => (fa.Employee.UserName == userName).ToListAsync()
+            var fundingApplications = await _context.FundingApplications.Where(fa => (fa.Employee.UserName == userName).ToListAsync();
             return fundingApplications;
         }
     }
