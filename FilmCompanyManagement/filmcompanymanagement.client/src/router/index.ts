@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '@/components/Login/Login.vue'
 import InfopageVue from '../components/2_all/Infopage.vue'
+import FinancialStatements from '@/components/2_all/FinancialStatements.vue';
 
 const router = createRouter(
     {
@@ -17,7 +18,12 @@ const router = createRouter(
         {
             path: "/Infopage/:id?",
             component: InfopageVue  
-        }
+        },
+        {
+            path: "/FinancialStatements/:id?",
+            name: "FinancialStatements",
+            component: FinancialStatements
+        },
     ]
     }
 )

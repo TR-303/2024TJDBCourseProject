@@ -23,6 +23,9 @@
             <li role="menuitem" id="menu_1" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 部门情况
             </li>
+            <li role="menuitem" id="menu_2" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                查看财政表
+            </li>
         </ul>
     </div>
     <div id="container" class="container">
@@ -192,6 +195,9 @@
                     this.$router.push({ path: '/Infopage', query: { id: this.id } });
                 if (event.target.id == 'menu_1')
                     this.$router.push({ path: '/Department', query: { id: this.id } });
+                if (event.target.id == 'menu_2') {
+                    this.$router.push({ path: '/FinancialStatements', query: { id: this.id } });
+                }
                 if (event.target.id == 'exit') {
                     console.log(this.id);
                     this.$router.push({ path: '/', query: { id: this.id } });

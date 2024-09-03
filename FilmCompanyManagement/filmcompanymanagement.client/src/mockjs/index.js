@@ -29,6 +29,24 @@ let userdataList = [
     { id: '3', department: '业务部', phone: '13579' },
     { id: '4', department: '业务部', phone: '22222' },
 ] 
+
+// 外部投资数据
+let investmentList = [
+    { investmentId: '1', customerId: '11', orderDate: '2024-08-01', invoiceNumber: '20240801', amount: 5000, expenseType: '广告费用' },
+    { investmentId: '2', customerId: '22', orderDate: '2024-08-15', invoiceNumber: '20240815', amount: 10000, expenseType: '制作费用' },
+    
+];
+
+// 获取外部投资数据
+Mock.mock('/api/externalinvestments/unprocessed', 'get', (params) => {
+    // 返回数据
+    return {
+        code: 200,
+        data: investmentList
+    };
+});
+
+
 //身份：传了id
 Mock.mock('/data/userdata', 'post', (params) => {
     let user = JSON.parse(params.body);
