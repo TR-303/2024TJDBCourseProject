@@ -35,10 +35,12 @@
             </ul>
         </div>
         <div class="window2">
-            <p style="font-size: 18px;text-align: center;">近期佳作展示</p><br>
+            <div>
+                <p style="font-size: 18px;text-align: center;margin-top:10px;">近期佳作展示</p>
+            </div>
             <div class="image_container">
-                <img class="image" src="../assets/picture2_1.png" />
-                <img class="image" src="../assets/picture2_2.png" />
+                <img class="image" src="@/assets/picture2_1.png" />
+                <img class="image" src="@/assets/picture2_2.png" />
             </div>
         </div>
         <div class="window3">
@@ -165,7 +167,6 @@
                         this.tips_1 = `签到时间：${result.data.signtime}`;
                     }
                     else {
-                        alert("您已签到!");
                         this.isClicked_1 = true;
                         this.buttonText_1 = "已签到";
                         this.tips_1 = `签到时间：${result.data.signtime}`;
@@ -207,12 +208,20 @@
             //获取id
             getid() {
                 this.id = this.$route.query.id;
+            },
+            getissign() {
+                axios.post('/data/checksign', { id: this.id }).then(result => {
+                    this.handleClick_1();
+                }).catch(error => {
+                    console.error('Error fetching mock data:', error);
+                });
             }
         },
         mounted() {
             this.updateDateTime();
             this.getid();
             this.getdata();
+            this.getissign();
             setInterval(this.updateDateTime, 1000);  // 每秒更新一次
         }
     }
@@ -296,16 +305,19 @@
 
     .window2 {
         grid-area: left-bottom;
+        flex-direction: column;
         margin: 5px;
         padding: 10px;
         text-align: center;
         border-radius: 5px;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         border: 2px solid black;
         width: 65vw;
         height: 33vh;
         box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
     }
 
     .window3 {
@@ -317,7 +329,7 @@
         flex-direction: column;
         justify-content: flex-start;
         border: 2px solid black;
-        width: 20vw;
+        width: 36vh;
         height: 98vh;
         box-sizing: border-box;
     }
@@ -351,16 +363,17 @@
 
     .image_container {
         display: flex;
-        justify-content: space-between;
-        width: 52vw;
+        justify-content:center;
+        width: 100%;
         height: 26vh;
     }
 
-    .iamge {
+    .image {
         display: inline-block;
         margin: 5px;
-        width: 200px;
-        height: 250px;
+        padding:10px;
+        width: 45%;
+        height: auto;
     }
 
     .initial-button {

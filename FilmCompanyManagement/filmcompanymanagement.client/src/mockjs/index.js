@@ -5,6 +5,11 @@ let dataList = [
     { id: '2', name: 'manager' },
     { id: '3', name: 'worker' }
 ];
+let issignList = [
+    { id: '1', issign: '0' },
+    { id: '2', issign: '0' },
+    { id: '3', issign: '0' }
+]
 //login用
 let loginList = [
     { username: '1', password: '1', department: '管理部' },
@@ -24,7 +29,7 @@ let userdataList = [
     { id: '3', department: '业务部', phone: '13579' },
     { id: '4', department: '业务部', phone: '22222' },
 ] 
-//传了id
+//身份：传了id
 Mock.mock('/data/userdata', 'post', (params) => {
     let user = JSON.parse(params.body);
     const userdata = dataList.find(item => item.id === user.id);
@@ -34,7 +39,7 @@ Mock.mock('/data/userdata', 'post', (params) => {
 }
 )
 
-//传了username，password，department
+//登录使用：传了username，password，department
 Mock.mock('api/Login/IsUserUni', 'post', (params) => {
     let login = JSON.parse(params.body);
     const logindata = loginList.find(item => item.username === login.username && item.password === login.password && item.department === login.department);
@@ -50,7 +55,7 @@ Mock.mock('api/Login/IsUserUni', 'post', (params) => {
 }
 )
 
-//传了id和time
+//签到时间：传了id和time
 Mock.mock('/data/signdata', 'post', (params) => {
     let user = JSON.parse(params.body);
     const signdata = signList.find(item => item.id === user.id);
@@ -71,13 +76,23 @@ Mock.mock('/data/signdata', 'post', (params) => {
 }
 )
 
-//传了department
+//部门情况需求：传了department，返回员工姓名，电话号码
 Mock.mock('/data/departmentuserdata', 'post',(params)=> {
     let data = JSON.parse(params.body);
     const departmentdata = userdataList.filter(item => item.department === data.department);
     if (departmentdata) {
         console.log(departmentdata);
         return departmentdata;
+    }
+}
+)
+
+//查看是否签到:传了id
+Mock.mock('/data/checksign', 'post', (params) => {
+    let data = JSON.parse(params.body);
+    const issigndata = issignList.filter(item => item.id === data.id);
+    if (issigndata) {
+        return issigndata;
     }
 }
 )
