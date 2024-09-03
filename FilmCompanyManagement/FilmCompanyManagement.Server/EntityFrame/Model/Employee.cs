@@ -5,16 +5,12 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class Employee//员工
     {
-<<<<<<< HEAD
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string UserName { get; internal set; }
-=======
         [Key, StringLength(12)]
         public string Id { get; set; }//员工ID——PK
 
         [Required, StringLength(20)]
         public string Name { get; set; }//姓名
+
 
         [Required, StringLength(2)]
         public string Gender { get; set; }//性别
@@ -49,6 +45,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public ICollection<KPI> KPIs { get; set; }
         public ICollection<Attendance> Attendances { get; set; }
         public ICollection<Drill> Drills { get; set; }
->>>>>>> cb3afef74cc03635ca13361cffb2f04a00b5fdbc
+
     }
 }
