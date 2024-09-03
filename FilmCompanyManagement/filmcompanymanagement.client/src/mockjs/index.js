@@ -4,12 +4,8 @@ let dataList = [
     { id: '1', name: 'boss' },
     { id: '2', name: 'manager' },
     { id: '3', name: 'worker' }
-];
-let issignList = [
-    { id: '1', issign: '0' },
-    { id: '2', issign: '0' },
-    { id: '3', issign: '0' }
 ]
+
 //login用
 let loginList = [
     { username: '1', password: '1', department: '管理部' },
@@ -19,9 +15,9 @@ let loginList = [
 //department用
 
 let signList = [
-    { id: '1', issign: '0', signtime: '' },
-    { id: '2', issign: '0', signtime: '' },
-    { id: '3', issign: '0', signtime: '' },
+    { id: '1', issign: '0', signtime: '', issignout: '0', signouttime: '' },
+    { id: '2', issign: '0', signtime: '', issignout: '0', signouttime: '' },
+    { id: '3', issign: '0', signtime: '', issignout: '0', signouttime: '' },
 ]
 let userdataList = [
     { id: '1', department: '管理部', phone: '12345' },
@@ -58,22 +54,43 @@ Mock.mock('api/Login/IsUserUni', 'post', (params) => {
 //签到时间：传了id和time
 Mock.mock('/data/signdata', 'post', (params) => {
     let user = JSON.parse(params.body);
-    const signdata = signList.find(item => item.id === user.id);
-    if (signdata.issign === '0') {
-        signdata.issign = '1';
-        signdata.signtime = user.time;
-        console.log(signdata);
-        return {
-            signtime: signdata.signtime,
-            success: 1,
+    if (user.state === '1') {
+        const signdata = signList.find(item => item.id === user.id);
+        if (signdata.issign === '0') {
+            signdata.issign = '1';
+            signdata.signtime = user.time;
+            console.log(signdata);
+            return {
+                signtime: signdata.signtime,
+                success: 1,
+            }
+        }
+        else
+            return {
+                success: 0,
+                signtime: signdata.signtime,
+            }
+    }
+    else {
+        const signdata = signList.find(item => item.id === user.id);
+        if (signdata.issignout === '0') {
+            signdata.issignout = '1';
+            signdata.signouttime = user.time;
+            console.log(signdata);
+            return {
+                signouttime: signdata.signouttime,
+                success: 1,
+            }
+        }
+        else {
+            signdata.signouttime = user.time;
+            return {
+                success: 0,
+                signouttime: signdata.signouttime,
+            }
         }
     }
-    else
-        return {
-            success: 0,
-            signtime: signdata.signtime,
-        }
-}
+    }
 )
 
 //部门情况需求：传了department，返回员工姓名，电话号码
@@ -90,9 +107,9 @@ Mock.mock('/data/departmentuserdata', 'post',(params)=> {
 //查看是否签到:传了id
 Mock.mock('/data/checksign', 'post', (params) => {
     let data = JSON.parse(params.body);
-    const issigndata = issignList.filter(item => item.id === data.id);
-    if (issigndata) {
-        return issigndata;
+    const signdata = signList.filter(item => item.id === data.id);
+    if (signdata) {
+        return signdata;
     }
 }
 )

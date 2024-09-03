@@ -50,10 +50,10 @@
                 {{ buttonText_1 }}
             </button>
             <p v-if="isClicked_1" style="text-align: center;">{{ tips_1 }}</p>
-            <button v-if="isClicked_1" :class="buttonClass(isClicked_2)" @click="handleClick_2" :disabled="isClicked_2">
+            <button v-if="isClicked_1" :class="buttonClass(0)" @click="handleClick_2" >
                 {{ buttonText_2 }}
             </button>
-            <p v-if="isClicked_2" style="text-align: center;">{{ tips_2 }}</p>
+            <p style="text-align: center;">{{ tips_2 }}</p>
             <ul class="bottom-text">
                 <li>项目ID:{{ ProjectID }}</li>
                 <li>评定时间:{{ Date }}</li>
@@ -157,6 +157,7 @@
                 axios.post('/data/signdata',{
                     id: this.id,
                     time: this.currentDateTime,
+                    state:'1',
                 })
                     .then(result => {
                     if (result.data.success) {
@@ -176,11 +177,33 @@
                 });
             },
             handleClick_2() {
-                alert("签退成功!");
+                axios.post('/data/signdata', {
+                    id: this.id,
+                    time: this.currentDateTime,
+                    state: '0',
+                })
+                    .then(result => {
+                        if (result.data.success) {
+                            alert("签退成功!");
+                            console.log(result.data);
+                            this.isClicked_2 = true;
+                            this.buttonText_2 = "已签退";
+                            this.tips_2 = `签退时间：${result.data.signouttime}`;
+                        }
+                        else {
+                            alert("已更改签退时间！");
+                            this.isClicked_2 = true;
+                            this.buttonText_2 = "已签退";
+                            this.tips_2 = `签退时间：${result.data.signouttime}`;
+                        }
+                    }).catch(error => {
+                        console.error('Error fetching mock data:', error);
+                    });
+/*                alert("签退成功!");
                 this.isClicked_2 = true;
                 this.buttonText_2 = "已签退";
                 this.tips_2 = `签退时间：${this.currentDateTime}`;
-                // 此时签到签退均完成，向管理员传送考勤信息
+                // 此时签到签退均完成，向管理员传送考勤信息*/
             },
             buttonClass(isClicked) {
                 return isClicked ? 'clicked-button' : 'initial-button';
@@ -211,6 +234,13 @@
             },
             getissign() {
                 axios.post('/data/checksign', { id: this.id }).then(result => {
+                    console.log(result);
+                    if (result.data[0].issignout == '1') { 
+                        console.log(result);
+                        this.handleClick_2 = true;
+                        this.buttonText_2 = "已签退";
+                        this.tips_2 = `签退时间：${result.data[0].signouttime}`;
+                    }
                     this.handleClick_1();
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
