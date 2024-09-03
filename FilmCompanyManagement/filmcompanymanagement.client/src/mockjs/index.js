@@ -113,3 +113,68 @@ Mock.mock('/data/checksign', 'post', (params) => {
     }
 }
 )
+
+//worker
+
+
+Mock.mock('/api/workers', 'get', {
+    projects: [{
+        workerID: '3'
+    }]
+})
+
+Mock.mock('/api/projects', 'get', {
+    projects: [{
+        id: '001',
+        managerID: '2150001',
+        orderDate: '2024.7.1',
+        orderStatus: '进行中',
+        paymentStatus: '进行中',
+        workerID: '3'
+    }, {
+        id: '002',
+        managerID: '2150002',
+        orderDate: '2024.7.2',
+        orderStatus: '进行中',
+        paymentStatus: '进行中',
+        workerID: '3'
+    }],
+})
+
+Mock.mock('/api/expense', 'post', {
+    message: '经费申请已提交'
+})
+
+Mock.mock('/api/purchase', 'post', {
+    message: '设备购买已提交'
+})
+
+Mock.mock('/api/repair', 'post', {
+    message: '设备维修已提交'
+})
+
+Mock.mock('/api/files', 'get', {
+    files: [{
+        id: '001',
+        name: '入职通知书',
+        type: 'pdf',
+        description: '欢迎新人！',
+        size: '114 KB',
+        uploadDate: '2024.7.1',
+        status: '收件人',
+        workerID: '3'
+    }, {
+        id: '002',
+        name: '解职通知书',
+        type: 'pdf',
+        description: '你被开了！',
+        size: '514 KB',
+        uploadDate: '2024.7.1',
+        status: '收件人',
+        workerID: '3'
+    },],
+})
+
+Mock.mock('/api/upload', 'post', {
+    message: '文件已上传'
+})

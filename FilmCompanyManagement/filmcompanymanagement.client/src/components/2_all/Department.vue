@@ -23,6 +23,15 @@
             <li role="menuitem" id="menu_1" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 部门情况
             </li>
+            <li v-if="showWorkerMenu" role="menuitem" id="menu_2" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                项目查看
+            </li>
+            <li v-if="showWorkerMenu" role="menuitem" id="menu_3" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                事务申请
+            </li>
+            <li v-if="showWorkerMenu" role="menuitem" id="menu_4" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                成果上传
+            </li>
         </ul>
     </div>
     <div class="container">
@@ -62,6 +71,16 @@
                 userdataList:[],
             }
         },
+        computed: {
+            showWorkerMenu() {
+                return this.$route.query.id === '3';
+            }
+        },
+        watch: {
+            '$route.query.id'(newId) {
+                this.showWorkerMenu = newId === '3';
+            }
+        },
         methods: {
             // 添加阴影效果
             addShadow(event) {
@@ -81,6 +100,18 @@
                 if (event.target.id == 'menu_1') {
                     console.log(this.id);
                     this.$router.push({ path: '/Department', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_2') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/projects', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_3') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/application', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_4') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/upload', query: { id: this.id } });
                 }
                 if (event.target.id == 'exit') {
                     console.log(this.id);
