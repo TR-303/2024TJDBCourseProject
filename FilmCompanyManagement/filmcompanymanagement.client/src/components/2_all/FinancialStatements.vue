@@ -1,53 +1,54 @@
-<template>
+ï»¿<template>
     <div>
         <div class="head">
             <div class="head_left">
                 <img class="head_logo" src="@/assets/logo.png" />
-                <label class="head_center">ÉãÓ°¹«Ë¾¹ÜÀíÏµÍ³</label>
+                <label class="head_center">æ‘„å½±å…¬å¸ç®¡ç†ç³»ç»Ÿ</label>
             </div>
             <div class="head_right">
                 <img class="head_logo" src="@/assets/User.jpg" />
-                <!-- ÕâÀï»ñÈ¡µÇÈëĞÕÃû -->
-                <label class="head_center">ÄãºÃ, {{ name }} </label>
+                <!-- è¿™é‡Œè·å–ç™»å…¥å§“å -->
+                <label class="head_center">ä½ å¥½, {{ name }} </label>
                 <button class="head_button" id="exit" @click="jump($event)">
-                    ÍË³öµÇÂ¼
+                    é€€å‡ºç™»å½•
                 </button>
             </div>
         </div>
         <div class="aside">
             <ul class="ul_menu">
                 <li role="menuitem" id="menu_0" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
-                    Ê×Ò³
+                    é¦–é¡µ
                 </li>
                 <li role="menuitem" id="menu_1" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
-                    ²¿ÃÅÇé¿ö
+                    éƒ¨é—¨æƒ…å†µ
                 </li>
                 <li role="menuitem" id="menu_2" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleSubMenu">
-                    ²é¿´²ÆÕş±í
-                    <!-- ¶ş¼¶µ¼º½Ïî -->
-                    <ul v-if="showSubMenu" class="sub_menu">
-                        <li role="menuitem" id="submenu_1" tabindex="-1" class="li_node" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showInvestmentData">
-                            ²é¿´Íâ²¿Í¶×Ê
-                        </li>
-                    </ul>
+                    æŸ¥çœ‹è´¢æ”¿è¡¨
+
                 </li>
+                <!-- äºŒçº§å¯¼èˆªé¡¹ -->
+                
+                    <li  v-if="showSubMenu" class="sub_menu " role="menuitem" id="submenu_1" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showInvestmentData">
+                        æŸ¥çœ‹å¤–éƒ¨æŠ•èµ„
+                    </li>
+                
             </ul>
         </div>
         <div class="container" v-if="showInvestment">
             <div class="container_head">
-                <label class="container_head_left">²é¿´Íâ²¿Í¶×Ê</label>
-                <button class="container_head_right" @click="refreshData">
-                    Ë¢ĞÂÊı¾İ
+                <label class="container_head_left">æŸ¥çœ‹å¤–éƒ¨æŠ•èµ„</label>
+                <button class="container_head_right" @click="refreshData()">
+                    åˆ·æ–°æ•°æ®
                 </button>
             </div>
             <div>
                 <el-table :data="investmentList" style="width: 100%">
-                    <el-table-column prop="investmentId" label="Í¶×Ê±àºÅ" />
-                    <el-table-column prop="customerId" label="Í¶×Ê¿Í»§ID" />
-                    <el-table-column prop="orderDate" label="¶©µ¥ÈÕÆÚ" />
-                    <el-table-column prop="invoiceNumber" label="ÕËµ¥±àºÅ" />
-                    <el-table-column prop="amount" label="·ÑÓÃÊı¶î" />
-                    <el-table-column prop="expenseType" label="·ÑÓÃÀàĞÍ" />
+                    <el-table-column prop="investmentId" label="æŠ•èµ„ç¼–å·" />
+                    <el-table-column prop="customerId" label="æŠ•èµ„å®¢æˆ·ID" />
+                    <el-table-column prop="orderDate" label="è®¢å•æ—¥æœŸ" />
+                    <el-table-column prop="invoiceNumber" label="è´¦å•ç¼–å·" />
+                    <el-table-column prop="amount" label="è´¹ç”¨æ•°é¢" />
+                    <el-table-column prop="expenseType" label="è´¹ç”¨ç±»å‹" />
                 </el-table>
             </div>
         </div>
@@ -62,8 +63,8 @@
             return {
                 name: '',
                 investmentList: [],
-                showSubMenu: false, // ¿ØÖÆ¶ş¼¶µ¼º½ÏÔÊ¾
-                showInvestment: false // ¿ØÖÆÍ¶×ÊÊı¾İÏÔÊ¾
+                showSubMenu: false, // æ§åˆ¶äºŒçº§å¯¼èˆªæ˜¾ç¤º
+                showInvestment: false // æ§åˆ¶æŠ•èµ„æ•°æ®æ˜¾ç¤º
             };
         },
         methods: {
@@ -87,28 +88,29 @@
                 }
             },
             toggleSubMenu() {
-                // ÇĞ»»ÏÔÊ¾¶ş¼¶²Ëµ¥
+                // åˆ‡æ¢æ˜¾ç¤ºäºŒçº§èœå•
                 this.showSubMenu = !this.showSubMenu;
             },
             showInvestmentData() {
-                this.showInvestment = true; // ÏÔÊ¾Í¶×ÊÊı¾İ
-                this.getInvestmentData(); // »ñÈ¡Í¶×ÊÊı¾İ
+                this.showInvestment = true; // æ˜¾ç¤ºæŠ•èµ„æ•°æ®
+                this.getInvestmentData(); // è·å–æŠ•èµ„æ•°æ®
             },
             refreshData() {
                 this.getInvestmentData();
             },
             getInvestmentData() {
-                axios.get('/api/externalinvestments/unprocessed', {
-                    params: { orderStatus: 'approved' }
-                }).then(response => {
-                    this.investmentList = response.data;
+                axios.get('/api/externalinvestments/unprocessed')
+                .then(response => {
+                    //console.log(response.data);
+                    this.investmentList = response.data.data;
+                    //console.log(this.investmentList); 
                 }).catch(error => {
                     console.error('Error fetching investment data:', error);
                 });
             }
         },
         mounted() {
-            // ¿ÉÒÔÔÚÒ³Ãæ¼ÓÔØÊ±Ô¤¼ÓÔØÍ¶×ÊÊı¾İ£¬»òÁô¸øÓÃ»§ÊÖ¶¯´¥·¢
+            // å¯ä»¥åœ¨é¡µé¢åŠ è½½æ—¶é¢„åŠ è½½æŠ•èµ„æ•°æ®ï¼Œæˆ–ç•™ç»™ç”¨æˆ·æ‰‹åŠ¨è§¦å‘
             // this.getInvestmentData();
         }
     };
@@ -128,14 +130,16 @@
 
     .container_head {
         flex: 1 1 auto;
-        gap: var(--base-size-12,10px);
+/*        gap: var(--base-size-12,10px);*/
         display: flex;
+        justify-content:space-between;
+        padding: 0 10px;
     }
 
     .container_head_left {
         height: 30px;
         font-size: 20px;
-        width: 100px;
+        width: 120px;
         display: flex;
         text-align: center;
     }
@@ -151,12 +155,18 @@
     .container_head_right {
         background-color: deepskyblue;
         color: white;
+        border:none;
         border-radius: 5px;
         cursor: pointer;
         font-size: 13px;
         width: 70px;
         text-align: center;
         height: 30px;
+        font-weight: 600px;
+    }
+
+    .container_head_right:hover {
+            background-color: #1976d2;
     }
 
     .head_left {
@@ -249,20 +259,25 @@
 
     .head_button:hover {
             background-color: #1976d2;
-            /* °´Å¥Ğü¸¡Ğ§¹û */
+            /* æŒ‰é’®æ‚¬æµ®æ•ˆæœ */
     }
 
     .sub_menu {
-        position: relative;
-        left: -130px; /* Ïà¶ÔÓÚ¸¸ÔªËØµÄ×ó±ß¶ÔÆë */
-        top: 40px; /* ¿ØÖÆ¶ş¼¶²Ëµ¥µÄÎ»ÖÃ£¬Ê¹ÆäÏÔÊ¾ÔÚÏÂ·½ */
-/*        margin-left: 20px;*/
+        display: flex;
+        text-align: center;
+        background-color: rgba(229, 242, 252, 0.801);
+        margin: 8px 0;
+        box-shadow: 0px 0px 10px 1.5px rgba(199, 198, 198, 0.893);
+        height: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 5px 0 5px 10px;
         list-style-type: none;
     }
 
     .sub_menu .li_node {
-            padding: 5px 10px;
-            cursor: pointer;
+/*            padding: 5px 10px;
+            cursor: pointer;*/
     }
 
 </style>
