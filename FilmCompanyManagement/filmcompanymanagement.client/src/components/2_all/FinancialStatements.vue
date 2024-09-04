@@ -36,6 +36,10 @@
                 <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_3" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showBlockPurchaseOrderData">
                     查看成片购买订单
                 </li>
+                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_4" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showSalaryData">
+                    查看工资
+                </li>
+
             </ul>
         </div>
 
@@ -98,6 +102,26 @@
                 </el-table>
             </div>
         </div>
+
+        <!-- 工资数据显示部分 -->
+        <div class="container" v-if="showSalary">
+            <div class="container_head">
+                <label class="container_head_left">查看工资</label>
+                <button class="container_head_right" @click="refreshSalaryData()">
+                    刷新数据
+                </button>
+            </div>
+            <div>
+                <el-table :data="salaryList" style="width: 100%">
+                    <el-table-column prop="payrollNumber" label="工资表编号" />
+                    <el-table-column prop="ratingRecordId" label="评定记录ID" />
+                    <el-table-column prop="ratingResult" label="评定结果" />
+                    <el-table-column prop="rateeId" label="被评定者ID" />
+                    <el-table-column prop="basePay" label="基本工资" />
+                </el-table>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -108,13 +132,16 @@
         data() {
             return {
                 name: '',
-                investmentList: [],
-                leasingList: [],
-                blockPurchaseOrderList: [],
+                investmentList: [], // 外部投资数据列表
+                leasingList: [], // 设备租赁数据列表
+                blockPurchaseOrderList: [], // 成片购买订单数据列表
+                salaryList: [], // 工资数据列表
+
                 showSubMenu: false, // 控制二级导航显示
                 showInvestment: false, // 控制外部投资数据显示
                 showLeasing: false, // 控制设备租赁数据显示
-                showBlockPurchaseOrder: false // 控制成片购买订单数据显示
+                showBlockPurchaseOrder: false, // 控制成片购买订单数据显示
+                showSalary: false // 控制工资数据显示
             };
         },
         methods: {
@@ -145,19 +172,29 @@
                 this.showInvestment = true; // 显示外部投资数据
                 this.showLeasing = false; //关闭设备租赁数据
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
+                this.showSalary = false; // 关闭工资数据
                 this.getInvestmentData(); // 获取外部投资数据
             },
             showLeasingData() {
                 this.showLeasing = true; //显示设备租赁数据
                 this.showInvestment = false; //关闭外部投资数据
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
+                this.showSalary = false; // 关闭工资数据
                 this.getLeasingData(); // 获取设备租赁数据
             },
             showBlockPurchaseOrderData() {
                 this.showBlockPurchaseOrder = true; // 显示成片购买订单数据
                 this.showInvestment = false; //关闭外部投资数据
                 this.showLeasing = false; //关闭设备租赁数据
+                this.showSalary = false; // 关闭工资数据
                 this.getBlockPurchaseOrderData(); // 获取成片购买订单数据
+            },
+            showSalaryData() {
+                this.showSalary = true; // 显示工资数据
+                this.showInvestment = false; // 关闭外部投资数据
+                this.showLeasing = false; // 关闭设备租赁数据
+                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
+                this.getSalaryData(); // 获取工资数据
             },
             refreshData() {
                 this.getInvestmentData();
@@ -168,7 +205,9 @@
             refreshBlockPurchaseOrderData() {
                 this.getBlockPurchaseOrderData();
             },
-
+            refreshSalaryData() {
+                this.getSalaryData();
+            },
             /**************** 外部投资 ****************/
             //不带请求参数--仅供自己测试使用
             //getInvestmentData() {
@@ -225,6 +264,17 @@
                     this.blockPurchaseOrderList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching block purchase order data:', error);
+                });
+            },
+
+            /**************** 工资 ****************/
+            getSalaryData() {
+                axios.get('/api/salary/unprocessed', {
+                    params: { evaluationStatus: 'complete' } // 添加请求参数
+                }).then(response => {
+                    this.salaryList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching salary data:', error);
                 });
             }
 

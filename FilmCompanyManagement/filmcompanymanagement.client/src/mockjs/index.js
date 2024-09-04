@@ -134,6 +134,35 @@ Mock.mock(RegExp('/api/blockPurchaseOrder/unprocessed' + ".*"), 'get', (params) 
     }
 });
 
+// 工资数据
+let salaryList = [
+    { payrollNumber: 'S001', ratingRecordId: 'R001', ratingResult: '优秀', rateeId: '1', basePay: 5000 },
+    { payrollNumber: 'S002', ratingRecordId: 'R002', ratingResult: '良好', rateeId: '2', basePay: 4500 },
+    { payrollNumber: 'S003', ratingRecordId: 'R003', ratingResult: '合格', rateeId: '3', basePay: 4000 },
+    { payrollNumber: 'S004', ratingRecordId: 'R004', ratingResult: '优秀', rateeId: '4', basePay: 5500 },
+];
+
+// 获取工资数据（带请求参数）
+Mock.mock(RegExp('/api/salary/unprocessed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const evaluationStatus = query.get('evaluationStatus'); // 获取 evaluationStatus 参数
+
+    console.log('Received Salary query:', { evaluationStatus }); // 调试信息
+
+    if (evaluationStatus === 'complete') {
+        return {
+            code: 200,
+            data: salaryList // 返回符合条件的数据
+        };
+    } else {
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
+});
+
 
 //身份：传了id
 Mock.mock('/data/userdata', 'post', (params) => {
