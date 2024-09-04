@@ -163,6 +163,33 @@ Mock.mock(RegExp('/api/salary/unprocessed' + ".*"), 'get', (params) => {
     }
 });
 
+// 项目收入数据
+let projectIncomeList = [
+    { projectId: 'P001', dockingManagementId: 'D001', orderDate: '2024-09-01', invoiceNumber: '20240901', amount: 30000, expenseType: '项目收入' },
+    { projectId: 'P002', dockingManagementId: 'D002', orderDate: '2024-09-15', invoiceNumber: '20240915', amount: 20000, expenseType: '项目收入' }
+];
+
+// 获取项目收入数据（带请求参数）
+Mock.mock(RegExp('/api/projectIncome/unprocessed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
+
+    console.log('Received Project Income query:', { orderStatus }); // 调试信息
+
+    if (orderStatus === 'approved') {
+        return {
+            code: 200,
+            data: projectIncomeList // 返回符合条件的数据
+        };
+    } else {
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
+});
+
 
 //身份：传了id
 Mock.mock('/data/userdata', 'post', (params) => {

@@ -39,6 +39,9 @@
                 <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_4" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showSalaryData">
                     查看工资
                 </li>
+                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_5" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProjectIncomeData">
+                    查看项目收入
+                </li>
 
             </ul>
         </div>
@@ -122,6 +125,27 @@
             </div>
         </div>
 
+        <!-- 项目收入数据显示部分 -->
+        <div class="container" v-if="showProjectIncome">
+            <div class="container_head">
+                <label class="container_head_left">查看项目收入</label>
+                <button class="container_head_right" @click="refreshProjectIncomeData()">
+                    刷新数据
+                </button>
+            </div>
+            <div>
+                <el-table :data="projectIncomeList" style="width: 100%">
+                    <el-table-column prop="projectId" label="项目编号" />
+                    <el-table-column prop="dockingManagementId" label="对接管理ID" />
+                    <el-table-column prop="orderDate" label="订单日期" />
+                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="amount" label="费用数额" />
+                    <el-table-column prop="expenseType" label="费用类型" />
+                </el-table>
+            </div>
+        </div>
+
+
     </div>
 </template>
 
@@ -136,12 +160,14 @@
                 leasingList: [], // 设备租赁数据列表
                 blockPurchaseOrderList: [], // 成片购买订单数据列表
                 salaryList: [], // 工资数据列表
+                projectIncomeList: [], // 项目收入数据列表
 
                 showSubMenu: false, // 控制二级导航显示
                 showInvestment: false, // 控制外部投资数据显示
                 showLeasing: false, // 控制设备租赁数据显示
                 showBlockPurchaseOrder: false, // 控制成片购买订单数据显示
-                showSalary: false // 控制工资数据显示
+                showSalary: false, // 控制工资数据显示
+                showProjectIncome: false // 控制项目收入数据显示
             };
         },
         methods: {
@@ -173,6 +199,7 @@
                 this.showLeasing = false; //关闭设备租赁数据
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
+                this.showProjectIncome = false; // 关闭项目收入数据
                 this.getInvestmentData(); // 获取外部投资数据
             },
             showLeasingData() {
@@ -180,6 +207,7 @@
                 this.showInvestment = false; //关闭外部投资数据
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
+                this.showProjectIncome = false; // 关闭项目收入数据
                 this.getLeasingData(); // 获取设备租赁数据
             },
             showBlockPurchaseOrderData() {
@@ -187,6 +215,7 @@
                 this.showInvestment = false; //关闭外部投资数据
                 this.showLeasing = false; //关闭设备租赁数据
                 this.showSalary = false; // 关闭工资数据
+                this.showProjectIncome = false; // 关闭项目收入数据
                 this.getBlockPurchaseOrderData(); // 获取成片购买订单数据
             },
             showSalaryData() {
@@ -194,7 +223,16 @@
                 this.showInvestment = false; // 关闭外部投资数据
                 this.showLeasing = false; // 关闭设备租赁数据
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
+                this.showProjectIncome = false; // 关闭项目收入数据
                 this.getSalaryData(); // 获取工资数据
+            },
+            showProjectIncomeData() {
+                this.showProjectIncome = true; // 显示项目收入数据
+                this.showInvestment = false; // 关闭外部投资数据
+                this.showLeasing = false; // 关闭设备租赁数据
+                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
+                this.showSalary = false; // 关闭工资数据
+                this.getProjectIncomeData(); // 获取项目收入数据
             },
             refreshData() {
                 this.getInvestmentData();
@@ -207,6 +245,9 @@
             },
             refreshSalaryData() {
                 this.getSalaryData();
+            },
+            refreshProjectIncomeData() {
+                this.getProjectIncomeData();
             },
             /**************** 外部投资 ****************/
             //不带请求参数--仅供自己测试使用
@@ -276,8 +317,18 @@
                 }).catch(error => {
                     console.error('Error fetching salary data:', error);
                 });
-            }
+            },
 
+            /**************** 项目收入 ****************/
+            getProjectIncomeData() {
+                axios.get('/api/projectIncome/unprocessed', {
+                    params: { orderStatus: 'approved' } // 添加请求参数
+                }).then(response => {
+                    this.projectIncomeList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching project income data:', error);
+                });
+            }
         },
         mounted() {
             // 可以在页面加载时预加载投资数据，或留给用户手动触发
