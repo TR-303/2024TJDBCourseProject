@@ -47,6 +47,20 @@ Mock.mock('/api/externalinvestments/unprocessed', 'get', (params) => {
     };
 });
 
+// 设备租赁数据
+let leasingList = [
+    { projectId: 'P001', dockingManagementId: 'D001', orderDate: '2024-09-01', invoiceNumber: '20240901', amount: 15000, expenseType: '设备租赁费用' },
+    { projectId: 'P002', dockingManagementId: 'D002', orderDate: '2024-09-10', invoiceNumber: '20240910', amount: 8000, expenseType: '设备维护费用' }
+];
+
+// 获取设备租赁数据
+Mock.mock('/api/equipmentLeasing/unprocessed', 'get', (params) => {
+    return {
+        code: 200,
+        data: leasingList
+    };
+});
+
 
 //身份：传了id
 Mock.mock('/data/userdata', 'post', (params) => {

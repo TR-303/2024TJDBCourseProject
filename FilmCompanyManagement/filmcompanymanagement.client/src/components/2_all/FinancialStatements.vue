@@ -27,13 +27,17 @@
 
                 </li>
                 <!-- 二级导航项 -->
-                
-                    <li  v-if="showSubMenu" class="sub_menu " role="menuitem" id="submenu_1" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showInvestmentData">
-                        查看外部投资
-                    </li>
-                
+                <li v-if="showSubMenu" class="sub_menu " role="menuitem" id="submenu_1" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showInvestmentData">
+                    查看外部投资
+                </li>
+                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_2" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showLeasingData">
+                    查看设备租赁
+                </li>
+
             </ul>
         </div>
+
+        <!-- 外部投资数据显示部分 -->
         <div class="container" v-if="showInvestment">
             <div class="container_head">
                 <label class="container_head_left">查看外部投资</label>
@@ -52,6 +56,27 @@
                 </el-table>
             </div>
         </div>
+
+        <!-- 设备租赁数据显示部分 -->
+        <div class="container" v-if="showLeasing">
+            <div class="container_head">
+                <label class="container_head_left">查看设备租赁</label>
+                <button class="container_head_right" @click="refreshLeasingData()">
+                    刷新数据
+                </button>
+            </div>
+            <div>
+                <el-table :data="leasingList" style="width: 100%">
+                    <el-table-column prop="projectId" label="项目编号" />
+                    <el-table-column prop="dockingManagementId" label="对接管理ID" />
+                    <el-table-column prop="orderDate" label="订单日期" />
+                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="amount" label="费用数额" />
+                    <el-table-column prop="expenseType" label="费用类型" />
+                </el-table>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -63,8 +88,10 @@
             return {
                 name: '',
                 investmentList: [],
+                leasingList: [],
                 showSubMenu: false, // 控制二级导航显示
-                showInvestment: false // 控制投资数据显示
+                showInvestment: false, // 控制外部投资数据显示
+                showLeasing: false // 控制设备租赁数据显示
             };
         },
         methods: {
@@ -82,7 +109,7 @@
                 if (event.target.id === 'menu_1') {
                     this.$router.push({ path: '/Department', query: { id: this.id } });
                 }
-                
+
                 if (event.target.id === 'exit') {
                     this.$router.push({ path: '/', query: { id: this.id } });
                 }
@@ -92,22 +119,31 @@
                 this.showSubMenu = !this.showSubMenu;
             },
             showInvestmentData() {
-                this.showInvestment = true; // 显示投资数据
-                this.getInvestmentData(); // 获取投资数据
+                this.showInvestment = true; // 显示外部投资数据
+                this.showLeasing = false; //关闭设备租赁数据
+                this.getInvestmentData(); // 获取外部投资数据
+            },
+            showLeasingData() {
+                this.showLeasing = true; //显示设备租赁数据
+                this.showInvestment = false; //关闭外部投资数据
+                this.getLeasingData(); // 获取设备租赁数据
             },
             refreshData() {
                 this.getInvestmentData();
             },
+            refreshLeasingData() {
+                this.getLeasingData();
+            },
             getInvestmentData() {
                 axios.get('/api/externalinvestments/unprocessed')
-                .then(response => {
-                    //console.log(response.data);
-                    this.investmentList = response.data.data;
-                    //console.log(this.investmentList); 
-                }).catch(error => {
-                    console.error('Error fetching investment data:', error);
-                });
-            }
+                    .then(response => {
+                        //console.log(response.data);
+                        this.investmentList = response.data.data;
+                        //console.log(this.investmentList);
+                    }).catch(error => {
+                        console.error('Error fetching investment data:', error);
+                    });
+            },
             //带请求参数`orderStatus` (string): 订单状态，值为“approved”表示管理员已批准
             //getInvestmentData() {
             //    axios.get('/api/externalinvestments/unprocessed', {
@@ -118,6 +154,14 @@
             //        console.error('Error fetching investment data:', error);
             //    });
             //}
+            getLeasingData() {
+                axios.get('/api/equipmentLeasing/unprocessed')
+                    .then(response => {
+                        this.leasingList = response.data.data;
+                    }).catch(error => {
+                        console.error('Error fetching leasing data:', error);
+                    });
+            }
         },
         mounted() {
             // 可以在页面加载时预加载投资数据，或留给用户手动触发
