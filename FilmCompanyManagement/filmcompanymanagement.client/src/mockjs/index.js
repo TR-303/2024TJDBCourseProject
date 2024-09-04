@@ -38,13 +38,36 @@ let investmentList = [
     { investmentId: '4', customerId: '44', orderDate: '2024-08-17', invoiceNumber: '20240817', amount: 30000, expenseType: '制作费用' },
 ];
 
-// 获取外部投资数据
-Mock.mock('/api/externalinvestments/unprocessed', 'get', (params) => {
-    // 返回数据
-    return {
-        code: 200,
-        data: investmentList
-    };
+// 获取外部投资数据(不带请求参数)--仅供自己测试使用
+//Mock.mock('/api/externalinvestments/unprocessed', 'get', (params) => {
+//    // 返回数据
+//    return {
+//        code: 200,
+//        data: investmentList
+//    };
+//});
+
+// 获取外部投资数据（带请求参数）
+Mock.mock(RegExp('/api/externalinvestments/unprocessed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
+
+    console.log('Received Investments query:', { orderStatus }); // 调试信息
+
+    if (orderStatus === 'approved') {
+        //console.log("approved!!!");
+        return {
+            code: 200,
+            data: investmentList // 返回符合条件的数据
+        };
+    } else {
+        //console.log("Not approved!!!");
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
 });
 
 // 设备租赁数据
@@ -61,13 +84,13 @@ let leasingList = [
 //    };
 //});
 
-//获取设备租赁数据（带请求参数）
+// 获取设备租赁数据（带请求参数）
 Mock.mock(RegExp('/api/equipmentLeasing/unprocessed' + ".*"), 'get', (params) => {
     const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
     const query = new URLSearchParams(url.search); // 获取查询参数
     const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
 
-    console.log('Received query:', { orderStatus }); // 调试信息
+    console.log('Received Equipment query:', { orderStatus }); // 调试信息
 
     if (orderStatus === 'approved') {
         //console.log("approved!!!");

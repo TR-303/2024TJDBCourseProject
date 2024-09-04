@@ -134,29 +134,32 @@
             refreshLeasingData() {
                 this.getLeasingData();
             },
-            /********** 外部投资 **********/
-            getInvestmentData() {
-                axios.get('/api/externalinvestments/unprocessed')
-                    .then(response => {
-                        //console.log(response.data);
-                        this.investmentList = response.data.data;
-                        //console.log(this.investmentList);
-                    }).catch(error => {
-                        console.error('Error fetching investment data:', error);
-                    });
-            },
-            //带请求参数`orderStatus` (string): 订单状态，值为“approved”表示管理员已批准
-            //getInvestmentData() {
-            //    axios.get('/api/externalinvestments/unprocessed', {
-            //        params: { orderStatus: 'approved' }
-            //    }).then(response => {
-            //        this.investmentList = response.data;
-            //    }).catch(error => {
-            //        console.error('Error fetching investment data:', error);
-            //    });
-            //}
 
-            /********** 设备租赁 **********/
+            /**************** 外部投资 ****************/
+            //不带请求参数--仅供自己测试使用
+            //getInvestmentData() {
+            //    axios.get('/api/externalinvestments/unprocessed')
+            //        .then(response => {
+            //            //console.log(response.data);
+            //            this.investmentList = response.data.data;
+            //            //console.log(this.investmentList);
+            //        }).catch(error => {
+            //            console.error('Error fetching investment data:', error);
+            //        });
+            //},
+
+            //带请求参数`orderStatus` (string): 订单状态，值为“approved”表示管理员已批准
+            getInvestmentData() {
+                axios.get('/api/externalinvestments/unprocessed', {
+                    params: { orderStatus: 'approved' }
+                }).then(response => {
+                    this.investmentList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching investment data:', error);
+                });
+            },
+
+            /**************** 设备租赁 ****************/
             //不带请求参数--仅供自己测试使用
             //getLeasingData() {
             //    axios.get('/api/equipmentLeasing/unprocessed')
