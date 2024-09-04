@@ -1,0 +1,6 @@
+@FilmCompanyManagement.Server_HostAddress = http://localhost:5232
+
+GET {{FilmCompanyManagement.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
