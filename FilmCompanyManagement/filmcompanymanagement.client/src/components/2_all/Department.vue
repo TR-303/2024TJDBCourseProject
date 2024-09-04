@@ -23,6 +23,24 @@
             <li role="menuitem" id="menu_1" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 部门情况
             </li>
+            <li v-if="showWorkerMenu" role="menuitem" id="menu_2" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                项目查看
+            </li>
+            <li v-if="showWorkerMenu" role="menuitem" id="menu_3" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                事务申请
+            </li>
+            <li v-if="showWorkerMenu" role="menuitem" id="menu_4" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                成果上传
+            </li>
+            <li v-if="showBossMenu" role="menuitem" id="menu_5" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                人员管理
+            </li>
+            <li v-if="showBossMenu" role="menuitem" id="menu_6" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                申请批准
+            </li>
+            <li v-if="showBossMenu" role="menuitem" id="menu_7" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                业务管理
+            </li>
         </ul>
     </div>
     <div class="container">
@@ -62,6 +80,20 @@
                 userdataList:[],
             }
         },
+        computed: {
+            showBossMenu() {
+                return this.$route.query.id === '1';
+            },
+            showWorkerMenu() {
+                return this.$route.query.id === '3';
+            }
+        },
+        watch: {
+            '$route.query.id'(newId) {
+                this.showBossMenu = newId === '1';
+                this.showWorkerMenu = newId === '3';
+            }
+        },
         methods: {
             // 添加阴影效果
             addShadow(event) {
@@ -81,6 +113,27 @@
                 if (event.target.id == 'menu_1') {
                     console.log(this.id);
                     this.$router.push({ path: '/Department', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_2') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/projects', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_3') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/application', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_4') {
+                    console.log(this.id);
+                    this.$router.push({ path: '/upload', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_5') {
+                    this.$router.push({ path: '/PersonnelM', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_6') {
+                    this.$router.push({ path: '/AuthorizeR', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_7') {
+                    this.$router.push({ path: '/BusinessM', query: { id: this.id } });
                 }
                 if (event.target.id == 'exit') {
                     console.log(this.id);
