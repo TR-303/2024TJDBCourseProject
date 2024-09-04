@@ -34,15 +34,15 @@
         </div>
 
         <div>
-            <button @click="setBusinessID('0')">外部投资</button>
-            <button @click="setBusinessID('1')">成片购买</button>
-            <button @click="setBusinessID('2')">设备租赁</button>
-            <button @click="setBusinessID('3')">公司项目</button>
+            <el-button class="main_button" type="primary" size="large" plain @click="setBusinessID('0')">外部投资</el-button>
+            <el-button class="main_button" type="primary" size="large" plain @click="setBusinessID('1')">成片购买</el-button>
+            <el-button class="main_button" type="primary" size="large" plain @click="setBusinessID('2')">设备租赁</el-button>
+            <el-button class="main_button" type="primary" size="large" plain @click="setBusinessID('3')">公司项目</el-button>
         </div>
 
         <div v-for="business in businesses" :key="business.id">
             <div v-if="business.id === businessID && businessID == '0'">
-                <h3>外部投资</h3>
+                <h1>外部投资</h1>
                 <div class="container">
                     <table>
                         <thead>
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div v-if="business.id === businessID && businessID == '1'">
-                <h3>成片购买</h3>
+                <h1>成片购买</h1>
                 <div class="container">
                     <table>
                         <thead>
@@ -100,7 +100,7 @@
                 </div>
             </div>
             <div v-if="business.id === businessID && businessID == '2'">
-                <h3>设备租赁</h3>
+                <h1>设备租赁</h1>
                 <div class="container">
                     <table>
                         <thead>
@@ -129,7 +129,7 @@
                 </div>
             </div>
             <div v-if="business.id === businessID && businessID == '3'">
-                <h3>公司项目</h3>
+                <h1>公司项目</h1>
                 <div class="container">
                     <table>
                         <thead>
@@ -170,7 +170,7 @@
         data() {
             return {
                 name: '', // 获取登入姓名
-                businessID: 0,
+                businessID: '0',
                 businesses: [
                   { id: '0', name: '外部投资'},
                   { id: '1', name: '成片购买'},
@@ -244,7 +244,7 @@
            
 
             getInvestment() {
-                axios.get('/api/businessInvestment')
+                axios.get('/api/businesstment')
                     .then(response => {
                         this.businesses_investment = response.data.businesses_investment || [];
                     })
@@ -456,6 +456,16 @@
         },
         mounted() {
             this.getdata();
+            switch(this.businessID){
+                case '0':this.getInvestment();
+                    break;
+                case '1':this.getBuy();
+                    break;
+                case '2':this.getLease();
+                    break;
+                case '3':this.getProject();
+                    break;
+            }
         }
     }
 </script>
@@ -541,6 +551,10 @@
         padding-block-start: 0px;
         padding: 0;
         margin: 0;
+    }
+
+    .main_button {
+        transform: translate(10px, 10px);
     }
 
     .container {

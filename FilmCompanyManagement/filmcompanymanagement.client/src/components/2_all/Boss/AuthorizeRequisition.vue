@@ -32,32 +32,62 @@
                 </li>
             </ul>
         </div>
-
-        <div class="container">
-            <h1>项目查看</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>申请人</th>
-                        <th>申请类型</th>
-                        <th>申请状态</th>
-                        <th>意见</th>
-                        <th>详情</th>
-                    </tr>
-                </thead>
-                <tbody v-show="requisition.length > 0">
-                    <tr v-for="requisitionData in requisition" :key="requisitionData.id">
-                        <td>{{ requisitionData.name }}</td>
-                        <td>{{ requisitionData.type }}</td>
-                        <td>{{ requisitionData.status }}</td>
-                        <td>{{ requisitionData.ideas }}</td>
-                        <td><button @click="viewDetails(requisitionData.id)">详情</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <p v-if="requisition.length <= 0" style="text-align: center;">没有申请数据</p>
-        </div>
     </div>
+
+    <div class="dataTable">
+        <el-table :data="requisition" style="width: 100%">
+            <el-table-column prop="id" label="编号" width="120"></el-table-column>
+            <el-table-column prop="name" label="申请人姓名" width="120"></el-table-column>
+            <el-table-column prop="type" label="申请类型" width="120"></el-table-column>
+            <el-table-column prop="status" label="申请状态" width="120"></el-table-column>
+            <el-table-column fixed="right" label="操作" width="200">
+                <template v-slot="scope">
+                    <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                    <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    
+    <!--表单显示-->
+    <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+        <!--根据表单数据结构动态生成表单-->
+        <el-form :model="form" label-width="120px">
+            <el-form-item label="申请编号">
+                <el-input v-model="form.id" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="申请类型">
+                <el-select v-model="form.type" placeholder="请选择申请类型">
+                    <el-option label="维修申请" value="0"></el-option>
+                    <el-option label="购买申请" value="1"></el-option>
+                    <el-option label="报销申请" value="2"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="申请人">
+                <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="申请状态">
+                <el-input v-model="form.status"></el-input>
+            </el-form-item>
+            <el-form-item label="日期">
+                <el-date-picker v-model="form.date"
+                                type="date"
+                                placeholder="选择日期">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="申请价格">
+                <el-input-number v-model="form.price"></el-input-number>
+            </el-form-item>
+            <el-form-item label="备注">
+                <el-input type="textarea" v-model="form.remark"></el-input>
+            </el-form-item>
+        </el-form>
+    
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitForm">保存</el-button>
+            <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+        </span>
+    </el-dialog>
 </template>
 
 <script>
@@ -68,7 +98,9 @@
         data() {
             return {
                 name: '', // 获取登入姓名
-                requisition:[], //默认申请数据
+                requisition: [], //默认申请数据
+                dialogVisible: false,
+                form:    { id: '', type: '', name: '', status: '', date: '', price: '', remark: '' },
             }
         },
         computed: {
@@ -125,48 +157,60 @@
                         console.error('Error fetching requisition:', error);
                     });
             },
-            // 查看详情的方法
-            viewDetails(id) {
-                alert('查看详情:');
-                alert(id);
-
-                //请求信息
-                getDetailsRequisition(id);
-                //弹出对话框                 //这边建议使用element来实现，会简单许多
-                //.....
-                //可选 保存、删除、取消三种退出方式，最后一种不change
-                //再次拉取信息一览
+            //提交表单
+            submitForm() {
+                axios.post('/api/submit-req-form', this.form)
+                    .then(response => {
+                        console.log('提交成功:', response.data.message); // 打印消息
+                        this.$message({
+                            type: 'success',
+                            message: response.data.message
+                        }); // 显示消息提示
+                        this.dialogVisible = false; // 关闭对话框
+                        alert(response.data.message);
+                    })
+                    .catch(error => {
+                        console.error('提交表单失败', error);
+                        this.$message({
+                            type: 'error',
+                            message: error.response.data.message // 假设错误信息也在 message 字段中
+                        });
+                    });
+                //重新请求数据
                 getRequisition();
             },
-            //查看申请的详细信息
-            getDetailsRequisition(id) {
-                axios.post('/api/detailsRequisition', { id })
-                    .then(result => {
-                        this.requisition = response.data.requisition || [];
-                    }).catch(error => {
-                        console.error('Error fetching requisition:', error);
-
-                        if (1) {
-                            alert("查询成功")
-                        } else {
-                            alert("查询失败")
-                        }
+            //删除申请
+            Delete(row) {
+                axios.post('/api/delete-form', this.row)
+                    .then(response => {
+                        console.log('删除成功:', response.data.message); // 打印消息
+                        this.$message({
+                            type: 'success',
+                            message: response.data.message
+                        }); // 显示消息提示
+                        this.dialogVisible = false; // 关闭对话框
+                        alert(response.data.message);
+                    })
+                    .catch(error => {
+                        console.error('删除失败', error);
+                        this.$message({
+                            type: 'error',
+                            message: error.response.data.message // 假设错误信息也在 message 字段中
+                        });
                     });
             },
-            //修改申请信息
-            changeRequisition(id) {
-                axios.post('/api/changeRequisition', { id })
-                    .then(result => {
-                        this.requisition = response.data.requisition || [];
-                    }).catch(error => {
-                        console.error('Error fetching requisition:', error);
-                        if (1) {
-                            alert("修改成功")
-                        } else {
-                            alert("修改失败")
-                        }
-                    });
-            }
+            // 查看详情
+            viewDetails(row) {
+                // 根据申请类型发送请求
+                this.form_type = row.type
+                axios.post('/api/details-req-form', { id: row.id, type: row.type }).then(response => {
+                    this.form = response.data[0];
+                    // 显示表单
+                    this.dialogVisible = true;
+                }).catch(error => {
+                    console.error('获取维修申请表单数据失败', error);
+                });
+            },
         },
         mounted() {
             this.getdata();
@@ -237,6 +281,16 @@
         height: 100vh;
         background-color: lightskyblue;
         box-sizing: border-box;
+    }
+
+    .dataTable {
+        display: flex;
+        justify-content: center; /* 或 flex-start, flex-end, space-between, space-around */
+        align-items: center; /* 或 flex-start, flex-end, stretch */
+        width: 85%;
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .ul_menu {

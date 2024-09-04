@@ -34,14 +34,14 @@
         </div>
 
         <div>
-            <button @click="setEmployeeID('0')">招聘实习</button>
-            <button @click="setEmployeeID('1')">人员总览</button>
-            <button @click="setEmployeeID('2')">员工培训</button>
+            <el-button class="main_button" type="primary" size="large" plain @click="setEmployeeID('0')">招聘实习</el-button>
+            <el-button class="main_button" type="primary" size="large" plain @click="setEmployeeID('1')">人员总览</el-button>
+            <el-button class="main_button" type="primary" size="large" plain @click="setEmployeeID('2')">员工培训</el-button>
         </div>
-        
+
         <div v-for="employee in employees" :key="employee.id">
             <div v-if="employee.id === employeeID && employeeID == '0'">
-                <h3>外部投资</h3>
+                <h1>外部投资</h1>
                 <div class="container">
                     <table>
                         <thead>
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div v-if="employee.id === employeeID && employeeID == '1'">
-                <h3>成片购买</h3>
+                <h1>成片购买</h1>
                 <div class="container">
                     <table>
                         <thead>
@@ -91,7 +91,7 @@
                 </div>
             </div>
             <div v-if="employee.id === employeeID && employeeID == '2'">
-                <h3>设备租赁</h3>
+                <h1>设备租赁</h1>
                 <div class="container">
                     <table>
                         <thead>
@@ -130,7 +130,7 @@
         data() {
             return {
                 name: '', // 获取登入姓名
-                employeeID: 0,
+                employeeID: '0',
                 employees: [
                     { id: '0', name: '招聘实习' },
                     { id: '1', name: '人员总览' },
@@ -354,12 +354,19 @@
                             alert("修改失败")
                         }
                     });
-
-            },
-            mounted() {
-                this.getdata();
             },
         },
+        mounted() {
+            this.getdata();
+            switch (this.employeeID) {
+                case '0': this.getInvite();
+                    break;
+                case '1': this.getOverview();
+                    break;
+                case '2': this.getTrain();
+                    break;
+            }
+        }
     }
 </script>
 
@@ -444,6 +451,10 @@
         padding-block-start: 0px;
         padding: 0;
         margin: 0;
+    }
+
+    .main_button {
+        transform: translate(10px, 10px);
     }
 
     .container {
