@@ -1,13 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FilmCompanyManagement.Server.EntityFrame.Models;
-using System.Threading.Tasks;
-using System.Text;
-using System.Security.Cryptography;
 using FilmCompanyManagement.Server.EntityFrame;
-using Microsoft.Extensions.Configuration;
-using Oracle.ManagedDataAccess.Client;
-using System;
 
 namespace FilmCompanyManagement.Controllers
 {
