@@ -53,13 +53,37 @@ let leasingList = [
     { projectId: 'P002', dockingManagementId: 'D002', orderDate: '2024-09-10', invoiceNumber: '20240910', amount: 8000, expenseType: '设备维护费用' }
 ];
 
-// 获取设备租赁数据
-Mock.mock('/api/equipmentLeasing/unprocessed', 'get', (params) => {
-    return {
-        code: 200,
-        data: leasingList
-    };
+// 获取设备租赁数据(不带请求参数)--仅供自己测试使用
+//Mock.mock('/api/equipmentLeasing/unprocessed', 'get', (params) => {
+//    return {
+//        code: 200,
+//        data: leasingList
+//    };
+//});
+
+//获取设备租赁数据（带请求参数）
+Mock.mock(RegExp('/api/equipmentLeasing/unprocessed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
+
+    console.log('Received query:', { orderStatus }); // 调试信息
+
+    if (orderStatus === 'approved') {
+        //console.log("approved!!!");
+        return {
+            code: 200,
+            data: leasingList // 返回符合条件的数据
+        };
+    } else {
+        //console.log("Not approved!!!");
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
 });
+
 
 
 //身份：传了id
