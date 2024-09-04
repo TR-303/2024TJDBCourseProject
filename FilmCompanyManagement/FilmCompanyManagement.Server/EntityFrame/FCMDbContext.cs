@@ -9,6 +9,7 @@ namespace FilmCompanyManagement.Server.EntityFrame
 
         //=======================================添加数据库对应的表========================================
 
+
         public DbSet<Bill> Bills { get; set; }
         public DbSet<StorageEquipment> StorageEquipments { get; set; }
         public DbSet<Investment> Investments { get; set; }
