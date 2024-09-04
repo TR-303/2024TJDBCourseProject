@@ -53,7 +53,7 @@ Mock.mock(RegExp('/api/externalinvestments/unprocessed' + ".*"), 'get', (params)
     const query = new URLSearchParams(url.search); // 获取查询参数
     const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
 
-    console.log('Received Investments query:', { orderStatus }); // 调试信息
+    console.log('Received External Investments query:', { orderStatus }); // 调试信息
 
     if (orderStatus === 'approved') {
         //console.log("approved!!!");
@@ -90,7 +90,7 @@ Mock.mock(RegExp('/api/equipmentLeasing/unprocessed' + ".*"), 'get', (params) =>
     const query = new URLSearchParams(url.search); // 获取查询参数
     const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
 
-    console.log('Received Equipment query:', { orderStatus }); // 调试信息
+    console.log('Received Equipment Leasing query:', { orderStatus }); // 调试信息
 
     if (orderStatus === 'approved') {
         //console.log("approved!!!");
@@ -107,6 +107,32 @@ Mock.mock(RegExp('/api/equipmentLeasing/unprocessed' + ".*"), 'get', (params) =>
     }
 });
 
+// 成片购买订单数据
+let blockPurchaseOrderList = [
+    { orderId: 'O001', blockFileId: 'B001', orderDate: '2024-09-01', invoiceNumber: '20240901', amount: 25000, expenseType: '成片购买费用' },
+    { orderId: 'O002', blockFileId: 'B002', orderDate: '2024-09-10', invoiceNumber: '20240910', amount: 12000, expenseType: '成片制作费用' }
+];
+
+// 获取成片购买订单数据（带请求参数）
+Mock.mock(RegExp('/api/blockPurchaseOrder/unprocessed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
+
+    console.log('Received Block Purchase Order query:', { orderStatus }); // 调试信息
+
+    if (orderStatus === 'approved') {
+        return {
+            code: 200,
+            data: blockPurchaseOrderList // 返回符合条件的数据
+        };
+    } else {
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
+});
 
 
 //身份：传了id

@@ -33,7 +33,9 @@
                 <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_2" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showLeasingData">
                     查看设备租赁
                 </li>
-
+                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_3" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showBlockPurchaseOrderData">
+                    查看成片购买订单
+                </li>
             </ul>
         </div>
 
@@ -77,6 +79,25 @@
             </div>
         </div>
 
+        <!-- 成片购买订单数据显示部分 -->
+        <div class="container" v-if="showBlockPurchaseOrder">
+            <div class="container_head">
+                <label class="container_head_left">查看成片购买订单</label>
+                <button class="container_head_right" @click="refreshBlockPurchaseOrderData()">
+                    刷新数据
+                </button>
+            </div>
+            <div>
+                <el-table :data="blockPurchaseOrderList" style="width: 100%">
+                    <el-table-column prop="orderId" label="订单编号" />
+                    <el-table-column prop="blockFileId" label="对接管理ID" />
+                    <el-table-column prop="orderDate" label="订单日期" />
+                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="amount" label="费用数额" />
+                    <el-table-column prop="expenseType" label="费用类型" />
+                </el-table>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -89,9 +110,11 @@
                 name: '',
                 investmentList: [],
                 leasingList: [],
+                blockPurchaseOrderList: [],
                 showSubMenu: false, // 控制二级导航显示
                 showInvestment: false, // 控制外部投资数据显示
-                showLeasing: false // 控制设备租赁数据显示
+                showLeasing: false, // 控制设备租赁数据显示
+                showBlockPurchaseOrder: false // 控制成片购买订单数据显示
             };
         },
         methods: {
@@ -121,18 +144,29 @@
             showInvestmentData() {
                 this.showInvestment = true; // 显示外部投资数据
                 this.showLeasing = false; //关闭设备租赁数据
+                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.getInvestmentData(); // 获取外部投资数据
             },
             showLeasingData() {
                 this.showLeasing = true; //显示设备租赁数据
                 this.showInvestment = false; //关闭外部投资数据
+                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.getLeasingData(); // 获取设备租赁数据
+            },
+            showBlockPurchaseOrderData() {
+                this.showBlockPurchaseOrder = true; // 显示成片购买订单数据
+                this.showInvestment = false; //关闭外部投资数据
+                this.showLeasing = false; //关闭设备租赁数据
+                this.getBlockPurchaseOrderData(); // 获取成片购买订单数据
             },
             refreshData() {
                 this.getInvestmentData();
             },
             refreshLeasingData() {
                 this.getLeasingData();
+            },
+            refreshBlockPurchaseOrderData() {
+                this.getBlockPurchaseOrderData();
             },
 
             /**************** 外部投资 ****************/
@@ -181,7 +215,19 @@
                     }).catch(error => {
                         console.error('Error fetching leasing data:', error);
                     });
+            },
+
+            /**************** 成片购买订单 ****************/
+            getBlockPurchaseOrderData() {
+                axios.get('/api/blockPurchaseOrder/unprocessed', {
+                    params: { orderStatus: 'approved' } // 添加请求参数
+                }).then(response => {
+                    this.blockPurchaseOrderList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching block purchase order data:', error);
+                });
             }
+
         },
         mounted() {
             // 可以在页面加载时预加载投资数据，或留给用户手动触发
@@ -204,16 +250,16 @@
 
     .container_head {
         flex: 1 1 auto;
-/*        gap: var(--base-size-12,10px);*/
+        /*        gap: var(--base-size-12,10px);*/
         display: flex;
-        justify-content:space-between;
+        justify-content: space-between;
         padding: 0 10px;
     }
 
     .container_head_left {
         height: 30px;
         font-size: 20px;
-        width: 120px;
+        width: 160px;
         display: flex;
         text-align: center;
     }
@@ -229,7 +275,7 @@
     .container_head_right {
         background-color: deepskyblue;
         color: white;
-        border:none;
+        border: none;
         border-radius: 5px;
         cursor: pointer;
         font-size: 13px;
@@ -239,9 +285,9 @@
         font-weight: 600px;
     }
 
-    .container_head_right:hover {
+        .container_head_right:hover {
             background-color: #1976d2;
-    }
+        }
 
     .head_left {
         flex: 1 1 auto;
@@ -331,27 +377,27 @@
         width: 100px;
     }
 
-    .head_button:hover {
+        .head_button:hover {
             background-color: #1976d2;
             /* 按钮悬浮效果 */
-    }
+        }
 
     .sub_menu {
         display: flex;
         text-align: center;
         background-color: rgba(229, 242, 252, 0.801);
-        margin: 8px 0;
-        box-shadow: 0px 0px 10px 1.5px rgba(199, 198, 198, 0.893);
+        margin: 4px 0;
+/*        box-shadow: 0px 0px 10px 1.5px rgba(199, 198, 198, 0.893);*/
         height: 20px;
         cursor: pointer;
         font-size: 14px;
         padding: 5px 0 5px 10px;
         list-style-type: none;
+        width: 130px;
+        margin-left: 3px;
     }
 
-    .sub_menu .li_node {
-/*            padding: 5px 10px;
-            cursor: pointer;*/
+    #submenu_1 {
+        margin-top: -2px;
     }
-
 </style>
