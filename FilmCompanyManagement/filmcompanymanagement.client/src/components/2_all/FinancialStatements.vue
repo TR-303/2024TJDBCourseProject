@@ -108,6 +108,16 @@
                     console.error('Error fetching investment data:', error);
                 });
             }
+            //带请求参数`orderStatus` (string): 订单状态，值为“approved”表示管理员已批准
+            //getInvestmentData() {
+            //    axios.get('/api/externalinvestments/unprocessed', {
+            //        params: { orderStatus: 'approved' }
+            //    }).then(response => {
+            //        this.investmentList = response.data;
+            //    }).catch(error => {
+            //        console.error('Error fetching investment data:', error);
+            //    });
+            //}
         },
         mounted() {
             // 可以在页面加载时预加载投资数据，或留给用户手动触发
