@@ -4,8 +4,7 @@ let dataList = [
     { id: '1', name: 'boss' },
     { id: '2', name: 'manager' },
     { id: '3', name: 'worker' }
-]
-
+];
 //login用
 let loginList = [
     { username: '1', password: '1', department: '管理部' },
@@ -15,9 +14,9 @@ let loginList = [
 //department用
 
 let signList = [
-    { id: '1', issign: '0', signtime: '', issignout: '0', signouttime: '' },
-    { id: '2', issign: '0', signtime: '', issignout: '0', signouttime: '' },
-    { id: '3', issign: '0', signtime: '', issignout: '0', signouttime: '' },
+    { id: '1', issign: '0', signtime: '' },
+    { id: '2', issign: '0', signtime: '' },
+    { id: '3', issign: '0', signtime: '' },
 ]
 let userdataList = [
     { id: '1', department: '管理部', phone: '12345' },
@@ -25,7 +24,7 @@ let userdataList = [
     { id: '3', department: '业务部', phone: '13579' },
     { id: '4', department: '业务部', phone: '22222' },
 ] 
-//身份：传了id
+//传了id
 Mock.mock('/data/userdata', 'post', (params) => {
     let user = JSON.parse(params.body);
     const userdata = dataList.find(item => item.id === user.id);
@@ -35,7 +34,7 @@ Mock.mock('/data/userdata', 'post', (params) => {
 }
 )
 
-//登录使用：传了username，password，department
+//传了username，password，department
 Mock.mock('api/Login/IsUserUni', 'post', (params) => {
     let login = JSON.parse(params.body);
     const logindata = loginList.find(item => item.username === login.username && item.password === login.password && item.department === login.department);
@@ -51,49 +50,28 @@ Mock.mock('api/Login/IsUserUni', 'post', (params) => {
 }
 )
 
-//签到时间：传了id和time
+//传了id和time
 Mock.mock('/data/signdata', 'post', (params) => {
     let user = JSON.parse(params.body);
-    if (user.state === '1') {
-        const signdata = signList.find(item => item.id === user.id);
-        if (signdata.issign === '0') {
-            signdata.issign = '1';
-            signdata.signtime = user.time;
-            console.log(signdata);
-            return {
-                signtime: signdata.signtime,
-                success: 1,
-            }
-        }
-        else
-            return {
-                success: 0,
-                signtime: signdata.signtime,
-            }
-    }
-    else {
-        const signdata = signList.find(item => item.id === user.id);
-        if (signdata.issignout === '0') {
-            signdata.issignout = '1';
-            signdata.signouttime = user.time;
-            console.log(signdata);
-            return {
-                signouttime: signdata.signouttime,
-                success: 1,
-            }
-        }
-        else {
-            signdata.signouttime = user.time;
-            return {
-                success: 0,
-                signouttime: signdata.signouttime,
-            }
+    const signdata = signList.find(item => item.id === user.id);
+    if (signdata.issign === '0') {
+        signdata.issign = '1';
+        signdata.signtime = user.time;
+        console.log(signdata);
+        return {
+            signtime: signdata.signtime,
+            success: 1,
         }
     }
-    }
+    else
+        return {
+            success: 0,
+            signtime: signdata.signtime,
+        }
+}
 )
 
-//部门情况需求：传了department，返回员工姓名，电话号码
+//传了department
 Mock.mock('/data/departmentuserdata', 'post',(params)=> {
     let data = JSON.parse(params.body);
     const departmentdata = userdataList.filter(item => item.department === data.department);
@@ -184,38 +162,38 @@ Mock.mock('/api/changeTrain', 'post', {
 
 
 //申请管理部分
+let requiredataList = [
+    { id: '001', type: '维修申请', name: '张a', status: '等待批准', date: '9.1', price: '1000', remark: '照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机' },
+    { id: '002', type: '报销申请', name: '张b', status: '维修完成', date: '9.1', price: '1000', remark: '无人机' },
+    { id: '003', type: '维修申请', name: '张c', status: '维修中', date: '9.1', price: '1000', remark: '麦克风' },
+    { id: '004', type: '购买申请', name: '张d', status: '等待批准', date: '9.1', price: '1000', remark: '闪光灯' },
+] 
+
 Mock.mock('/api/requisition', 'get', {
-    requisition: [{
-        id:'001',
-        name: '张三',
-        type: '维修申请',
-        status: '等待批准',
-        ideas: '无',
-    }, {
-        id: '002',
-        name: '李四',
-        type: '购买申请',
-        status: '已拒绝',
-        ideas: '经费不足',
-        }, {
-        id: '003',
-        name: '王二',
-        type: '报销申请',
-        status: '已同意',
-        ideas: '无',
-    }],
+    requisition: requiredataList,
 })
 
-Mock.mock('/api/detailsRequisition', 'post', {
-    message: '查询申请'
+Mock.mock('/api/details-req-form', 'post', (params) => {
+    let data = JSON.parse(params.body);
+    const requiredata = requiredataList.filter(item => item.id === data.id && item.type === data.type);
+    if (requiredata) {
+        console.log(requiredata);
+        return requiredata;
+    }
+}
+)
+
+Mock.mock('/api/submit-req-form', 'post', {
+    message: '提交成功'
 })
 
-Mock.mock('/api/changeRequisition', 'post', {
-    message: '修改成功'
+Mock.mock('/api/delete-form', 'post', {
+    message: '删除成功'
 })
+
 
 //业务管理部分
-Mock.mock('/api/businessInvestment', 'get', {
+Mock.mock('/api/businesstment', 'get', {
     businesses_investment: [{
         id: '001',
         date: '9.1',
