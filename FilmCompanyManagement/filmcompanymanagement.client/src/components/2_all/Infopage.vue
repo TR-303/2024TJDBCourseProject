@@ -32,6 +32,15 @@
             <li v-if="showWorkerMenu" role="menuitem" id="menu_4" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 成果上传
             </li>
+            <li v-if="showBossMenu" role="menuitem" id="menu_5" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                人员管理
+            </li>
+            <li v-if="showBossMenu" role="menuitem" id="menu_6" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                申请批准
+            </li>
+            <li v-if="showBossMenu" role="menuitem" id="menu_7" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                业务管理
+            </li>
         </ul>
     </div>
     <div id="container" class="container">
@@ -99,12 +108,16 @@
             }
         },
         computed: {
+            showBossMenu() {
+                return this.$route.query.id === '1';
+            },
             showWorkerMenu() {
                 return this.$route.query.id === '3';
             }
         },
         watch: {
             '$route.query.id'(newId) {
+                this.showBossMenu = newId === '1';
                 this.showWorkerMenu = newId === '3';
             }
         },
@@ -242,6 +255,15 @@
                 }
                 if (event.target.id == 'menu_4') {
                     this.$router.push({ path: '/upload', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_5') {
+                    this.$router.push({ path: '/PersonnelM', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_6') {
+                    this.$router.push({ path: '/AuthorizeR', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_7') {
+                    this.$router.push({ path: '/BusinessM', query: { id: this.id } });
                 }
                 if (event.target.id == 'exit') {
                     this.$router.push({ path: '/', query: { id: this.id } });
