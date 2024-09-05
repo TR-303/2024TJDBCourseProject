@@ -53,7 +53,7 @@
             </ul>
         </div>
         <div class="window2">
-            <p style="font-size: 18px;text-align: center;">近期佳作展示</p><br>
+            <p style="font-size: 18px;text-align: center;">近期佳作展示</p>
             <div class="image_container">
                 <img class="image" src="@/assets/picture2_1.png" />
                 <img class="image" src="@/assets/picture2_2.png" />
