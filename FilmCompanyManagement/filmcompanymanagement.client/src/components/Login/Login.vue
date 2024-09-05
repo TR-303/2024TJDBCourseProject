@@ -66,13 +66,7 @@ export default {
                     // 跳转到业务页面
                     if (this.department == '业务部')
                         this.$router.push({ path: '/Infopage', query: { id: '3' } });
-                } else if (response.data.success === -1) {
-                    // 清空输入栏
-                    this.username = '';
-                    this.password = '';
-                    alert('账号不存在！');
-                }
-                else {
+                } else{
                     // 清空输入栏
                     this.username = '';
                     this.password = '';
