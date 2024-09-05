@@ -11,6 +11,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Required, StringLength(20)]
         public string Name { get; set; }//ÐÕÃû
 
+
         [Required, StringLength(2)]
         public string Gender { get; set; }//ÐÔ±ð
 
@@ -44,5 +45,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public ICollection<KPI> KPIs { get; set; }
         public ICollection<Attendance> Attendances { get; set; }
         public ICollection<Drill> Drills { get; set; }
+
     }
 }

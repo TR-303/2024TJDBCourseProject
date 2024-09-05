@@ -1,12 +1,16 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '@/components/Login/Login.vue'
 import InfopageVue from '../components/2_all/Infopage.vue'
+
 import ProjectView from '../components/2_all/Worker/ProjectView.vue'
 import ApplicationView from '../components/2_all/Worker/ApplicationView.vue'
 import UploadView from '../components/2_all/Worker/UploadView.vue'
 import AuthorizeRequisition from '../components/2_all/Boss/AuthorizeRequisition.vue'
 import BusinessManagement from '../components/2_all/Boss/BusinessManagement.vue'
 import PersonnelManagement from '../components/2_all/Boss/PersonnelManagement.vue'
+
+
+import FinancialStatements from '@/components/2_all/Worker/FinancialStatements.vue';
 
 
 const router = createRouter(
@@ -72,7 +76,13 @@ const router = createRouter(
             path: '/upload',
             name: 'upload',
             component: UploadView
-        }
+        },
+        {
+            path: "/FinancialStatements/:id?",
+            name: "FinancialStatements",
+            component: FinancialStatements
+        },
+
     ]
     }
 )

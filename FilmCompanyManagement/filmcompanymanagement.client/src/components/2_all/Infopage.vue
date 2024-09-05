@@ -40,6 +40,8 @@
             </li>
             <li v-if="showBossMenu" role="menuitem" id="menu_7" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 业务管理
+            <li role="menuitem" id="menu_8" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+                查看财政表
             </li>
         </ul>
     </div>
@@ -87,7 +89,7 @@
         data() {
             return {
                 name: '',
-                id:'',
+                id: '',
                 count: 0,
                 count2: 0,
                 messages: ['待定', '待定', '待定', '待定', '待定'],
@@ -262,6 +264,9 @@
                 }
                 if (event.target.id == 'menu_7') {
                     this.$router.push({ path: '/BusinessM', query: { id: this.id } });
+                }
+                if (event.target.id == 'menu_8') {
+                    this.$router.push({ path: '/FinancialStatements', query: { id: this.id } });
                 }
                 if (event.target.id == 'exit') {
                     this.$router.push({ path: '/', query: { id: this.id } });
