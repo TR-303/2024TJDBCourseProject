@@ -243,10 +243,10 @@ Mock.mock(RegExp('/api/blockPurchaseOrders/unprocessed' + ".*"), 'get', (params)
 Mock.mock('/api/blockPurchaseOrders/markProcessed', 'post', (params) => {
     // 解析请求数据
     const requestBody = JSON.parse(params.body);
-    const projectId = requestBody.projectId;
+    const orderId = requestBody.orderId;
 
     // 查找并移除未处理列表中的记录
-    const blockPurchaseOrderIndex = unprocessedBlockPurchaseOrderList.findIndex(item => item.projectId === projectId);
+    const blockPurchaseOrderIndex = unprocessedBlockPurchaseOrderList.findIndex(item => item.orderId === orderId);
     if (blockPurchaseOrderIndex !== -1) {
         // 从未处理列表中移除记录
         const blockPurchaseOrder = unprocessedBlockPurchaseOrderList.splice(blockPurchaseOrderIndex, 1)[0];
@@ -331,10 +331,10 @@ Mock.mock(RegExp('/api/salary/unprocessed' + ".*"), 'get', (params) => {
 Mock.mock('/api/salary/markProcessed', 'post', (params) => {
     // 解析请求数据
     const requestBody = JSON.parse(params.body);
-    const projectId = requestBody.projectId;
+    const payrollNumber = requestBody.payrollNumber;
 
     // 查找并移除未处理列表中的记录
-    const salaryIndex = unprocessedSalaryList.findIndex(item => item.projectId === projectId);
+    const salaryIndex = unprocessedSalaryList.findIndex(item => item.payrollNumber === payrollNumber);
     if (salaryIndex !== -1) {
         // 从未处理列表中移除记录
         const salary = unprocessedSalaryList.splice(salaryIndex, 1)[0];
@@ -389,7 +389,7 @@ Mock.mock(RegExp('/api/salary/processed' + ".*"), 'get', (params) => {
 
 
 // 项目收入数据
-let projectIncomeList = [
+let unprocessedProjectIncomeList = [
     { projectId: 'P001', dockingManagementId: 'D001', orderDate: '2024-09-01', invoiceNumber: '20240901', amount: 30000, expenseType: '项目收入' },
     { projectId: 'P002', dockingManagementId: 'D002', orderDate: '2024-09-15', invoiceNumber: '20240915', amount: 20000, expenseType: '项目收入' }
 ];
@@ -405,7 +405,7 @@ Mock.mock(RegExp('/api/projectIncome/unprocessed' + ".*"), 'get', (params) => {
     if (orderStatus === 'approved') {
         return {
             code: 200,
-            data: projectIncomeList // 返回符合条件的数据
+            data: unprocessedProjectIncomeList // 返回符合条件的数据
         };
     } else {
         return {
@@ -414,6 +414,67 @@ Mock.mock(RegExp('/api/projectIncome/unprocessed' + ".*"), 'get', (params) => {
         };
     }
 });
+
+// 拦截 POST 请求，路径为 /api/externalInvestments/markProcessed
+Mock.mock('/api/projectIncome/markProcessed', 'post', (params) => {
+    // 解析请求数据
+    const requestBody = JSON.parse(params.body);
+    const projectId = requestBody.projectId;
+
+    // 查找并移除未处理列表中的记录
+    const projectIncomeIndex = unprocessedProjectIncomeList.findIndex(item => item.projectId === projectId);
+    if (projectIncomeIndex !== -1) {
+        // 从未处理列表中移除记录
+        const projectIncome = unprocessedProjectIncomeList.splice(projectIncomeIndex, 1)[0];
+        // 添加到已处理列表中
+        const processedProjectIncome = {
+            ...projectIncome,
+            processedDate: requestBody.processedDate // 返回请求中传递的处理日期
+        };
+        processedProjectIncomeList.push(processedProjectIncome);
+
+        return {
+            code: 200,
+            message: '处理成功',
+            data: processedProjectIncome // 返回处理后的数据
+        };
+    } else {
+        return {
+            code: 404,
+            message: '投资记录未找到'
+        };
+    }
+});
+
+// 模拟已处理的项目收入数据
+let processedProjectIncomeList = [
+    //{ investmentId: '5', customerId: '55', orderDate: '2024-08-18', invoiceNumber: '20240818', amount: 6000, expenseType: '广告费用', processedDate: '2024-09-01' },
+    //{ investmentId: '6', customerId: '66', orderDate: '2024-08-19', invoiceNumber: '20240819', amount: 12000, expenseType: '制作费用', processedDate: '2024-09-02' }
+];
+
+// 获取已处理项目收入数据
+Mock.mock(RegExp('/api/projectIncome/processed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const financialStatus = query.get('financialStatus'); // 获取 financialStatus 参数
+
+    console.log('Received External Investments query22:', { financialStatus }); // 调试信息
+
+    if (financialStatus === 'processed') {
+        //console.log("approved!!!");
+        return {
+            code: 200,
+            data: processedProjectIncomeList // 返回符合条件的数据
+        };
+    } else {
+        //console.log("Not approved!!!");
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
+});
+
 
 
 //身份：传了id
