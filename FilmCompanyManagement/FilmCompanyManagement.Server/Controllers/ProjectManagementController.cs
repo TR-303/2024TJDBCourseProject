@@ -18,6 +18,13 @@ namespace FilmCompanyManagement.Controllers
             _context = context;
         }
 
+        [HttpGet("AttendingProjects/{userName}")]
+        public async Task<ActionResult> AttendingProjects(string userName)
+        {
+            var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
+            return Ok(await _context.Projects.Where(p => p.Employees.Contains(user)).ToListAsync());
+        }
+
         // 获取项目列表
         [HttpGet("ProjectList")]
         public async Task<ActionResult<List<Project>>> ProjectList()
