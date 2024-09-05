@@ -116,81 +116,87 @@ Mock.mock('/data/checksign', 'post', (params) => {
 
 //boss
 //人员管理部分
-Mock.mock('/api/employeeInvite', 'get', {
-    employee_invite: [{
-        id: '001',
-        name: '张三',
-        type: '实习生',
-        status: '实习中',
-    }, {
-        id: '002',
-        name: '李四',
-        type: '求职者',
-        status: '未招聘',
-    }, {
-        id: '003',
-        name: '王二',
-        type: '求职者',
-        status: '已拒绝',
-    }],
+let inviteList = [
+    { id: '001', name: '张三', type:'实习生', salary: '10000', status: '实习中', remark: '即将结束考察' },
+    { id: '002', name: '李四', type:'求职者', salary: '0', status: '未招聘', remark: '可以考虑' },
+    { id: '003', name: '王二', type:'求职者', salary: '0', status: '已拒绝', remark: '不能胜任' },
+] 
+
+Mock.mock('/api/get-invite', 'get', {
+    employee_list: inviteList,
 })
 
-Mock.mock('/api/detailsInvite', 'post', {
-    message: '查询申请'
+Mock.mock('/api/details-invite', 'post', (params) => {
+    let data = JSON.parse(params.body);
+    const employeedata = inviteList.filter(item => item.id === data.id);
+    if (employeedata) {
+        console.log(employeedata);
+        return employeedata;
+    }
 })
 
-Mock.mock('/api/changeInvite', 'post', {
-    message: '修改成功'
+Mock.mock('/api/submit-invite-form', 'post', {
+    message: 'invite提交成功'
 })
 
-Mock.mock('/api/employeeOverview', 'get', {
-    employee_overview: [{
-        id: '001',
-        name: '张三',
-        salary: '15660',
-    }, {
-        id: '002',
-        name: '李四',
-        salary: '12354',
-    }, {
-        id: '003',
-        name: '王二',
-        salary: '6663',
-    }],
+Mock.mock('/api/delete-invite-form', 'post', {
+    message: 'invite删除成功'
 })
 
-Mock.mock('/api/detailsOverview', 'post', {
-    message: '查询申请'
+let overviewList = [
+    { id: '001', name: '张三', salary: '10000', status: '休假中', remark: '无' },
+    { id: '002', name: '李四', salary: '0', status: '在岗', remark: '无' },
+    { id: '003', name: '王二', salary: '0', status: '出差', remark: '长期外派' },
+] 
+
+
+Mock.mock('/api/get-overview', 'get', {
+    employee_list: overviewList,
 })
 
-Mock.mock('/api/changeOverview', 'post', {
-    message: '修改成功'
+Mock.mock('/api/details-overview', 'post', (params) => {
+    let data = JSON.parse(params.body);
+    const employeedata = overviewList.filter(item => item.id === data.id);
+    if (employeedata) {
+        console.log(employeedata);
+        return employeedata;
+    }
 })
 
-Mock.mock('/api/employeeTrain', 'get', {
-    employee_train: [{
-        id: '001',
-        teacher: '张三',
-        date: '10.7-10.30',
-        student: '小王',
-        status: '等待批准',
-    }, {
-        id: '001',
-        teacher: '张三',
-        date: '9.10-9.17',
-        student: '小刘',
-        status: '等待批准',
-    }],
+Mock.mock('/api/submit-overview-form', 'post', {
+    message: 'overview提交成功'
 })
 
-Mock.mock('/api/detailsTrain', 'post', {
-    message: '查询申请'
+Mock.mock('/api/delete-overview-form', 'post', {
+    message: 'overview删除成功'
 })
 
-Mock.mock('/api/changeTrain', 'post', {
-    message: '修改成功'
+let trainList = [
+    { id: '001', teacher: '张三', date:'9.5', student: '小王', status: '等待批准', remark: '时间不足' },
+    { id: '002', teacher: '李四', date:'10.8', student: '小刘', status: '正在开课', remark: '无' },
+    { id: '003', teacher: '王二', date:'6.6', student: '小王、小刘', status: '已结课', remark: '需要进行效果评估' },
+] 
+
+Mock.mock('/api/get-train', 'get', {
+    employee_list: trainList,
 })
 
+Mock.mock('/api/details-train', 'post', (params) => {
+    let data = JSON.parse(params.body);
+    const employeedata = trainList.filter(item => item.id === data.id);
+    if (employeedata) {
+        console.log(employeedata);
+        return employeedata;
+    }
+})
+
+Mock.mock('/api/submit-train-form', 'post', {
+    message: 'train提交成功'
+})
+
+Mock.mock('/api/delete-train-form', 'post', {
+    message: 'train删除成功'
+})
 
 //申请管理部分
 let requiredataList = [
