@@ -34,142 +34,254 @@
         </div>
 
         <div>
-            <el-button class="main_button" type="primary" size="large" plain @click="setBusinessID('0')">外部投资</el-button>
-            <el-button class="main_button" type="primary" size="large" plain @click="setBusinessID('1')">成片购买</el-button>
-            <el-button class="main_button" type="primary" size="large" plain @click="setBusinessID('2')">设备租赁</el-button>
-            <el-button class="main_button" type="primary" size="large" plain @click="setBusinessID('3')">公司项目</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: businessID === '0' ? '#409EFF' : '', color: businessID === '0' ? 'white' : '' }" 
+                type="primary" size="large" plain @click="setBusinessID('0')">外部投资</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: businessID === '1' ? '#409EFF' : '', color: businessID === '1' ? 'white' : '' }"
+                type="primary" size="large" plain @click="setBusinessID('1')">成片购买</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: businessID === '2' ? '#409EFF' : '', color: businessID === '2' ? 'white' : '' }"
+                type="primary" size="large" plain @click="setBusinessID('2')">设备租赁</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: businessID === '3' ? '#409EFF' : '', color: businessID === '3' ? 'white' : '' }"
+                type="primary" size="large" plain @click="setBusinessID('3')">公司项目</el-button>
         </div>
 
-        <div v-for="business in businesses" :key="business.id">
-            <div v-if="business.id === businessID && businessID == '0'">
-                <h1>外部投资</h1>
-                <div class="container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>日期</th>
-                                <th>金额</th>
-                                <th>负责人</th>
-                                <th>状态</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody v-show="businesses_investment.length > 0">
-                            <tr v-for="investmentData in businesses_investment" :key="investmentData.id">
-                                <td>{{ investmentData.id }}</td>
-                                <td>{{ investmentData.date }}</td>
-                                <td>{{ investmentData.money }}</td>
-                                <td>{{ investmentData.functionary }}</td>
-                                <td>{{ investmentData.status }}</td>
-                                <td>{{ investmentData.details }}</td>
-                                <td><button @click="viewInvestmentDetails(investmentData.id)">详情</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-if="businesses_investment.length <= 0" style="text-align: center;">没有外部投资数据</p>
-                </div>
+
+        <div v-if="businessID == '0'">
+            <div class="header-container">
+                <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
-            <div v-if="business.id === businessID && businessID == '1'">
-                <h1>成片购买</h1>
-                <div class="container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>日期</th>
-                                <th>金额</th>
-                                <th>负责人</th>
-                                <th>状态</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody v-show="businesses_buy.length > 0">
-                            <tr v-for="buyData in businesses_buy" :key="buyData.id">
-                                <td>{{ buyData.id }}</td>
-                                <td>{{ buyData.date }}</td>
-                                <td>{{ buyData.money }}</td>
-                                <td>{{ buyData.functionary }}</td>
-                                <td>{{ buyData.status }}</td>
-                                <td>{{ buyData.details }}</td>
-                                <td><button @click="viewBuyDetails(buyData.id)">详情</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-if="businesses_buy.length <= 0" style="text-align: center;">没有成片购买数据</p>
-                </div>
+
+            <div class="dataTable">
+                 <el-table :data="businesses_list" style="width: 100%">
+                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
+                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
+                    <el-table-column prop="client" label="投资人" width="120"></el-table-column>
+                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
+                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="200">
+                        <template v-slot="scope">
+                            <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                            <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </div>
-            <div v-if="business.id === businessID && businessID == '2'">
-                <h1>设备租赁</h1>
-                <div class="container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>日期</th>
-                                <th>金额</th>
-                                <th>负责人</th>
-                                <th>状态</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody v-show="businesses_lease.length > 0">
-                            <tr v-for="leaseData in businesses_lease" :key="leaseData.id">
-                                <td>{{ leaseData.id }}</td>
-                                <td>{{ leaseData.date }}</td>
-                                <td>{{ leaseData.money }}</td>
-                                <td>{{ leaseData.functionary }}</td>
-                                <td>{{ leaseData.status }}</td>
-                                <td>{{ leaseData.details }}</td>
-                                <td><button @click="viewLeaseDetails(leaseData.id)">详情</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-if="businesses_lease.length <= 0" style="text-align: center;">没有设备租赁数据</p>
-                </div>
+            <!--表单显示-->
+            <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+                <!--根据表单数据结构动态生成表单-->
+                <el-form :model="investment_form" label-width="120px">
+                    <el-form-item label="投资编号">
+                        <el-input v-model="investment_form.id" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资日期">
+                        <el-date-picker v-model="investment_form.date"
+                                        type="date"
+                                        placeholder="选择日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="投资人">
+                        <el-input v-model="investment_form.client"></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资金额">
+                        <el-input-number v-model="investment_form.price"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="投资负责人">
+                        <el-input v-model="investment_form.functionary"></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资状态">
+                        <el-input v-model="investment_form.status"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input type="textarea" v-model="investment_form.remark"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="submitForm">保存</el-button>
+                    <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+                </span>
+            </el-dialog>
+        </div>
+        <div v-if="businessID == '1'">
+            <div class="header-container">
+                <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
-            <div v-if="business.id === businessID && businessID == '3'">
-                <h1>公司项目</h1>
-                <div class="container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>日期</th>
-                                <th>金额</th>
-                                <th>负责人</th>
-                                <th>状态</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody v-show="businesses_project.length > 0">
-                            <tr v-for="projectData in businesses_project" :key="projectData.id">
-                                <td>{{ projectData.id }}</td>
-                                <td>{{ projectData.date }}</td>
-                                <td>{{ projectData.money }}</td>
-                                <td>{{ projectData.functionary }}</td>
-                                <td>{{ projectData.status }}</td>
-                                <td>{{ projectData.details }}</td>
-                                <td><button @click="viewProjectDetails(projectData.id)">详情</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-if="businesses_project.length <= 0" style="text-align: center;">没有公司项目数据</p>
-                </div>
+            <div class="dataTable">
+                 <el-table :data="businesses_list" style="width: 100%">
+                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
+                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
+                    <el-table-column prop="client" label="购买人" width="120"></el-table-column>
+                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
+                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="200">
+                        <template v-slot="scope">
+                            <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                            <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <!--表单显示-->
+                <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+                    <!--根据表单数据结构动态生成表单-->
+                    <el-form :model="buy_form" label-width="120px">
+                        <el-form-item label="投资编号">
+                            <el-input v-model="buy_form.id" disabled></el-input>
+                        </el-form-item>
+                        <el-form-item label="投资日期">
+                            <el-date-picker v-model="buy_form.date"
+                                            type="date"
+                                            placeholder="选择日期">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="投资人">
+                            <el-input v-model="buy_form.client"></el-input>
+                        </el-form-item>
+                        <el-form-item label="投资金额">
+                            <el-input-number v-model="buy_form.price"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="投资负责人">
+                            <el-input v-model="buy_form.functionary"></el-input>
+                        </el-form-item>
+                        <el-form-item label="投资状态">
+                            <el-input v-model="buy_form.status"></el-input>
+                        </el-form-item>
+                        <el-form-item label="备注">
+                            <el-input type="textarea" v-model="buy_form.remark"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button type="primary" @click="submitForm">保存</el-button>
+                        <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+                    </span>
+                </el-dialog>
             </div>
+        </div>
+        <div v-if="businessID == '2'">
+            <div class="header-container">
+                <el-button type="primary" size="medium" @click="createNew">新建</el-button>
+            </div>
+            <div class="dataTable">
+                 <el-table :data="businesses_list" style="width: 100%">
+                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
+                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
+                    <el-table-column prop="client" label="租赁人" width="120"></el-table-column>
+                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
+                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="200">
+                        <template v-slot="scope">
+                            <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                            <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <!--表单显示-->
+            <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+                <!--根据表单数据结构动态生成表单-->
+                <el-form :model="lease_form" label-width="120px">
+                    <el-form-item label="投资编号">
+                        <el-input v-model="lease_form.id" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资日期">
+                        <el-date-picker v-model="lease_form.date"
+                                        type="date"
+                                        placeholder="选择日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="投资人">
+                        <el-input v-model="lease_form.client"></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资金额">
+                        <el-input-number v-model="lease_form.price"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="投资负责人">
+                        <el-input v-model="lease_form.functionary"></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资状态">
+                        <el-input v-model="lease_form.status"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input type="textarea" v-model="lease_form.remark"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="submitForm">保存</el-button>
+                    <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+                </span>
+            </el-dialog>
+        </div>
+        <div v-if="businessID == '3'">
+            <div class="header-container">
+                <el-button type="primary" size="medium" @click="createNew">新建</el-button>
+            </div>
+            <div class="dataTable">
+                <el-table :data="businesses_list" style="width: 100%">
+                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
+                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
+                    <el-table-column prop="client" label="客户" width="120"></el-table-column>
+                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
+                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="200">
+                        <template v-slot="scope">
+                            <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                            <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <!--表单显示-->
+            <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+                <!--根据表单数据结构动态生成表单-->
+                <el-form :model="project_form" label-width="120px">
+                    <el-form-item label="投资编号">
+                        <el-input v-model="project_form.id" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资日期">
+                        <el-date-picker v-model="project_form.date"
+                                        type="date"
+                                        placeholder="选择日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="投资人">
+                        <el-input v-model="project_form.client"></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资金额">
+                        <el-input-number v-model="project_form.price"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="投资负责人">
+                        <el-input v-model="project_form.functionary"></el-input>
+                    </el-form-item>
+                    <el-form-item label="投资状态">
+                        <el-input v-model="project_form.status"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input type="textarea" v-model="project_form.remark"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="submitForm">保存</el-button>
+                    <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+                </span>
+            </el-dialog>
         </div>
     </div>
-
 </template>
 
 <script>
     import axios from 'axios';
 
     export default {
-        name: 'BusinessManagement',
+        name: 'AuthorizeRequisition',
         data() {
             return {
                 name: '', // 获取登入姓名
+                dialogVisible: false,
                 businessID: '0',
                 businesses: [
                   { id: '0', name: '外部投资'},
@@ -177,10 +289,12 @@
                   { id: '2', name: '设备租赁'},
                   { id: '3', name: '公司项目'},
                 ],
-                businesses_investment:[],
-                businesses_buy:[],
-                businesses_lease:[],
-                businesses_project:[],
+                businesses_list:[],
+                template_form:{id:'0'},
+                investment_form:    { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
+                buy_form:           { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
+                lease_form:         { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
+                project_form:       { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
             }
         },
         computed: {
@@ -230,242 +344,155 @@
             },
             setBusinessID(id) {
                 this.businessID = id;
+                this.getIncome();
+            },
+            //获取信息
+            getIncome(){
+                let path;
                 switch(this.businessID){
-                    case '0':this.getInvestment();
+                    case '0':
+                        path='/api/get-invest';
                         break;
-                    case '1':this.getBuy();
+                    case '1':
+                        path='/api/get-buy';
                         break;
-                    case '2':this.getLease();
+                    case '2':
+                        path='/api/get-lease';
                         break;
-                    case '3':this.getProject();
+                    case '3':
+                        path='/api/get-project';
+                        break;
+                }
+                axios.get(path)
+                    .then(response => {
+                        this.businesses_list = response.data.businesses_list || [];
+                    })
+                    .catch(error => {
+                        console.error('Error fetching investment:', error);
+                    });
+            },
+            //提交表单
+            submitForm() {
+                let path;
+                let form;
+                switch(this.businessID){
+                    case '0':
+                        path='/api/submit-invest-form';
+                        form=this.investment_form;
+                        break;
+                    case '1':
+                        path='/api/submit-buy-form';
+                        form=this.buy_form;
+                        break;
+                    case '2':
+                        path='/api/submit-lease-form';
+                        form=this.lease_form;
+                        break;
+                    case '3':
+                        path='/api/submit-project-form';
+                        form=this.project_form;
+                        break;
+                }
+                axios.post(path, form)
+                    .then(response => {
+                        console.log('提交成功:', response.data.message); // 打印消息
+                        this.$message({
+                            type: 'success',
+                            message: response.data.message
+                        }); // 显示消息提示
+                        this.dialogVisible = false; // 关闭对话框
+                    })
+                    .catch(error => {
+                        console.error('提交表单失败', error);
+                        this.$message({
+                            type: 'error',
+                            message: error.response.data.message // 假设错误信息也在 message 字段中
+                        });
+                    });
+                //重新请求数据
+                getIncome();
+            },
+                        //新建
+            createNew(){
+                switch(this.businessID){
+                    case '0':this.investment_form = this.template_form;break;
+                    case '1':this.buy_form = this.template_form;break;
+                    case '2':this.lease_form = this.template_form;break;
+                    case '3':this.project_form = this.template_form;break;
+                }
+                this.dialogVisible = true;
+            },
+            //删除
+            Delete(row) {
+                let path;
+                switch(this.businessID){
+                    case '0':path='/api/delete-invest-form';break;
+                    case '1':path='/api/delete-buy-form';break;
+                    case '2':path='/api/delete-lease-form';break;
+                    case '3':path='/api/delete-project-form';break;
+                }
+                axios.post(path, this.row)
+                    .then(response => {
+                        console.log('删除成功:', response.data.message); // 打印消息
+                        this.$message({
+                            type: 'success',
+                            message: response.data.message
+                        }); // 显示消息提示
+                    })
+                    .catch(error => {
+                        console.error('删除失败', error);
+                        this.$message({
+                            type: 'error',
+                            message: error.response.data.message // 假设错误信息也在 message 字段中
+                        });
+                    });
+            },
+            // 查看详情
+            viewDetails(row) {      
+                // 根据申请类型发送请求
+                switch(this.businessID){
+                    case '0':
+                        axios.post('/api/details-invest', { id: row.id}).then(response => {
+                            this.investment_form = response.data[0];
+                        // 显示表单
+                        this.dialogVisible = true;
+                        }).catch(error => {
+                            console.error('获取外部投资表单数据失败', error);
+                        });
+                        break;
+                    case '1':
+                        axios.post('/api/details-buy', { id: row.id}).then(response => {
+                            this.buy_form = response.data[0];
+                        // 显示表单
+                        this.dialogVisible = true;
+                        }).catch(error => {
+                            console.error('获取成片购买表单数据失败', error);
+                        });
+                        break;
+                    case '2':
+                        axios.post('/api/details-lease', { id: row.id}).then(response => {
+                            this.lease_form = response.data[0];
+                        // 显示表单
+                        this.dialogVisible = true;
+                        }).catch(error => {
+                            console.error('获取设备租赁表单数据失败', error);
+                        });
+                        break;
+                    case '3':
+                        axios.post('/api/details-project', { id: row.id}).then(response => {
+                            this.project_form = response.data[0];
+                        // 显示表单
+                        this.dialogVisible = true;
+                        }).catch(error => {
+                            console.error('获取公司项目表单数据失败', error);
+                        });
                         break;
                 }
             },
-           
-
-            getInvestment() {
-                axios.get('/api/businesstment')
-                    .then(response => {
-                        this.businesses_investment = response.data.businesses_investment || [];
-                    })
-                    .catch(error => {
-                        console.error('Error fetching investment:', error);
-                    });
-            },
-            // 查看详情的方法
-            viewInvestmentDetails(id) {
-                alert('查看投资详情:');
-                alert(id);
-
-                //请求信息
-                getDetailsInvestment(id);
-                //弹出对话框                 //这边建议使用element来实现，会简单许多
-                //.....
-                //可选 保存、删除、取消三种退出方式，最后一种不change
-                //再次拉取信息一览
-                getInvestment();
-            },
-            //查看申请的详细信息
-            getDetailsInvestment(id) {
-                axios.post('/api/detailsInvestment', { id })
-                    .then(result => {
-                        this.businesses_investment = response.data.businesses_investment || [];
-                    }).catch(error => {
-                        console.error('Error fetching investment:', error);
-
-                        if (1) {
-                            alert("查询成功")
-                        } else {
-                            alert("查询失败")
-                        }
-                    });
-            },
-            //修改申请信息
-            changeInvestment(id) {
-                axios.post('/api/changeInvestment', { id })
-                    .then(result => {
-                        this.businesses_investment = response.data.businesses_investment || [];
-                    }).catch(error => {
-                        console.error('Error fetching investment:', error);
-                        if (1) {
-                            alert("修改成功")
-                        } else {
-                            alert("修改失败")
-                        }
-                    });
-            },
-
-
-            getBuy() {
-                axios.get('/api/businessBuy')
-                    .then(response => {
-                        this.businesses_buy = response.data.businesses_buy || [];
-                    })
-                    .catch(error => {
-                        console.error('Error fetching buy:', error);
-                    });
-            },
-            // 查看详情的方法
-            viewBuyDetails(id) {
-                alert('查看购买投资详情:');
-                alert(id);
-            
-                //请求信息
-                getDetailsBuy(id);
-                //弹出对话框                 //这边建议使用element来实现，会简单许多
-                //.....
-                //可选 保存、删除、取消三种退出方式，最后一种不change
-                //再次拉取信息一览
-                getBuy();
-            },
-            //查看申请的详细信息
-            getDetailsBuy(id) {
-                axios.post('/api/detailsBuy', { id })
-                    .then(result => {
-                        this.businesses_buy = response.data.businesses_buy || [];
-                    }).catch(error => {
-                        console.error('Error fetching buy:', error);
-            
-                        if (1) {
-                            alert("查询成功")
-                        } else {
-                            alert("查询失败")
-                        }
-                    });
-            },
-            //修改申请信息
-            changeBuy(id) {
-                axios.post('/api/changeBuy', { id })
-                    .then(result => {
-                        this.businesses_buy = response.data.businesses_buy || [];
-                    }).catch(error => {
-                        console.error('Error fetching buy:', error);
-                        if (1) {
-                            alert("修改成功")
-                        } else {
-                            alert("修改失败")
-                        }
-                    });
-            },
-
-
-            getLease() {
-                axios.get('/api/businessLease')
-                    .then(response => {
-                        this.businesses_lease = response.data.businesses_lease || [];
-                    })
-                    .catch(error => {
-                        console.error('Error fetching lease:', error);
-                    });
-            },
-            // 查看详情的方法
-            viewLeaseDetails(id) {
-                alert('查看租赁详情:');
-                alert(id);
-            
-                //请求信息
-                getDetailsLease(id);
-                //弹出对话框                 //这边建议使用element来实现，会简单许多
-                //.....
-                //可选 保存、删除、取消三种退出方式，最后一种不change
-                //再次拉取信息一览
-                getLease();
-            },
-            //查看申请的详细信息
-            getDetailsLease(id) {
-                axios.post('/api/detailsLease', { id })
-                    .then(result => {
-                        this.businesses_lease = response.data.businesses_lease || [];
-                    }).catch(error => {
-                        console.error('Error fetching lease:', error);
-            
-                        if (1) {
-                            alert("查询成功")
-                        } else {
-                            alert("查询失败")
-                        }
-                    });
-            },
-            //修改申请信息
-            changeLease(id) {
-                axios.post('/api/changeLease', { id })
-                    .then(result => {
-                        this.businesses_lease = response.data.businesses_lease || [];
-                    }).catch(error => {
-                        console.error('Error fetching lease:', error);
-                        if (1) {
-                            alert("修改成功")
-                        } else {
-                            alert("修改失败")
-                        }
-                    });
-            },
-
-
-            getProject() {
-                axios.get('/api/businessProject')
-                    .then(response => {
-                        this.businesses_project = response.data.businesses_project || [];
-                    })
-                    .catch(error => {
-                        console.error('Error fetching project:', error);
-                    });
-            },
-            // 查看详情的方法
-            viewProjectDetails(id) {
-                alert('查看项目详情:');
-                alert(id);
-            
-                //请求信息
-                getDetailsProject(id);
-                //弹出对话框                 //这边建议使用element来实现，会简单许多
-                //.....
-                //可选 保存、删除、取消三种退出方式，最后一种不change
-                //再次拉取信息一览
-                getProject();
-            },
-            //查看申请的详细信息
-            getDetailsProject(id) {
-                axios.post('/api/detailsProject', { id })
-                    .then(result => {
-                        this.businesses_project = response.data.businesses_project || [];
-                    }).catch(error => {
-                        console.error('Error fetching project:', error);
-            
-                        if (1) {
-                            alert("查询成功")
-                        } else {
-                            alert("查询失败")
-                        }
-                    });
-            },
-            //修改申请信息
-            changeProject(id) {
-                axios.post('/api/changeProject', { id })
-                    .then(result => {
-                        this.businesses_project = response.data.businesses_project || [];
-                    }).catch(error => {
-                        console.error('Error fetching project:', error);
-                        if (1) {
-                            alert("修改成功")
-                        } else {
-                            alert("修改失败")
-                        }
-                    });
-            }
         },
         mounted() {
             this.getdata();
-            switch(this.businessID){
-                case '0':this.getInvestment();
-                    break;
-                case '1':this.getBuy();
-                    break;
-                case '2':this.getLease();
-                    break;
-                case '3':this.getProject();
-                    break;
-            }
+            this.getIncome();
         }
     }
 </script>
@@ -523,6 +550,15 @@
             /* 按钮悬浮效果 */
         }
 
+    .header-container {
+        max-width: 900px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        justify-content: right;
+    }
+
     .aside {
         justify-content: center;
         align-items: center;
@@ -532,6 +568,25 @@
         height: 100vh;
         background-color: lightskyblue;
         box-sizing: border-box;
+    }
+
+    .dataTable {
+        max-width:1000px;
+        display: flex;
+        justify-content: center; /* 或 flex-start, flex-end, space-between, space-around */
+        align-items: center; /* 或 flex-start, flex-end, stretch */
+        width: 85%;
+        float: left;
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .ul_menu {
+        list-style-type: none;
+        padding-block-start: 0px;
+        padding: 0;
+        margin: 0;
     }
 
     .li_node {
@@ -546,13 +601,6 @@
         padding: 10px 0 20px 10px;
     }
 
-    .ul_menu {
-        list-style-type: none;
-        padding-block-start: 0px;
-        padding: 0;
-        margin: 0;
-    }
-
     .main_button {
         transform: translate(10px, 10px);
     }
@@ -561,17 +609,6 @@
         display: flex;
         flex-direction: column;
         padding: 10px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
     }
 
 </style>
