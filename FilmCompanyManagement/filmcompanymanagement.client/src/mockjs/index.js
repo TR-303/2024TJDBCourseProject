@@ -38,15 +38,6 @@ let unprocessedInvestmentList = [
     { investmentId: '4', customerId: '44', orderDate: '2024-08-17', invoiceNumber: '20240817', amount: 30000, expenseType: '制作费用' },
 ];
 
-// 获取外部投资数据(不带请求参数)--仅供自己测试使用
-//Mock.mock('/api/externalinvestments/unprocessed', 'get', (params) => {
-//    // 返回数据
-//    return {
-//        code: 200,
-//        data: investmentList
-//    };
-//});
-
 // 获取未处理的外部投资数据（带请求参数）
 Mock.mock(RegExp('/api/externalInvestments/unprocessed' + ".*"), 'get', (params) => {
     const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
@@ -69,27 +60,6 @@ Mock.mock(RegExp('/api/externalInvestments/unprocessed' + ".*"), 'get', (params)
         };
     }
 });
-
-// 拦截 POST 请求，路径为 /api/externalInvestments/markProcessed
-//Mock.mock('/api/externalInvestments/markProcessed', 'post', (params) => {
-//    // 解析请求数据
-//    const requestBody = JSON.parse(params.body);
-
-//    // 模拟成功的处理结果
-//    return {
-//        code: 200,
-//        message: '处理成功',
-//        data: {
-//            investmentId: requestBody.investmentId,
-//            customerId: requestBody.customerId,
-//            orderDate: requestBody.orderDate,
-//            invoiceNumber: requestBody.invoiceNumber,
-//            amount: requestBody.amount,
-//            expenseType: requestBody.expenseType,
-//            processedDate: Mock.mock('@date("yyyy-MM-dd")') // 返回模拟的处理日期
-//        }
-//    };
-//});
 
 // 拦截 POST 请求，路径为 /api/externalInvestments/markProcessed
 Mock.mock('/api/externalInvestments/markProcessed', 'post', (params) => {
@@ -124,8 +94,8 @@ Mock.mock('/api/externalInvestments/markProcessed', 'post', (params) => {
 
 // 模拟已处理的外部投资数据
 let processedInvestmentList = [
-    { investmentId: '5', customerId: '55', orderDate: '2024-08-18', invoiceNumber: '20240818', amount: 6000, expenseType: '广告费用', processedDate: '2024-09-01' },
-    { investmentId: '6', customerId: '66', orderDate: '2024-08-19', invoiceNumber: '20240819', amount: 12000, expenseType: '制作费用', processedDate: '2024-09-02' }
+    //{ investmentId: '5', customerId: '55', orderDate: '2024-08-18', invoiceNumber: '20240818', amount: 6000, expenseType: '广告费用', processedDate: '2024-09-01' },
+    //{ investmentId: '6', customerId: '66', orderDate: '2024-08-19', invoiceNumber: '20240819', amount: 12000, expenseType: '制作费用', processedDate: '2024-09-02' }
 ];
 
 // 获取已处理外部投资数据
@@ -153,19 +123,11 @@ Mock.mock(RegExp('/api/externalInvestments/processed' + ".*"), 'get', (params) =
 
 
 
-// 设备租赁数据
-let leasingList = [
+// 未处理的设备租赁数据
+let unprocessedLeasingList = [
     { projectId: 'P001', dockingManagementId: 'D001', orderDate: '2024-09-01', invoiceNumber: '20240901', amount: 15000, expenseType: '设备租赁费用' },
     { projectId: 'P002', dockingManagementId: 'D002', orderDate: '2024-09-10', invoiceNumber: '20240910', amount: 8000, expenseType: '设备维护费用' }
 ];
-
-// 获取设备租赁数据(不带请求参数)--仅供自己测试使用
-//Mock.mock('/api/equipmentLeasing/unprocessed', 'get', (params) => {
-//    return {
-//        code: 200,
-//        data: leasingList
-//    };
-//});
 
 // 获取设备租赁数据（带请求参数）
 Mock.mock(RegExp('/api/equipmentLeasing/unprocessed' + ".*"), 'get', (params) => {
@@ -179,7 +141,7 @@ Mock.mock(RegExp('/api/equipmentLeasing/unprocessed' + ".*"), 'get', (params) =>
         //console.log("approved!!!");
         return {
             code: 200,
-            data: leasingList // 返回符合条件的数据
+            data: unprocessedLeasingList // 返回符合条件的数据
         };
     } else {
         //console.log("Not approved!!!");
@@ -189,6 +151,66 @@ Mock.mock(RegExp('/api/equipmentLeasing/unprocessed' + ".*"), 'get', (params) =>
         };
     }
 });
+
+// 拦截 POST 请求，路径为 /api/equipmentLeasing/markProcessed
+Mock.mock('/api/equipmentLeasing/markProcessed', 'post', (params) => {
+    // 解析请求数据
+    const requestBody = JSON.parse(params.body);
+    const projectId = requestBody.projectId;
+
+    // 查找并移除未处理列表中的记录
+    const leasingIndex = unprocessedLeasingList.findIndex(item => item.projectId === projectId);
+    if (leasingIndex !== -1) {
+        // 从未处理列表中移除记录
+        const leasing = unprocessedLeasingList.splice(leasingIndex, 1)[0];
+        // 添加到已处理列表中
+        const processedLeasing = {
+            ...leasing,
+            processedDate: requestBody.processedDate // 返回请求中传递的处理日期
+        };
+        processedLeasingList.push(processedLeasing);
+
+        return {
+            code: 200,
+            message: '处理成功',
+            data: processedLeasing // 返回处理后的数据
+        };
+    } else {
+        return {
+            code: 404,
+            message: '设备租赁记录未找到'
+        };
+    }
+});
+
+// 模拟已处理的设备租赁数据
+let processedLeasingList = [
+    //{ projectId: 'P003', dockingManagementId: 'D003', orderDate: '2024-09-05', invoiceNumber: '20240905', amount: 20000, expenseType: '设备租赁费用', processedDate: '2024-09-01' },
+    //{ projectId: 'P004', dockingManagementId: 'D004', orderDate: '2024-09-12', invoiceNumber: '20240912', amount: 10000, expenseType: '设备维护费用', processedDate: '2024-09-02' }
+];
+
+// 获取已处理设备租赁数据
+Mock.mock(RegExp('/api/equipmentLeasing/processed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const financialStatus = query.get('financialStatus'); // 获取 financialStatus 参数
+
+    console.log('Received Equipment Leasing query22:', { financialStatus }); // 调试信息
+
+    if (financialStatus === 'processed') {
+        return {
+            code: 200,
+            data: processedLeasingList // 返回符合条件的数据
+        };
+    } else {
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
+});
+
+
 
 // 成片购买订单数据
 let blockPurchaseOrderList = [
