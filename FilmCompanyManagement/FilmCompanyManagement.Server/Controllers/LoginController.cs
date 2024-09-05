@@ -24,9 +24,13 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> UserLogin(string userName, string password, string department)
+        public async Task<ActionResult> UserLogin(LoginRequest request)
         {
-            var loginUser = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
+            string userName = request.UserName;
+            string password = request.Password;
+            string department = request.Department;
+
+            var loginUser = await _context.Employees.Where(e => e.UserName == userName && e.Department.Name == department).SingleAsync();
             if (loginUser == null)
                 return BadRequest(-1);//账户不存在
             if (loginUser.Password == password)
@@ -42,5 +46,12 @@ namespace FilmCompanyManagement.Controllers
                 return BadRequest();//账户不存在
             return Ok(loginUser.Id);
         }
+    }
+
+    public class LoginRequest
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string Department { get; set; }
     }
 }

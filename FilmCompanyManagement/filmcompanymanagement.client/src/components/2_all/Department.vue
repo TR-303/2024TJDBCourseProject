@@ -41,7 +41,7 @@
             </li>
             <li v-if="showBossMenu" role="menuitem" id="menu_7" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 业务管理
-
+            </li>
             <li role="menuitem" id="menu_8" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 查看财政表
 
@@ -71,18 +71,18 @@
 </template>
 <script>
     import axios from 'axios'
-    export default{
-        data(){
-            return{
+    export default {
+        data() {
+            return {
                 name: '',
-                id:'2',
+                id: '2',
                 choose_department: '',
                 options: [
                     { value: '管理部', text: '管理部' },
                     { value: '财务部', text: '财务部' },
                     { value: '业务部', text: '业务部' },
                 ],
-                userdataList:[],
+                userdataList: [],
             }
         },
         computed: {
@@ -150,9 +150,9 @@
             },
             //获取数据
             getdata() {
-                axios.post('/data/userdata', {id:this.id}).then(result => {
+                axios.post('/data/userdata', { id: this.id }).then(result => {
                     this.name = result.data.name;// 将服务器返回的 name 更新到组件的 name 属性
-                }).catch(error => { 
+                }).catch(error => {
                     console.error('Error fetching mock data:', error);
                 });
             },
@@ -164,7 +164,7 @@
                 axios.post('/data/departmentuserdata', { department: this.choose_department }).then(result => {
                     console.log(result.data);
                     this.userdataList = result.data;
-                    console.log(this.userdataList);    
+                    console.log(this.userdataList);
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
                 });
@@ -186,25 +186,29 @@
         box-sizing: border-box;
         color: black;
     }
+
     .container_head {
-        flex:1 1 auto;
-        gap:var(--base-size-12,10px);
+        flex: 1 1 auto;
+        gap: var(--base-size-12,10px);
         display: flex;
     }
-    .container_head_left{
-        height:30px;
-        font-size:20px;
-        width:100px;
-        display:flex;
-        text-align:center;
+
+    .container_head_left {
+        height: 30px;
+        font-size: 20px;
+        width: 100px;
+        display: flex;
+        text-align: center;
     }
+
     .container_head_mid {
         flex: auto;
-        width:80%;
+        width: 80%;
         display: flex;
         text-align: left;
         height: 30px;
     }
+
     .container_head_right {
         background-color: deepskyblue;
         color: white;
@@ -215,11 +219,13 @@
         text-align: center;
         height: 30px;
     }
+
     .head_left {
         flex: 1 1 auto;
         display: flex;
         gap: var(--bar-size-8,5%);
     }
+
     .head_center {
         font-size: 20px;
         text-align: center;
@@ -231,11 +237,12 @@
         margin-right: 10%;
         gap: var(--bar-size-5,0%);
     }
+
     .head_logo {
         width: 30px;
         height: 30px;
         border: 0;
-        margin:0 5px;
+        margin: 0 5px;
         outline-offset: 2px;
     }
 
@@ -251,8 +258,8 @@
     }
 
     .container {
-        display:flex;
-        flex-direction:column;
+        display: flex;
+        flex-direction: column;
         padding: 10px;
     }
 
@@ -289,6 +296,7 @@
         height: 10px;
         box-sizing: border-box;
     }
+
     .head_button {
         margin: 0 10px;
         background-color: deepskyblue;
@@ -299,8 +307,9 @@
         font-size: 18px;
         width: 100px;
     }
-    .head_button:hover {
-        background-color: #1976d2;
-        /* 按钮悬浮效果 */
-    }
+
+        .head_button:hover {
+            background-color: #1976d2;
+            /* 按钮悬浮效果 */
+        }
 </style>
