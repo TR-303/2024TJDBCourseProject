@@ -50,12 +50,14 @@ Mock.mock(RegExp('/api/externalInvestments/unprocessed' + ".*"), 'get', (params)
         //console.log("approved!!!");
         return {
             code: 200,
+            message: '成功获取管理员已批准的外部投资数据',
             data: unprocessedInvestmentList // 返回符合条件的数据
         };
     } else {
         //console.log("Not approved!!!");
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取设备租赁数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
@@ -81,13 +83,13 @@ Mock.mock('/api/externalInvestments/markProcessed', 'post', (params) => {
 
         return {
             code: 200,
-            message: '处理成功',
+            message: '外部投资记录处理成功',
             data: processedInvestment // 返回处理后的数据
         };
     } else {
         return {
             code: 404,
-            message: '投资记录未找到'
+            message: '未找到外部投资记录'
         };
     }
 });
@@ -110,17 +112,18 @@ Mock.mock(RegExp('/api/externalInvestments/processed' + ".*"), 'get', (params) =
         //console.log("approved!!!");
         return {
             code: 200,
+            message: '成功获取已处理外部投资数据',
             data: processedInvestmentList // 返回符合条件的数据
         };
     } else {
         //console.log("Not approved!!!");
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取已处理外部投资数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
 });
-
 
 
 // 未处理的设备租赁数据
@@ -141,12 +144,14 @@ Mock.mock(RegExp('/api/equipmentLeasing/unprocessed' + ".*"), 'get', (params) =>
         //console.log("approved!!!");
         return {
             code: 200,
+            message: '成功获取管理员已批准的设备租赁数据',
             data: unprocessedLeasingList // 返回符合条件的数据
         };
     } else {
         //console.log("Not approved!!!");
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取设备租赁数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
@@ -172,13 +177,13 @@ Mock.mock('/api/equipmentLeasing/markProcessed', 'post', (params) => {
 
         return {
             code: 200,
-            message: '处理成功',
+            message: '设备租赁记录处理成功',
             data: processedLeasing // 返回处理后的数据
         };
     } else {
         return {
             code: 404,
-            message: '设备租赁记录未找到'
+            message: '未找到设备租赁记录'
         };
     }
 });
@@ -200,16 +205,17 @@ Mock.mock(RegExp('/api/equipmentLeasing/processed' + ".*"), 'get', (params) => {
     if (financialStatus === 'processed') {
         return {
             code: 200,
+            message: '成功获取已处理设备租赁数据',
             data: processedLeasingList // 返回符合条件的数据
         };
     } else {
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取已处理设备租赁数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
 });
-
 
 
 // 成片购买订单数据
@@ -229,11 +235,13 @@ Mock.mock(RegExp('/api/blockPurchaseOrders/unprocessed' + ".*"), 'get', (params)
     if (orderStatus === 'approved') {
         return {
             code: 200,
+            message: '成功获取管理员已批准的成片购买订单数据',
             data: unprocessedBlockPurchaseOrderList // 返回符合条件的数据
         };
     } else {
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取成片购买订单数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
@@ -259,13 +267,13 @@ Mock.mock('/api/blockPurchaseOrders/markProcessed', 'post', (params) => {
 
         return {
             code: 200,
-            message: '处理成功',
+            message: '成片购买订单记录处理成功',
             data: processedBlockPurchaseOrder // 返回处理后的数据
         };
     } else {
         return {
             code: 404,
-            message: '设备租赁记录未找到'
+            message: '未找到成片购买订单记录'
         };
     }
 });
@@ -287,11 +295,13 @@ Mock.mock(RegExp('/api/blockPurchaseOrders/processed' + ".*"), 'get', (params) =
     if (financialStatus === 'processed') {
         return {
             code: 200,
+            message: '成功获取已处理成片购买订单数据',
             data: processedBlockPurchaseOrderList // 返回符合条件的数据
         };
     } else {
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取已处理成片购买订单数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
