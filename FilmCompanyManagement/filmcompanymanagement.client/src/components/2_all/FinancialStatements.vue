@@ -38,6 +38,7 @@
                     已处理
                 </li>
 
+                <!-- 二级导航项 -->
                 <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_2" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleLeasingSubMenu">
                     查看设备租赁
                 </li>
@@ -49,12 +50,24 @@
                     已处理
                 </li>
 
-                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_3" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showBlockPurchaseOrderData">
+                <!-- 二级导航项 -->
+                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_3" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleBlockPurchaseOrderSubMenu">
                     查看成片购买订单
                 </li>
+                <!-- 三级导航项 -->
+                <li v-if="showBlockPurchaseOrderSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_blockPurchaseOrder_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedBlockPurchaseOrderF">
+                    未处理
+                </li>
+                <li v-if="showBlockPurchaseOrderSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_blockPurchaseOrder_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedBlockPurchaseOrderF">
+                    已处理
+                </li>
+
+                <!-- 二级导航项 -->
                 <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_4" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showSalaryData">
                     查看工资
                 </li>
+
+                <!-- 二级导航项 -->
                 <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_5" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProjectIncomeData">
                     查看项目收入
                 </li>
@@ -154,23 +167,48 @@
             </div>
         </div>
 
-
-        <!-- 成片购买订单数据显示部分 -->
-        <div class="container" v-if="showBlockPurchaseOrder">
+        <!-- 成片购买订单未处理数据显示部分 -->
+        <div class="container" v-if="showUnprocessedBlockPurchaseOrder">
             <div class="container_head">
-                <label class="container_head_left">查看成片购买订单</label>
-                <button class="container_head_right" @click="refreshBlockPurchaseOrderData()">
+                <label class="container_head_left">未处理成片购买订单</label>
+                <button class="container_head_right" @click="refreshUnprocessedBlockPurchaseOrderData">
                     刷新数据
                 </button>
             </div>
             <div>
-                <el-table :data="blockPurchaseOrderList" style="width: 100%">
+                <el-table :data="unprocessedBlockPurchaseOrderList" style="width: 100%">
                     <el-table-column prop="orderId" label="订单编号" />
                     <el-table-column prop="blockFileId" label="对接管理ID" />
                     <el-table-column prop="orderDate" label="订单日期" />
                     <el-table-column prop="invoiceNumber" label="账单编号" />
                     <el-table-column prop="amount" label="费用数额" />
                     <el-table-column prop="expenseType" label="费用类型" />
+                    <el-table-column label="操作">
+                        <template #default="scope">
+                            <el-button @click="markBlockPurchaseOrderAsProcessed(scope.row)">处理完成</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </div>
+
+        <!-- 成片购买订单已处理数据显示部分 -->
+        <div class="container" v-if="showProcessedBlockPurchaseOrder">
+            <div class="container_head">
+                <label class="container_head_left">已处理成片购买订单</label>
+                <button class="container_head_right" @click="refreshProcessedBlockPurchaseOrderData">
+                    刷新数据
+                </button>
+            </div>
+            <div>
+                <el-table :data="processedBlockPurchaseOrderList" style="width: 100%">
+                    <el-table-column prop="orderId" label="订单编号" />
+                    <el-table-column prop="blockFileId" label="对接管理ID" />
+                    <el-table-column prop="orderDate" label="订单日期" />
+                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="amount" label="费用数额" />
+                    <el-table-column prop="expenseType" label="费用类型" />
+                    <el-table-column prop="processedDate" label="处理完成日期" />
                 </el-table>
             </div>
         </div>
@@ -230,9 +268,12 @@
                 
                 unprocessedLeasingList: [], // 未处理设备租赁数据列表
                 processedLeasingList: [], // 已处理设备租赁数据列表
+
+                unprocessedBlockPurchaseOrderList: [], // 未处理成片购买订单数据列表
+                processedBlockPurchaseOrderList: [], // 已处理成片购买订单数据列表
+
+
                 //旧数据
-                leasingList: [], // 设备租赁数据列表
-                blockPurchaseOrderList: [], // 成片购买订单数据列表
                 salaryList: [], // 工资数据列表
                 projectIncomeList: [], // 项目收入数据列表
 
@@ -247,9 +288,11 @@
                 showUnprocessedLeasing: false, // 控制未处理设备租赁数据显示
                 showProcessedLeasing: false, // 控制已处理设备租赁数据显示
 
+                showBlockPurchaseOrderSubMenu: false, // 控制成片购买订单三级导航显示
+                showUnprocessedBlockPurchaseOrder: false, // 控制未处理成片购买订单数据显示
+                showProcessedBlockPurchaseOrder: false, // 控制已处理成片购买订单数据显示
+
                 //旧数据
-                showLeasing: false, // 控制设备租赁数据显示
-                showBlockPurchaseOrder: false, // 控制成片购买订单数据显示
                 showSalary: false, // 控制工资数据显示
                 showProjectIncome: false // 控制项目收入数据显示
             };
@@ -282,6 +325,8 @@
                     this.showInvesSubMenu = false;
                 if (this.showLeasingSubMenu === true)
                     this.showLeasingSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
             },
             toggleInvesSubMenu() {
                 // 切换显示外部投资的三级菜单
@@ -291,14 +336,19 @@
                 // 切换显示设备租赁的三级菜单
                 this.showLeasingSubMenu = !this.showLeasingSubMenu;
             },
+            toggleBlockPurchaseOrderSubMenu() {
+                // 切换显示成片购买订单的三级菜单
+                this.showBlockPurchaseOrderSubMenu = !this.showBlockPurchaseOrderSubMenu;
+            },
             // 显示未处理外部投资数据
             showUnprocessedInvestmentF() {
                 this.showUnprocessedInvestment = true;
                 this.showProcessedInvestment = false;
                 this.showUnprocessedLeasing = false;
                 this.showProcessedLeasing = false;
+                this.showProcessedBlockPurchaseOrder = false;
+                this.showUnprocessedBlockPurchaseOrder = false;
 
-                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshUnprocessedInvestmentData(); // 获取未处理外部投资数据
@@ -309,8 +359,9 @@
                 this.showUnprocessedInvestment = false;
                 this.showUnprocessedLeasing = false;
                 this.showProcessedLeasing = false;
+                this.showProcessedBlockPurchaseOrder = false;
+                this.showUnprocessedBlockPurchaseOrder = false;
 
-                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshProcessedInvestmentData(); // 获取已处理外部投资数据
@@ -322,27 +373,31 @@
                 this.showProcessedLeasing = false;
                 this.showUnprocessedInvestment = false;
                 this.showProcessedInvestment = false;
+                this.showProcessedBlockPurchaseOrder = false;
+                this.showUnprocessedBlockPurchaseOrder = false;
 
-                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshUnprocessedLeasingData(); // 获取未处理设备租赁数据
             },
-
             // 显示已处理设备租赁数据
             showProcessedLeasingF() {
                 this.showProcessedLeasing = true;
                 this.showUnprocessedLeasing = false;
                 this.showUnprocessedInvestment = false;
                 this.showProcessedInvestment = false;
+                this.showProcessedBlockPurchaseOrder = false;
+                this.showUnprocessedBlockPurchaseOrder = false;
 
-                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshProcessedLeasingData(); // 获取已处理设备租赁数据
             },
-            showBlockPurchaseOrderData() {
-                this.showBlockPurchaseOrder = true; // 显示成片购买订单数据
+
+            // 显示未处理成片购买订单数据
+            showUnprocessedBlockPurchaseOrderF() {
+                this.showUnprocessedBlockPurchaseOrder = true;
+                this.showProcessedBlockPurchaseOrder = false;
                 this.showUnprocessedInvestment = false;
                 this.showProcessedInvestment = false;
                 this.showUnprocessedLeasing = false;
@@ -350,8 +405,22 @@
 
                 this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
-                this.getBlockPurchaseOrderData(); // 获取成片购买订单数据
+                this.refreshUnprocessedBlockPurchaseOrderData(); // 获取未处理成片购买订单数据
             },
+            // 显示已处理成片购买订单数据
+            showProcessedBlockPurchaseOrderF() {
+                this.showProcessedBlockPurchaseOrder = true;
+                this.showUnprocessedBlockPurchaseOrder = false;
+                this.showUnprocessedInvestment = false;
+                this.showProcessedInvestment = false;
+                this.showUnprocessedLeasing = false;
+                this.showProcessedLeasing = false;
+
+                this.showSalary = false; // 关闭工资数据
+                this.showProjectIncome = false; // 关闭项目收入数据
+                this.refreshProcessedBlockPurchaseOrderData(); // 获取已处理成片购买订单数据
+            },
+
             showSalaryData() {
                 this.showSalary = true; // 显示工资数据
                 this.showUnprocessedInvestment = false;
@@ -458,62 +527,52 @@
                     console.error('请求失败:', error);
                 });
             },
-        
-            refreshBlockPurchaseOrderData() {
-                this.getBlockPurchaseOrderData();
+
+            /**************** 成片购买订单 ****************/
+            // 获取未处理成片购买订单数据
+            refreshUnprocessedBlockPurchaseOrderData() {
+                axios.get('/api/blockPurchaseOrders/unprocessed', {
+                    params: { orderStatus: 'approved' } // 添加请求参数
+                }).then(response => {
+                    this.unprocessedBlockPurchaseOrderList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching unprocessed block purchase order data:', error);
+                });
             },
+            // 获取已处理成片购买订单数据
+            refreshProcessedBlockPurchaseOrderData() {
+                axios.get('/api/blockPurchaseOrders/processed', {
+                    params: { financialStatus: 'processed' } // 添加请求参数
+                }).then(response => {
+                    this.processedBlockPurchaseOrderList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching processed block purchase order data:', error);
+                });
+            },
+            // 将未处理成片购买订单标记为已处理
+            markBlockPurchaseOrderAsProcessed(row) {
+                const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
+                axios.post('/api/blockPurchaseOrders/markProcessed', {
+                    orderId: row.orderId, // 根据当前行的数据传递 orderId
+                    processedDate: currentDate // 添加 processedDate
+                }).then(response => {
+                    if (response.data.success) {
+                        this.unprocessedBlockPurchaseOrderList = this.unprocessedBlockPurchaseOrderList.filter(item => item.orderId !== row.orderId);
+                        this.refreshUnprocessedBlockPurchaseOrderData();
+                        this.refreshProcessedBlockPurchaseOrderData();
+                    } else {
+                        console.error('标记处理失败:', response.data.message);
+                    }
+                }).catch(error => {
+                    console.error('请求失败:', error);
+                });
+            },
+
             refreshSalaryData() {
                 this.getSalaryData();
             },
             refreshProjectIncomeData() {
                 this.getProjectIncomeData();
-            },
-            /**************** 外部投资 ****************/
-            //不带请求参数--仅供自己测试使用
-            //getInvestmentData() {
-            //    axios.get('/api/externalinvestments/unprocessed')
-            //        .then(response => {
-            //            //console.log(response.data);
-            //            this.investmentList = response.data.data;
-            //            //console.log(this.investmentList);
-            //        }).catch(error => {
-            //            console.error('Error fetching investment data:', error);
-            //        });
-            //},
-
-            //带请求参数`orderStatus` (string): 订单状态，值为“approved”表示管理员已批准
-            //getInvestmentData() {
-            //    axios.get('/api/externalinvestments/unprocessed', {
-            //        params: { orderStatus: 'approved' }
-            //    }).then(response => {
-            //        this.unprocessedInvestmentList = response.data.data;
-            //    }).catch(error => {
-            //        console.error('Error fetching investment data:', error);
-            //    });
-            //},
-
-            /**************** 设备租赁 ****************/
-            //不带请求参数--仅供自己测试使用
-            //getLeasingData() {
-            //    axios.get('/api/equipmentLeasing/unprocessed')
-            //        .then(response => {
-            //            this.leasingList = response.data.data;
-            //        }).catch(error => {
-            //            console.error('Error fetching leasing data:', error);
-            //        });
-            //},
-
-            //带请求参数
-
-            /**************** 成片购买订单 ****************/
-            getBlockPurchaseOrderData() {
-                axios.get('/api/blockPurchaseOrder/unprocessed', {
-                    params: { orderStatus: 'approved' } // 添加请求参数
-                }).then(response => {
-                    this.blockPurchaseOrderList = response.data.data;
-                }).catch(error => {
-                    console.error('Error fetching block purchase order data:', error);
-                });
             },
 
             /**************** 工资 ****************/
@@ -568,7 +627,7 @@
     .container_head_left {
         height: 30px;
         font-size: 20px;
-        width: 160px;
+        width: 180px;
         display: flex;
         text-align: center;
     }

@@ -213,13 +213,13 @@ Mock.mock(RegExp('/api/equipmentLeasing/processed' + ".*"), 'get', (params) => {
 
 
 // 成片购买订单数据
-let blockPurchaseOrderList = [
+let unprocessedBlockPurchaseOrderList = [
     { orderId: 'O001', blockFileId: 'B001', orderDate: '2024-09-01', invoiceNumber: '20240901', amount: 25000, expenseType: '成片购买费用' },
     { orderId: 'O002', blockFileId: 'B002', orderDate: '2024-09-10', invoiceNumber: '20240910', amount: 12000, expenseType: '成片制作费用' }
 ];
 
 // 获取成片购买订单数据（带请求参数）
-Mock.mock(RegExp('/api/blockPurchaseOrder/unprocessed' + ".*"), 'get', (params) => {
+Mock.mock(RegExp('/api/blockPurchaseOrders/unprocessed' + ".*"), 'get', (params) => {
     const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
     const query = new URLSearchParams(url.search); // 获取查询参数
     const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
@@ -229,7 +229,7 @@ Mock.mock(RegExp('/api/blockPurchaseOrder/unprocessed' + ".*"), 'get', (params) 
     if (orderStatus === 'approved') {
         return {
             code: 200,
-            data: blockPurchaseOrderList // 返回符合条件的数据
+            data: unprocessedBlockPurchaseOrderList // 返回符合条件的数据
         };
     } else {
         return {
@@ -238,6 +238,68 @@ Mock.mock(RegExp('/api/blockPurchaseOrder/unprocessed' + ".*"), 'get', (params) 
         };
     }
 });
+
+// 拦截 POST 请求，路径为 /api/equipmentLeasing/markProcessed
+Mock.mock('/api/blockPurchaseOrders/markProcessed', 'post', (params) => {
+    // 解析请求数据
+    const requestBody = JSON.parse(params.body);
+    const projectId = requestBody.projectId;
+
+    // 查找并移除未处理列表中的记录
+    const blockPurchaseOrderIndex = unprocessedBlockPurchaseOrderList.findIndex(item => item.projectId === projectId);
+    if (blockPurchaseOrderIndex !== -1) {
+        // 从未处理列表中移除记录
+        const blockPurchaseOrder = unprocessedBlockPurchaseOrderList.splice(blockPurchaseOrderIndex, 1)[0];
+        // 添加到已处理列表中
+        const processedBlockPurchaseOrder = {
+            ...blockPurchaseOrder,
+            processedDate: requestBody.processedDate // 返回请求中传递的处理日期
+        };
+        processedBlockPurchaseOrderList.push(processedBlockPurchaseOrder);
+
+        return {
+            code: 200,
+            message: '处理成功',
+            data: processedBlockPurchaseOrder // 返回处理后的数据
+        };
+    } else {
+        return {
+            code: 404,
+            message: '设备租赁记录未找到'
+        };
+    }
+});
+
+// 模拟已处理的成片购买订单数据
+let processedBlockPurchaseOrderList = [
+    //{ projectId: 'P003', dockingManagementId: 'D003', orderDate: '2024-09-05', invoiceNumber: '20240905', amount: 20000, expenseType: '设备租赁费用', processedDate: '2024-09-01' },
+    //{ projectId: 'P004', dockingManagementId: 'D004', orderDate: '2024-09-12', invoiceNumber: '20240912', amount: 10000, expenseType: '设备维护费用', processedDate: '2024-09-02' }
+];
+
+// 获取已处理成片购买订单数据
+Mock.mock(RegExp('/api/blockPurchaseOrders/processed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const financialStatus = query.get('financialStatus'); // 获取 financialStatus 参数
+
+    console.log('Received Block Purchase Order query22:', { financialStatus }); // 调试信息
+
+    if (financialStatus === 'processed') {
+        return {
+            code: 200,
+            data: processedBlockPurchaseOrderList // 返回符合条件的数据
+        };
+    } else {
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
+});
+
+
+
+
 
 // 工资数据
 let salaryList = [
