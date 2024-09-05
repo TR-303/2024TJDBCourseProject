@@ -9,7 +9,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string Id { get; set; }
 
         [Required]
-        public PhotoEquipment PhoteEquipment { get; set; }
+        public PhotoEquipment PhotoEquipment { get; set; }
 
         [StringLength(100)]
         public string? Description { get; set; }
