@@ -33,91 +33,163 @@
             </ul>
         </div>
 
+
         <div>
-            <el-button class="main_button" type="primary" size="large" plain @click="setEmployeeID('0')">招聘实习</el-button>
-            <el-button class="main_button" type="primary" size="large" plain @click="setEmployeeID('1')">人员总览</el-button>
-            <el-button class="main_button" type="primary" size="large" plain @click="setEmployeeID('2')">员工培训</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: employeeID === '0' ? '#409EFF' : '', color: employeeID === '0' ? 'white' : '' }" 
+                type="primary" size="large" plain @click="setEmployeeID('0')">招聘实习</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: employeeID === '1' ? '#409EFF' : '', color: employeeID === '1' ? 'white' : '' }"
+                type="primary" size="large" plain @click="setEmployeeID('1')">人员总览</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: employeeID === '2' ? '#409EFF' : '', color: employeeID === '2' ? 'white' : '' }"
+                type="primary" size="large" plain @click="setEmployeeID('2')">员工培训</el-button>
         </div>
 
-        <div v-for="employee in employees" :key="employee.id">
-            <div v-if="employee.id === employeeID && employeeID == '0'">
-                <h1>外部投资</h1>
-                <div class="container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>姓名</th>
-                                <th>类型</th>
-                                <th>状态</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody v-show="employee_invite.length > 0">
-                            <tr v-for="inviteData in employee_invite" :key="inviteData.id">
-                                <td>{{ inviteData.id }}</td>
-                                <td>{{ inviteData.name }}</td>
-                                <td>{{ inviteData.type }}</td>
-                                <td>{{ inviteData.status }}</td>
-                                <td><button @click="viewInviteDetails(inviteData.id)">详情</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-if="employee_invite.length <= 0" style="text-align: center;">没有招聘数据</p>
-                </div>
+
+        <div v-if="employeeID == '0'">
+            <div class="header-container">
+                <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
-            <div v-if="employee.id === employeeID && employeeID == '1'">
-                <h1>成片购买</h1>
-                <div class="container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>姓名</th>
-                                <th>薪水</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody v-show="employee_overview.length > 0">
-                            <tr v-for="overviewData in employee_overview" :key="overviewData.id">
-                                <td>{{ overviewData.id }}</td>
-                                <td>{{ overviewData.name }}</td>
-                                <td>{{ overviewData.salary }}</td>
-                                <td><button @click="viewOverviewDetails(overviewData.id)">详情</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-if="employee_overview.length <= 0" style="text-align: center;">没有人员总览数据</p>
-                </div>
+
+            <div class="dataTable">
+                 <el-table :data="employee_list" style="width: 100%">
+                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
+                    <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+                    <el-table-column prop="type" label="招聘类型" width="120"></el-table-column>
+                    <el-table-column prop="salary" label="实习工资" width="120"></el-table-column>
+                    <el-table-column prop="status" label="招聘状态" width="120"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="200">
+                        <template v-slot="scope">
+                            <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                            <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </div>
-            <div v-if="employee.id === employeeID && employeeID == '2'">
-                <h1>设备租赁</h1>
-                <div class="container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>教师</th>
-                                <th>日期</th>
-                                <th>学生</th>
-                                <th>状态</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody v-show="employee_train.length > 0">
-                            <tr v-for="trainData in employee_train" :key="trainData.id">
-                                <td>{{ trainData.id }}</td>
-                                <td>{{ trainData.teacher }}</td>
-                                <td>{{ trainData.date }}</td>
-                                <td>{{ trainData.student }}</td>
-                                <td>{{ trainData.status }}</td>
-                                <td><button @click="viewTrainDetails(trainData.id)">详情</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-if="employee_train.length <= 0" style="text-align: center;">没有员工培训数据</p>
-                </div>
+            <!--表单显示-->
+            <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+                <!--根据表单数据结构动态生成表单-->
+                <el-form :model="invite_form" label-width="120px">
+                    <el-form-item label="编号">
+                        <el-input v-model="invite_form.id" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="姓名">
+                        <el-input v-model="invite_form.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="招聘类型">
+                        <el-input v-model="invite_form.type"></el-input>
+                    </el-form-item>
+                    <el-form-item label="实习工资">
+                        <el-input-number v-model="invite_form.salary"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="招聘状态">
+                        <el-input v-model="invite_form.status"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input type="textarea" v-model="invite_form.remark"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="submitForm">保存</el-button>
+                    <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+                </span>
+            </el-dialog>
+        </div>
+        <div v-if="employeeID == '1'">
+            <div class="header-container">
+                <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
+            <div class="dataTable">
+                 <el-table :data="employee_list" style="width: 100%">
+                    <el-table-column prop="id" label="员工编号" width="120"></el-table-column>
+                    <el-table-column prop="name" label="员工姓名" width="120"></el-table-column>
+                    <el-table-column prop="salary" label="员工薪水" width="120"></el-table-column>
+                    <el-table-column prop="status" label="员工状态" width="120"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="200">
+                        <template v-slot="scope">
+                            <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                            <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <!--表单显示-->
+                <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+                    <!--根据表单数据结构动态生成表单-->
+                    <el-form :model="overview_form" label-width="120px">
+                        <el-form-item label="员工编号">
+                            <el-input v-model="overview_form.id" disabled></el-input>
+                        </el-form-item>
+                        <el-form-item label="员工姓名">
+                            <el-input v-model="overview_form.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="员工薪水">
+                            <el-input-number v-model="overview_form.salary"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="员工状态">
+                            <el-input v-model="overview_form.status"></el-input>
+                        </el-form-item>
+                        <el-form-item label="备注">
+                            <el-input type="textarea" v-model="overview_form.remark"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button type="primary" @click="submitForm">保存</el-button>
+                        <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+                    </span>
+                </el-dialog>
+            </div>
+        </div>
+        <div v-if="employeeID == '2'">
+            <div class="header-container">
+                <el-button type="primary" size="medium" @click="createNew">新建</el-button>
+            </div>
+            <div class="dataTable">
+                 <el-table :data="employee_list" style="width: 100%">
+                    <el-table-column prop="id" label="培训编号" width="120"></el-table-column>
+                    <el-table-column prop="teacher" label="授课老师" width="120"></el-table-column>
+                    <el-table-column prop="date" label="授课日期" width="120"></el-table-column>
+                    <el-table-column prop="student" label="学生" width="120"></el-table-column>
+                    <el-table-column prop="status" label="培训状态" width="120"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="200">
+                        <template v-slot="scope">
+                            <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                            <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <!--表单显示-->
+            <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+                <!--根据表单数据结构动态生成表单-->
+                <el-form :model="train_form" label-width="120px">
+                    <el-form-item label="培训编号">
+                        <el-input v-model="train_form.id" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="授课老师">
+                        <el-input v-model="train_form.teacher"></el-input>
+                    </el-form-item>
+                    <el-form-item label="授课日期">
+                        <el-date-picker v-model="train_form.date"
+                                        type="date"
+                                        placeholder="选择日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="学生">
+                        <el-input v-model="train_form.student"></el-input>
+                    </el-form-item>
+                    <el-form-item label="培训状态">
+                        <el-input v-model="train_form.status"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input type="textarea" v-model="train_form.remark"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="submitForm">保存</el-button>
+                    <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+                </span>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -130,15 +202,18 @@
         data() {
             return {
                 name: '', // 获取登入姓名
+                dialogVisible: false,
                 employeeID: '0',
                 employees: [
                     { id: '0', name: '招聘实习' },
                     { id: '1', name: '人员总览' },
                     { id: '2', name: '员工培训' },
                 ],
-                employee_invite: [],
-                employee_overview: [],
-                employee_train: [],
+                employee_list:[],
+                template_form:{id:'0'},
+                invite_form:    { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
+                overview_form:  { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
+                train_form:     { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
             }
         },
         computed: {
@@ -188,184 +263,137 @@
             },
             setEmployeeID(id) {
                 this.employeeID = id;
-                switch (this.employeeID) {
-                    case '0': this.getInvite();
+                this.getIncome();
+            },
+            //获取信息
+            getIncome(){
+                let path;
+                switch(this.employeeID){
+                    case '0':
+                        path='/api/get-invite';
                         break;
-                    case '1': this.getOverview();
+                    case '1':
+                        path='/api/get-overview';
                         break;
-                    case '2': this.getTrain();
+                    case '2':
+                        path='/api/get-train';
                         break;
                 }
-            },
-
-            getInvite() {
-                axios.get('/api/employeeInvite')
+                axios.get(path)
                     .then(response => {
-                        this.employee_invite = response.data.employee_invite || [];
+                        this.employee_list = response.data.employee_list || [];
                     })
                     .catch(error => {
-                        console.error('Error fetching Invite:', error);
+                        console.error('Error fetching:', error);
                     });
             },
-            // 查看详情的方法
-            viewInviteDetails(id) {
-                alert('查看招聘详情:');
-                alert(id);
-
-                //请求信息
-                getDetailsInvite(id);
-                //弹出对话框                 //这边建议使用element来实现，会简单许多
-                //.....
-                //可选 保存、删除、取消三种退出方式，最后一种不change
-                //再次拉取信息一览
-                getInvite();
-            },
-            //查看申请的详细信息
-            getDetailsInvite(id) {
-                axios.post('/api/detailsInvite', { id })
-                    .then(result => {
-                        this.employee_invite = response.data.employee_invite || [];
-                    }).catch(error => {
-                        console.error('Error fetching Invite:', error);
-
-                        if (1) {
-                            alert("查询成功")
-                        } else {
-                            alert("查询失败")
-                        }
-                    });
-            },
-            //修改申请信息
-            changeInvite(id) {
-                axios.post('/api/changeInvite', { id })
-                    .then(result => {
-                        this.employee_invite = response.data.employee_invite || [];
-                    }).catch(error => {
-                        console.error('Error fetching Invite:', error);
-                        if (1) {
-                            alert("修改成功")
-                        } else {
-                            alert("修改失败")
-                        }
-                    });
-            },
-
-
-            getOverview() {
-                axios.get('/api/employeeOverview')
+            //提交表单
+            submitForm() {
+                let path;
+                let form;
+                switch(this.employeeID){
+                    case '0':
+                        path='/api/submit-invite-form';
+                        form=this.invite_form;
+                        break;
+                    case '1':
+                        path='/api/submit-overview-form';
+                        form=this.overview_form;
+                        break;
+                    case '2':
+                        path='/api/submit-train-form';
+                        form=this.train_form;
+                        break;
+                }
+                axios.post(path, form)
                     .then(response => {
-                        this.employee_overview = response.data.employee_overview || [];
+                        console.log('提交成功:', response.data.message); // 打印消息
+                        this.$message({
+                            type: 'success',
+                            message: response.data.message
+                        }); // 显示消息提示
+                        this.dialogVisible = false; // 关闭对话框
                     })
                     .catch(error => {
-                        console.error('Error fetching Overview:', error);
+                        console.error('提交表单失败', error);
+                        this.$message({
+                            type: 'error',
+                            message: error.response.data.message // 假设错误信息也在 message 字段中
+                        });
                     });
+                //重新请求数据
+                getIncome();
             },
-            // 查看详情的方法
-            viewOverviewDetails(id) {
-                alert('查看人员详情:');
-                alert(id);
-
-                //请求信息
-                getDetailsOverview(id);
-                //弹出对话框                 //这边建议使用element来实现，会简单许多
-                //.....
-                //可选 保存、删除、取消三种退出方式，最后一种不change
-                //再次拉取信息一览
-                getOverview();
+            //新建
+            createNew(){
+                switch(this.employeeID){
+                    case '0':this.invite_form = this.template_form;break;
+                    case '1':this.overview_form = this.template_form;break;
+                    case '2':this.train_form = this.template_form;break;
+                }
+                this.dialogVisible = true;
             },
-            //查看申请的详细信息
-            getDetailsOverview(id) {
-                axios.post('/api/detailsOverview', { id })
-                    .then(result => {
-                        this.employee_overview = response.data.employee_overview || [];
-                    }).catch(error => {
-                        console.error('Error fetching Overview:', error);
-
-                        if (1) {
-                            alert("查询成功")
-                        } else {
-                            alert("查询失败")
-                        }
-                    });
-            },
-            //修改申请信息
-            changeOverview(id) {
-                axios.post('/api/changeOverview', { id })
-                    .then(result => {
-                        this.employee_overview = response.data.employee_overview || [];
-                    }).catch(error => {
-                        console.error('Error fetching Overview:', error);
-                        if (1) {
-                            alert("修改成功")
-                        } else {
-                            alert("修改失败")
-                        }
-                    });
-            },
-
-
-            getTrain() {
-                axios.get('/api/employeeTrain')
+            //删除
+            Delete(row) {
+                let path;
+                switch(this.employeeID){
+                    case '0':path='/api/delete-invite-form';break;
+                    case '1':path='/api/delete-overview-form';break;
+                    case '2':path='/api/delete-train-form';break;
+                }
+                axios.post(path, this.row)
                     .then(response => {
-                        this.employee_train = response.data.employee_train || [];
+                        console.log('删除成功:', response.data.message); // 打印消息
+                        this.$message({
+                            type: 'success',
+                            message: response.data.message
+                        }); // 显示消息提示
                     })
                     .catch(error => {
-                        console.error('Error fetching Train:', error);
+                        console.error('删除失败', error);
+                        this.$message({
+                            type: 'error',
+                            message: error.response.data.message // 假设错误信息也在 message 字段中
+                        });
                     });
             },
-            // 查看详情的方法
-            viewTrainDetails(id) {
-                alert('查看培训详情:');
-                alert(id);
-
-                //请求信息
-                getDetailsTrain(id);
-                //弹出对话框                 //这边建议使用element来实现，会简单许多
-                //.....
-                //可选 保存、删除、取消三种退出方式，最后一种不change
-                //再次拉取信息一览
-                getTrain();
-            },
-            //查看申请的详细信息
-            getDetailsTrain(id) {
-                axios.post('/api/detailsTrain', { id })
-                    .then(result => {
-                        this.employee_train = response.data.employee_train || [];
-                    }).catch(error => {
-                        console.error('Error fetching Train:', error);
-
-                        if (1) {
-                            alert("查询成功")
-                        } else {
-                            alert("查询失败")
-                        }
-                    });
-            },
-            //修改申请信息
-            changeTrain(id) {
-                axios.post('/api/changeTrain', { id })
-                    .then(result => {
-                        this.employee_train = response.data.employee_train || [];
-                    }).catch(error => {
-                        console.error('Error fetching Train:', error);
-                        if (1) {
-                            alert("修改成功")
-                        } else {
-                            alert("修改失败")
-                        }
-                    });
+            // 查看详情
+            viewDetails(row) {      
+                // 根据申请类型发送请求
+                switch(this.employeeID){
+                    case '0':
+                        axios.post('/api/details-invite', { id: row.id}).then(response => {
+                            this.invite_form = response.data[0];
+                        // 显示表单
+                        this.dialogVisible = true;
+                        }).catch(error => {
+                            console.error('获取招聘实习表单数据失败', error);
+                        });
+                        break;
+                    case '1':
+                        axios.post('/api/details-overview', { id: row.id}).then(response => {
+                            this.overview_form = response.data[0];
+                        // 显示表单
+                        this.dialogVisible = true;
+                        }).catch(error => {
+                            console.error('获取人员总览表单数据失败', error);
+                        });
+                        break;
+                    case '2':
+                        axios.post('/api/details-train', { id: row.id}).then(response => {
+                            this.train_form = response.data[0];
+                        // 显示表单
+                        this.dialogVisible = true;
+                        }).catch(error => {
+                            console.error('获取员工培训表单数据失败', error);
+                        });
+                        break;
+                }
             },
         },
         mounted() {
             this.getdata();
-            switch (this.employeeID) {
-                case '0': this.getInvite();
-                    break;
-                case '1': this.getOverview();
-                    break;
-                case '2': this.getTrain();
-                    break;
-            }
+            this.getIncome();
         }
     }
 </script>
@@ -423,6 +451,15 @@
             /* 按钮悬浮效果 */
         }
 
+    .header-container {
+        max-width: 900px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        justify-content: right;
+    }
+
     .aside {
         justify-content: center;
         align-items: center;
@@ -432,6 +469,25 @@
         height: 100vh;
         background-color: lightskyblue;
         box-sizing: border-box;
+    }
+
+    .dataTable {
+        max-width:1000px;
+        display: flex;
+        justify-content: center; /* 或 flex-start, flex-end, space-between, space-around */
+        align-items: center; /* 或 flex-start, flex-end, stretch */
+        width: 85%;
+        float: left;
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .ul_menu {
+        list-style-type: none;
+        padding-block-start: 0px;
+        padding: 0;
+        margin: 0;
     }
 
     .li_node {
@@ -446,13 +502,6 @@
         padding: 10px 0 20px 10px;
     }
 
-    .ul_menu {
-        list-style-type: none;
-        padding-block-start: 0px;
-        padding: 0;
-        margin: 0;
-    }
-
     .main_button {
         transform: translate(10px, 10px);
     }
@@ -463,14 +512,4 @@
         padding: 10px;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
 </style>

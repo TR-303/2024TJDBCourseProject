@@ -368,7 +368,7 @@
                         this.businesses_list = response.data.businesses_list || [];
                     })
                     .catch(error => {
-                        console.error('Error fetching investment:', error);
+                        console.error('Error fetching:', error);
                     });
             },
             //提交表单
