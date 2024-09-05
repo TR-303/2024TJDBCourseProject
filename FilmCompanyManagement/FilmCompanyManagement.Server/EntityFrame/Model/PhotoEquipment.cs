@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
@@ -13,7 +14,12 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [StringLength(20)]
         public string? Model { get; set; }//设备型号
 
+        [Required, Column(TypeName = "NUMBER(1)")]
+        public int Status { get; set;}//审核状态
+
         [Required]
-        public int Count { get; set; }//当前库存
+        public int Price { get; set; }//金额
+
+        public Employee? Employee { get; set; }//申请人
     }
 }

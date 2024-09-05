@@ -56,7 +56,7 @@ namespace FilmCompanyManagement.Controllers
             var times = time.Split(' ');
             var date = Convert.ToDateTime(times[0]);
             var accurateTime = TimeSpan.Parse(times[1]);
-            var attendance = await _context.Attendances.Where(a => a.Employee.UserName == userName && a.Date == date).SingleAsync();
+            var attendance = await _context.Attendances.Where(a => a.Employee.UserName == userName && a.Date == date).FirstOrDefaultAsync();
             if (attendance == null)
             {
                 attendance = new Attendance
