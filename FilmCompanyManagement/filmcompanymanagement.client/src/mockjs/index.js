@@ -30,8 +30,8 @@ let userdataList = [
     { id: '4', department: '业务部', phone: '22222' },
 ] 
 
-// 外部投资数据
-let investmentList = [
+// 未处理的外部投资数据
+let unprocessedInvestmentList = [
     { investmentId: '1', customerId: '11', orderDate: '2024-08-01', invoiceNumber: '20240801', amount: 5000, expenseType: '广告费用' },
     { investmentId: '2', customerId: '22', orderDate: '2024-08-15', invoiceNumber: '20240815', amount: 10000, expenseType: '制作费用' },
     { investmentId: '3', customerId: '33', orderDate: '2024-08-16', invoiceNumber: '20240816', amount: 2000, expenseType: '广告费用' },
@@ -47,8 +47,8 @@ let investmentList = [
 //    };
 //});
 
-// 获取外部投资数据（带请求参数）
-Mock.mock(RegExp('/api/externalinvestments/unprocessed' + ".*"), 'get', (params) => {
+// 获取未处理的外部投资数据（带请求参数）
+Mock.mock(RegExp('/api/externalInvestments/unprocessed' + ".*"), 'get', (params) => {
     const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
     const query = new URLSearchParams(url.search); // 获取查询参数
     const orderStatus = query.get('orderStatus'); // 获取 orderStatus 参数
@@ -59,7 +59,7 @@ Mock.mock(RegExp('/api/externalinvestments/unprocessed' + ".*"), 'get', (params)
         //console.log("approved!!!");
         return {
             code: 200,
-            data: investmentList // 返回符合条件的数据
+            data: unprocessedInvestmentList // 返回符合条件的数据
         };
     } else {
         //console.log("Not approved!!!");
@@ -69,6 +69,89 @@ Mock.mock(RegExp('/api/externalinvestments/unprocessed' + ".*"), 'get', (params)
         };
     }
 });
+
+// 拦截 POST 请求，路径为 /api/externalInvestments/markProcessed
+//Mock.mock('/api/externalInvestments/markProcessed', 'post', (params) => {
+//    // 解析请求数据
+//    const requestBody = JSON.parse(params.body);
+
+//    // 模拟成功的处理结果
+//    return {
+//        code: 200,
+//        message: '处理成功',
+//        data: {
+//            investmentId: requestBody.investmentId,
+//            customerId: requestBody.customerId,
+//            orderDate: requestBody.orderDate,
+//            invoiceNumber: requestBody.invoiceNumber,
+//            amount: requestBody.amount,
+//            expenseType: requestBody.expenseType,
+//            processedDate: Mock.mock('@date("yyyy-MM-dd")') // 返回模拟的处理日期
+//        }
+//    };
+//});
+
+// 拦截 POST 请求，路径为 /api/externalInvestments/markProcessed
+Mock.mock('/api/externalInvestments/markProcessed', 'post', (params) => {
+    // 解析请求数据
+    const requestBody = JSON.parse(params.body);
+    const investmentId = requestBody.investmentId;
+
+    // 查找并移除未处理列表中的记录
+    const investmentIndex = unprocessedInvestmentList.findIndex(item => item.investmentId === investmentId);
+    if (investmentIndex !== -1) {
+        // 从未处理列表中移除记录
+        const investment = unprocessedInvestmentList.splice(investmentIndex, 1)[0];
+        // 添加到已处理列表中
+        const processedInvestment = {
+            ...investment,
+            processedDate: requestBody.processedDate // 返回请求中传递的处理日期
+        };
+        processedInvestmentList.push(processedInvestment);
+
+        return {
+            code: 200,
+            message: '处理成功',
+            data: processedInvestment // 返回处理后的数据
+        };
+    } else {
+        return {
+            code: 404,
+            message: '投资记录未找到'
+        };
+    }
+});
+
+// 模拟已处理的外部投资数据
+let processedInvestmentList = [
+    { investmentId: '5', customerId: '55', orderDate: '2024-08-18', invoiceNumber: '20240818', amount: 6000, expenseType: '广告费用', processedDate: '2024-09-01' },
+    { investmentId: '6', customerId: '66', orderDate: '2024-08-19', invoiceNumber: '20240819', amount: 12000, expenseType: '制作费用', processedDate: '2024-09-02' }
+];
+
+// 获取已处理外部投资数据
+Mock.mock(RegExp('/api/externalInvestments/processed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const financialStatus = query.get('financialStatus'); // 获取 financialStatus 参数
+
+    console.log('Received External Investments query22:', { financialStatus }); // 调试信息
+
+    if (financialStatus === 'processed') {
+        //console.log("approved!!!");
+        return {
+            code: 200,
+            data: processedInvestmentList // 返回符合条件的数据
+        };
+    } else {
+        //console.log("Not approved!!!");
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
+});
+
+
 
 // 设备租赁数据
 let leasingList = [

@@ -27,9 +27,17 @@
 
                 </li>
                 <!-- 二级导航项 -->
-                <li v-if="showSubMenu" class="sub_menu " role="menuitem" id="submenu_1" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showInvestmentData">
+                <li v-if="showSubMenu" class="sub_menu " role="menuitem" id="submenu_1" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleInvesSubMenu">
                     查看外部投资
                 </li>
+                <!-- 新增三级导航项 -->
+                <li v-if="showInvesSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_investment_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedInvestmentF">
+                    未处理
+                </li>
+                <li v-if="showInvesSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_investment_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedInvestmentF">
+                    已处理
+                </li>
+
                 <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_2" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showLeasingData">
                     查看设备租赁
                 </li>
@@ -46,25 +54,52 @@
             </ul>
         </div>
 
-        <!-- 外部投资数据显示部分 -->
-        <div class="container" v-if="showInvestment">
+        <!-- 外部投资未处理数据显示部分 -->
+        <div class="container" v-if="showUnprocessedInvestment">
             <div class="container_head">
-                <label class="container_head_left">查看外部投资</label>
-                <button class="container_head_right" @click="refreshData()">
+                <label class="container_head_left">未处理外部投资</label>
+                <button class="container_head_right" @click="refreshUnprocessedInvestmentData">
                     刷新数据
                 </button>
             </div>
             <div>
-                <el-table :data="investmentList" style="width: 100%">
+                <el-table :data="unprocessedInvestmentList" style="width: 100%">
                     <el-table-column prop="investmentId" label="投资编号" />
                     <el-table-column prop="customerId" label="投资客户ID" />
                     <el-table-column prop="orderDate" label="订单日期" />
                     <el-table-column prop="invoiceNumber" label="账单编号" />
                     <el-table-column prop="amount" label="费用数额" />
                     <el-table-column prop="expenseType" label="费用类型" />
+                    <el-table-column label="操作">
+                        <template #default="scope">
+                            <el-button @click="markInvestmentAsProcessed(scope.row)">处理完成</el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </div>
         </div>
+
+        <!-- 外部投资已处理数据显示部分 -->
+        <div class="container" v-if="showProcessedInvestment">
+            <div class="container_head">
+                <label class="container_head_left">已处理外部投资</label>
+                <button class="container_head_right" @click="refreshProcessedInvestmentData">
+                    刷新数据
+                </button>
+            </div>
+            <div>
+                <el-table :data="processedInvestmentList" style="width: 100%">
+                    <el-table-column prop="investmentId" label="投资编号" />
+                    <el-table-column prop="customerId" label="投资客户ID" />
+                    <el-table-column prop="orderDate" label="订单日期" />
+                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="amount" label="费用数额" />
+                    <el-table-column prop="expenseType" label="费用类型" />
+                    <el-table-column prop="processedDate" label="处理完成日期" />
+                </el-table>
+            </div>
+        </div>
+
 
         <!-- 设备租赁数据显示部分 -->
         <div class="container" v-if="showLeasing">
@@ -156,14 +191,20 @@
         data() {
             return {
                 name: '',
-                investmentList: [], // 外部投资数据列表
+                unprocessedInvestmentList: [], // 未处理投资数据列表
+                processedInvestmentList: [], // 已处理投资数据列表
+                
+
                 leasingList: [], // 设备租赁数据列表
                 blockPurchaseOrderList: [], // 成片购买订单数据列表
                 salaryList: [], // 工资数据列表
                 projectIncomeList: [], // 项目收入数据列表
 
                 showSubMenu: false, // 控制二级导航显示
-                showInvestment: false, // 控制外部投资数据显示
+                showInvesSubMenu: false, //控制外部投资三级导航显示
+                showUnprocessedInvestment: false, // 控制未处理投资数据显示
+                showProcessedInvestment: false, // 控制已处理投资数据显示
+
                 showLeasing: false, // 控制设备租赁数据显示
                 showBlockPurchaseOrder: false, // 控制成片购买订单数据显示
                 showSalary: false, // 控制工资数据显示
@@ -193,18 +234,39 @@
             toggleSubMenu() {
                 // 切换显示二级菜单
                 this.showSubMenu = !this.showSubMenu;
+                // 关闭三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
             },
-            showInvestmentData() {
-                this.showInvestment = true; // 显示外部投资数据
+            toggleInvesSubMenu() {
+                // 切换显示外部投资的三级菜单
+                this.showInvesSubMenu = !this.showInvesSubMenu;
+            },
+            // 显示未处理外部投资数据
+            showUnprocessedInvestmentF() {
+                this.showUnprocessedInvestment = true;
+                this.showProcessedInvestment = false;
                 this.showLeasing = false; //关闭设备租赁数据
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
-                this.getInvestmentData(); // 获取外部投资数据
+                this.refreshUnprocessedInvestmentData(); // 获取未处理外部投资数据
+            },
+            // 显示已处理外部投资数据
+            showProcessedInvestmentF() {
+                this.showProcessedInvestment = true;
+                this.showUnprocessedInvestment = false;
+                this.showLeasing = false; //关闭设备租赁数据
+                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
+                this.showSalary = false; // 关闭工资数据
+                this.showProjectIncome = false; // 关闭项目收入数据
+                this.refreshProcessedInvestmentData(); // 获取已处理外部投资数据
             },
             showLeasingData() {
                 this.showLeasing = true; //显示设备租赁数据
-                this.showInvestment = false; //关闭外部投资数据
+                this.showUnprocessedInvestment = false;
+                this.showProcessedInvestment = false;
+
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
@@ -212,7 +274,9 @@
             },
             showBlockPurchaseOrderData() {
                 this.showBlockPurchaseOrder = true; // 显示成片购买订单数据
-                this.showInvestment = false; //关闭外部投资数据
+                this.showUnprocessedInvestment = false;
+                this.showProcessedInvestment = false;
+
                 this.showLeasing = false; //关闭设备租赁数据
                 this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
@@ -220,7 +284,9 @@
             },
             showSalaryData() {
                 this.showSalary = true; // 显示工资数据
-                this.showInvestment = false; // 关闭外部投资数据
+                this.showUnprocessedInvestment = false;
+                this.showProcessedInvestment = false;
+
                 this.showLeasing = false; // 关闭设备租赁数据
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showProjectIncome = false; // 关闭项目收入数据
@@ -228,15 +294,56 @@
             },
             showProjectIncomeData() {
                 this.showProjectIncome = true; // 显示项目收入数据
-                this.showInvestment = false; // 关闭外部投资数据
+                this.showUnprocessedInvestment = false;
+                this.showProcessedInvestment = false;
+
                 this.showLeasing = false; // 关闭设备租赁数据
                 this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
                 this.showSalary = false; // 关闭工资数据
                 this.getProjectIncomeData(); // 获取项目收入数据
             },
-            refreshData() {
-                this.getInvestmentData();
+            // 获取未处理外部投资数据
+            refreshUnprocessedInvestmentData() {
+                axios.get('/api/externalInvestments/unprocessed', {
+                    params: { orderStatus: 'approved' }
+                }).then(response => {
+                    this.unprocessedInvestmentList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching investment data:', error);
+                });
             },
+            // 获取已处理外部投资数据
+            refreshProcessedInvestmentData() {
+                axios.get('/api/externalInvestments/processed', {
+                    params: { financialStatus: 'processed' } // 添加请求参数
+                }).then(response => {
+                    this.processedInvestmentList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching processed investment data:', error);
+                });
+            },
+            // 将未处理投资标记为已处理
+            markInvestmentAsProcessed(row) {
+                const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
+                // 发送 API 请求将该投资标记为处理完成
+                axios.post('/api/externalInvestments/markProcessed', {
+                    investmentId: row.investmentId, // 根据当前行的数据传递 investmentId
+                    processedDate: currentDate // 添加 processedDate
+                }).then(response => {
+                    if (response.data.success) {
+                        // 请求成功后移除该项
+                        this.unprocessedInvestmentList = this.unprocessedInvestmentList.filter(item => item.investmentId !== row.investmentId);
+                        // 也可以在这里调用刷新数据的方法来重新获取列表
+                        this.refreshUnprocessedInvestmentData();
+                        this.refreshProcessedInvestmentData();
+                    } else {
+                        console.error('标记处理失败:', response.data.message);
+                    }
+                }).catch(error => {
+                    console.error('请求失败:', error);
+                });
+            },
+
             refreshLeasingData() {
                 this.getLeasingData();
             },
@@ -263,15 +370,15 @@
             //},
 
             //带请求参数`orderStatus` (string): 订单状态，值为“approved”表示管理员已批准
-            getInvestmentData() {
-                axios.get('/api/externalinvestments/unprocessed', {
-                    params: { orderStatus: 'approved' }
-                }).then(response => {
-                    this.investmentList = response.data.data;
-                }).catch(error => {
-                    console.error('Error fetching investment data:', error);
-                });
-            },
+            //getInvestmentData() {
+            //    axios.get('/api/externalinvestments/unprocessed', {
+            //        params: { orderStatus: 'approved' }
+            //    }).then(response => {
+            //        this.unprocessedInvestmentList = response.data.data;
+            //    }).catch(error => {
+            //        console.error('Error fetching investment data:', error);
+            //    });
+            //},
 
             /**************** 设备租赁 ****************/
             //不带请求参数--仅供自己测试使用
@@ -500,5 +607,14 @@
 
     #submenu_1 {
         margin-top: -2px;
+    }
+
+    .sub_sub_menu{
+        width: 100px;
+        margin: 0 auto 3px auto;
+    }
+
+    #submenu_investment_processed{
+        margin-bottom: 8px;
     }
 </style>
