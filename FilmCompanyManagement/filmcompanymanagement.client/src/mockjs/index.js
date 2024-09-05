@@ -317,11 +317,13 @@ Mock.mock(RegExp('/api/salary/unprocessed' + ".*"), 'get', (params) => {
     if (evaluationStatus === 'complete') {
         return {
             code: 200,
+            message: '成功获取已完成评定的员工工资数据',
             data: unprocessedSalaryList // 返回符合条件的数据
         };
     } else {
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取员工工资数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
@@ -347,24 +349,24 @@ Mock.mock('/api/salary/markProcessed', 'post', (params) => {
 
         return {
             code: 200,
-            message: '处理成功',
+            message: '员工工资记录处理成功',
             data: processedSalary // 返回处理后的数据
         };
     } else {
         return {
             code: 404,
-            message: '设备租赁记录未找到'
+            message: '未找到员工工资记录'
         };
     }
 });
 
-// 模拟已处理的设备租赁数据
+// 模拟已处理的工资数据
 let processedSalaryList = [
     //{ projectId: 'P003', dockingManagementId: 'D003', orderDate: '2024-09-05', invoiceNumber: '20240905', amount: 20000, expenseType: '设备租赁费用', processedDate: '2024-09-01' },
     //{ projectId: 'P004', dockingManagementId: 'D004', orderDate: '2024-09-12', invoiceNumber: '20240912', amount: 10000, expenseType: '设备维护费用', processedDate: '2024-09-02' }
 ];
 
-// 获取已处理设备租赁数据
+// 获取已处理工资数据
 Mock.mock(RegExp('/api/salary/processed' + ".*"), 'get', (params) => {
     const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
     const query = new URLSearchParams(url.search); // 获取查询参数
@@ -375,11 +377,13 @@ Mock.mock(RegExp('/api/salary/processed' + ".*"), 'get', (params) => {
     if (financialStatus === 'processed') {
         return {
             code: 200,
+            message: '成功获取已处理员工工资数据',
             data: processedSalaryList // 返回符合条件的数据
         };
     } else {
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取已处理员工工资数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
@@ -405,11 +409,13 @@ Mock.mock(RegExp('/api/projectIncome/unprocessed' + ".*"), 'get', (params) => {
     if (orderStatus === 'approved') {
         return {
             code: 200,
+            message: '成功获取管理员已批准的项目收入数据',
             data: unprocessedProjectIncomeList // 返回符合条件的数据
         };
     } else {
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取项目收入数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
@@ -435,13 +441,13 @@ Mock.mock('/api/projectIncome/markProcessed', 'post', (params) => {
 
         return {
             code: 200,
-            message: '处理成功',
+            message: '项目收入记录处理成功',
             data: processedProjectIncome // 返回处理后的数据
         };
     } else {
         return {
             code: 404,
-            message: '投资记录未找到'
+            message: '未找到项目收入记录'
         };
     }
 });
@@ -464,12 +470,14 @@ Mock.mock(RegExp('/api/projectIncome/processed' + ".*"), 'get', (params) => {
         //console.log("approved!!!");
         return {
             code: 200,
+            message: '成功获取已处理项目收入数据',
             data: processedProjectIncomeList // 返回符合条件的数据
         };
     } else {
         //console.log("Not approved!!!");
         return {
-            code: 200,
+            code: 404,
+            message: '未能获取已处理项目收入数据',
             data: [] // 如果不符合条件，则返回空数组
         };
     }
