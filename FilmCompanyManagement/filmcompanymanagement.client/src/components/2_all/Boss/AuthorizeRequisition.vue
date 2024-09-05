@@ -32,62 +32,65 @@
                 </li>
             </ul>
         </div>
-    </div>
 
-    <div class="dataTable">
-        <el-table :data="requisition" style="width: 100%">
-            <el-table-column prop="id" label="编号" width="120"></el-table-column>
-            <el-table-column prop="name" label="申请人姓名" width="120"></el-table-column>
-            <el-table-column prop="type" label="申请类型" width="120"></el-table-column>
-            <el-table-column prop="status" label="申请状态" width="120"></el-table-column>
-            <el-table-column fixed="right" label="操作" width="200">
-                <template v-slot="scope">
-                    <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
-                    <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+        <div class="header-container">
+            <p> </p>
+        </div>
+        <div class="dataTable">
+            <el-table :data="requisition" style="width: 100%">
+                <el-table-column prop="id" label="编号" width="120"></el-table-column>
+                <el-table-column prop="name" label="申请人姓名" width="120"></el-table-column>
+                <el-table-column prop="type" label="申请类型" width="120"></el-table-column>
+                <el-table-column prop="status" label="申请状态" width="120"></el-table-column>
+                <el-table-column fixed="right" label="操作" width="200">
+                    <template v-slot="scope">
+                        <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
+                        <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        
+        <!--表单显示-->
+        <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+            <!--根据表单数据结构动态生成表单-->
+            <el-form :model="form" label-width="120px">
+                <el-form-item label="申请编号">
+                    <el-input v-model="form.id" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="申请类型">
+                    <el-select v-model="form.type" placeholder="请选择申请类型">
+                        <el-option label="维修申请" value="0"></el-option>
+                        <el-option label="购买申请" value="1"></el-option>
+                        <el-option label="报销申请" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="申请人">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="申请状态">
+                    <el-input v-model="form.status"></el-input>
+                </el-form-item>
+                <el-form-item label="日期">
+                    <el-date-picker v-model="form.date"
+                                    type="date"
+                                    placeholder="选择日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="申请价格">
+                    <el-input-number v-model="form.price"></el-input-number>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input type="textarea" v-model="form.remark"></el-input>
+                </el-form-item>
+            </el-form>
+        
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitForm">保存</el-button>
+                <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
+            </span>
+        </el-dialog>
     </div>
-    
-    <!--表单显示-->
-    <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
-        <!--根据表单数据结构动态生成表单-->
-        <el-form :model="form" label-width="120px">
-            <el-form-item label="申请编号">
-                <el-input v-model="form.id" disabled></el-input>
-            </el-form-item>
-            <el-form-item label="申请类型">
-                <el-select v-model="form.type" placeholder="请选择申请类型">
-                    <el-option label="维修申请" value="0"></el-option>
-                    <el-option label="购买申请" value="1"></el-option>
-                    <el-option label="报销申请" value="2"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="申请人">
-                <el-input v-model="form.name"></el-input>
-            </el-form-item>
-            <el-form-item label="申请状态">
-                <el-input v-model="form.status"></el-input>
-            </el-form-item>
-            <el-form-item label="日期">
-                <el-date-picker v-model="form.date"
-                                type="date"
-                                placeholder="选择日期">
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item label="申请价格">
-                <el-input-number v-model="form.price"></el-input-number>
-            </el-form-item>
-            <el-form-item label="备注">
-                <el-input type="textarea" v-model="form.remark"></el-input>
-            </el-form-item>
-        </el-form>
-    
-        <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="submitForm">保存</el-button>
-            <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
-        </span>
-    </el-dialog>
 </template>
 
 <script>
@@ -167,7 +170,6 @@
                             message: response.data.message
                         }); // 显示消息提示
                         this.dialogVisible = false; // 关闭对话框
-                        alert(response.data.message);
                     })
                     .catch(error => {
                         console.error('提交表单失败', error);
@@ -188,8 +190,6 @@
                             type: 'success',
                             message: response.data.message
                         }); // 显示消息提示
-                        this.dialogVisible = false; // 关闭对话框
-                        alert(response.data.message);
                     })
                     .catch(error => {
                         console.error('删除失败', error);
@@ -272,6 +272,16 @@
             /* 按钮悬浮效果 */
         }
 
+    .header-container {
+        max-width: 900px;
+        height: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        justify-content: right;
+    }
+
     .aside {
         justify-content: center;
         align-items: center;
@@ -284,10 +294,12 @@
     }
 
     .dataTable {
+        max-width:1000px;
         display: flex;
         justify-content: center; /* 或 flex-start, flex-end, space-between, space-around */
         align-items: center; /* 或 flex-start, flex-end, stretch */
         width: 85%;
+        float: left;
         border-collapse: collapse;
         margin-left: auto;
         margin-right: auto;
@@ -318,14 +330,4 @@
         padding: 10px;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
 </style>
