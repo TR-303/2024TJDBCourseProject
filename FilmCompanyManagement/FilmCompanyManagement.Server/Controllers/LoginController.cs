@@ -24,14 +24,14 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<int> UserLogin(string userName, string password, string department)
+        public async Task<ActionResult> UserLogin(string userName, string password, string department)
         {
             var loginUser = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
             if (loginUser == null)
-                return -1;//账户不存在
+                return Ok(-1);//账户不存在
             if (loginUser.Password == password)
-                return 1;//登入成功
-            return 0;//密码错误
+                return Ok(1);//登入成功
+            return Ok(0);//密码错误
         }
     }
 }
