@@ -6,7 +6,7 @@ namespace FilmCompanyManagement.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class LoginController:ControllerBase
+    public class LoginController : ControllerBase
     {
 
         private readonly FCMDbContext _context;
@@ -28,10 +28,19 @@ namespace FilmCompanyManagement.Controllers
         {
             var loginUser = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
             if (loginUser == null)
-                return Ok(-1);//账户不存在
+                return BadRequest(-1);//账户不存在
             if (loginUser.Password == password)
                 return Ok(1);//登入成功
             return Ok(0);//密码错误
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> WorkerID(string userName)
+        {
+            var loginUser = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
+            if (loginUser == null)
+                return BadRequest();//账户不存在
+            return Ok(loginUser.Id);
         }
     }
 }
