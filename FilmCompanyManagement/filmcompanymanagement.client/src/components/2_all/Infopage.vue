@@ -53,10 +53,10 @@
             </ul>
         </div>
         <div class="window2">
-            <p style="font-size: 18px;text-align: center;">近期佳作展示</p><br>
+            <p style="font-size: 18px;text-align: center;">近期佳作展示</p>
             <div class="image_container">
-                <img class="image" src="../assets/picture2_1.png" />
-                <img class="image" src="../assets/picture2_2.png" />
+                <img class="image" src="@/assets/picture2_1.png" />
+                <img class="image" src="@/assets/picture2_2.png" />
             </div>
         </div>
         <div class="window3">
@@ -66,7 +66,7 @@
                 {{ buttonText_1 }}
             </button>
             <p v-if="isClicked_1" style="text-align: center;">{{ tips_1 }}</p>
-            <button v-if="isClicked_1" :class="buttonClass(isClicked_2)" @click="handleClick_2" :disabled="isClicked_2">
+            <button v-if="isClicked_1" :class="buttonClass(0)" @click="handleClick_2">
                 {{ buttonText_2 }}
             </button>
             <p v-if="isClicked_2" style="text-align: center;">{{ tips_2 }}</p>
@@ -184,34 +184,56 @@
             },
             handleClick_1() {
                 //这里先向服务器传递签到时间
-                axios.post('/data/signdata',{
+                axios.post('/data/signdata', {
                     id: this.id,
                     time: this.currentDateTime,
+                    state: '1',
                 })
                     .then(result => {
-                    if (result.data.success) {
-                        alert("签到成功!");
-                        console.log(result.data);
-                        this.isClicked_1 = true;
-                        this.buttonText_1 = "已签到";
-                        this.tips_1 = `签到时间：${result.data.signtime}`;
-                    }
-                    else {
-                        alert("您已签到!");
-                        this.isClicked_1 = true;
-                        this.buttonText_1 = "已签到";
-                        this.tips_1 = `签到时间：${result.data.signtime}`;
-                    }
-                }).catch(error => {
-                    console.error('Error fetching mock data:', error);
-                });
+                        if (result.data.success) {
+                            alert("签到成功!");
+                            console.log(result.data);
+                            this.isClicked_1 = true;
+                            this.buttonText_1 = "已签到";
+                            this.tips_1 = `签到时间：${result.data.signtime}`;
+                        }
+                        else {
+                            this.isClicked_1 = true;
+                            this.buttonText_1 = "已签到";
+                            this.tips_1 = `签到时间：${result.data.signtime}`;
+                        }
+                    }).catch(error => {
+                        console.error('Error fetching mock data:', error);
+                    });
             },
             handleClick_2() {
-                alert("签退成功!");
-                this.isClicked_2 = true;
-                this.buttonText_2 = "已签退";
-                this.tips_2 = `签退时间：${this.currentDateTime}`;
-                // 此时签到签退均完成，向管理员传送考勤信息
+                axios.post('/data/signdata', {
+                    id: this.id,
+                    time: this.currentDateTime,
+                    state: '0',
+                })
+                    .then(result => {
+                        if (result.data.success) {
+                            alert("签退成功!");
+                            console.log(result.data);
+                            this.isClicked_2 = true;
+                            this.buttonText_2 = "已签退";
+                            this.tips_2 = `签退时间：${result.data.signouttime}`;
+                        }
+                        else {
+                            alert("已更改签退时间！");
+                            this.isClicked_2 = true;
+                            this.buttonText_2 = "已签退";
+                            this.tips_2 = `签退时间：${result.data.signouttime}`;
+                        }
+                    }).catch(error => {
+                        console.error('Error fetching mock data:', error);
+                    });
+                /*                alert("签退成功!");
+                                this.isClicked_2 = true;
+                                this.buttonText_2 = "已签退";
+                                this.tips_2 = `签退时间：${this.currentDateTime}`;
+                                // 此时签到签退均完成，向管理员传送考勤信息*/
             },
             buttonClass(isClicked) {
                 return isClicked ? 'clicked-button' : 'initial-button';
@@ -256,12 +278,27 @@
             //获取id
             getid() {
                 this.id = this.$route.query.id;
+            },
+            getissign() {
+                axios.post('/data/checksign', { id: this.id }).then(result => {
+                    console.log(result);
+                    if (result.data[0].issignout == '1') {
+                        console.log(result);
+                        this.isClicked_2 = true;
+                        this.buttonText_2 = "已签退";
+                        this.tips_2 = `签退时间：${result.data[0].signouttime}`;
+                    }
+                    this.handleClick_1();
+                }).catch(error => {
+                    console.error('Error fetching mock data:', error);
+                });
             }
         },
         mounted() {
             this.updateDateTime();
             this.getid();
             this.getdata();
+            this.getissign();
             setInterval(this.updateDateTime, 1000);  // 每秒更新一次
         }
     }
@@ -345,16 +382,19 @@
 
     .window2 {
         grid-area: left-bottom;
+        flex-direction: column;
         margin: 5px;
         padding: 10px;
         text-align: center;
         border-radius: 5px;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         border: 2px solid black;
         width: 65vw;
         height: 33vh;
         box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
     }
 
     .window3 {
@@ -366,7 +406,7 @@
         flex-direction: column;
         justify-content: flex-start;
         border: 2px solid black;
-        width: 20vw;
+        width: 36vh;
         height: 98vh;
         box-sizing: border-box;
     }
@@ -400,16 +440,17 @@
 
     .image_container {
         display: flex;
-        justify-content: space-between;
-        width: 52vw;
+        justify-content: center;
+        width: 100%;
         height: 26vh;
     }
 
-    .iamge {
+    .image {
         display: inline-block;
         margin: 5px;
-        width: 200px;
-        height: 250px;
+        padding: 10px;
+        width: 45%;
+        height: auto;
     }
 
     .initial-button {
@@ -442,6 +483,7 @@
         font-size: 18px;
         padding: 15px;
     }
+
     .head_button {
         margin: 0 10px;
         background-color: deepskyblue;
@@ -452,8 +494,9 @@
         font-size: 18px;
         width: 100px;
     }
-    .head_button:hover {
-        background-color: #1976d2;
-        /* 按钮悬浮效果 */
-    }
+
+        .head_button:hover {
+            background-color: #1976d2;
+            /* 按钮悬浮效果 */
+        }
 </style>
