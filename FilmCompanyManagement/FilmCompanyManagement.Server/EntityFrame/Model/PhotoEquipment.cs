@@ -20,6 +20,9 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Required]
         public int Price { get; set; }//½ğ¶î
 
+        [Required]
+        public Bill Bill { get; set; }
+
         public Employee? Employee { get; set; }//ÉêÇëÈË
     }
 }

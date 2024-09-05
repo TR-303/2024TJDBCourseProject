@@ -27,5 +27,8 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 
         [Required]
         public Customer Customer { get; set; }
+
+        [Required]
+        public Bill Bill { get; set; }
     }
 }

@@ -31,6 +31,11 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public decimal Salary { get; set; }//工资
 
         [Required, StringLength(20)]
+        public string SalaryStatus { get; set; }
+
+        public Bill? SalaryBill { get; set; }
+
+        [Required, StringLength(20)]
         public string UserName { get; set; }//账户名称
 
         [Required, StringLength(30)]

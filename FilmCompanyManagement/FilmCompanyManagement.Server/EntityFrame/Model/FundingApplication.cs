@@ -17,6 +17,9 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Required, StringLength(20)]
         public string BillStatus { get; set; }
 
+        [Required]
+        public Bill Bill { get; set; }
+
         [StringLength(20)]
         public string? AccountStatus { get; set; }
     }

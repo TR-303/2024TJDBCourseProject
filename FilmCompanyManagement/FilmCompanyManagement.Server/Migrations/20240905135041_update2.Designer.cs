@@ -3,6 +3,7 @@ using System;
 using FilmCompanyManagement.Server.EntityFrame;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace FilmCompanyManagement.Server.Migrations
 {
     [DbContext(typeof(FCMDbContext))]
-    partial class FCMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240905135041_update2")]
+    partial class update2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -329,9 +332,6 @@ namespace FilmCompanyManagement.Server.Migrations
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(12, 2)");
 
-                    b.Property<string>("SalaryBillId")
-                        .HasColumnType("NVARCHAR2(12)");
-
                     b.Property<string>("SalaryStatus")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -346,8 +346,6 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("SalaryBillId");
-
                     b.ToTable("Employees");
                 });
 
@@ -355,10 +353,6 @@ namespace FilmCompanyManagement.Server.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
-
-                    b.Property<string>("BillId")
-                        .IsRequired()
                         .HasColumnType("NVARCHAR2(12)");
 
                     b.Property<string>("CustomerId")
@@ -383,8 +377,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasColumnType("NVARCHAR2(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BillId");
 
                     b.HasIndex("CustomerId");
 
@@ -472,10 +464,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("NVARCHAR2(12)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
-
                     b.Property<string>("CustomerId")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(20)");
@@ -504,8 +492,6 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BillId");
-
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("FileId");
@@ -523,10 +509,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
-
                     b.Property<string>("BillStatus")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -540,8 +522,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasColumnType("NVARCHAR2(12)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BillId");
 
                     b.HasIndex("EmployeeId");
 
@@ -617,10 +597,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("NVARCHAR2(8)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
-
                     b.Property<string>("EmployeeId")
                         .HasColumnType("NVARCHAR2(12)");
 
@@ -640,8 +616,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasColumnType("NUMBER(1)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BillId");
 
                     b.HasIndex("EmployeeId");
 
@@ -667,10 +641,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("NVARCHAR2(12)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
-
                     b.Property<string>("CustomerId")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(20)");
@@ -693,8 +663,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasColumnType("NVARCHAR2(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BillId");
 
                     b.HasIndex("CustomerId");
 
@@ -895,23 +863,11 @@ namespace FilmCompanyManagement.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Bill", "SalaryBill")
-                        .WithMany()
-                        .HasForeignKey("SalaryBillId");
-
                     b.Navigation("Department");
-
-                    b.Navigation("SalaryBill");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.EquipmentLease", b =>
                 {
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Bill", "Bill")
-                        .WithMany()
-                        .HasForeignKey("BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Customer", "Customer")
                         .WithMany("EquipmentLeases")
                         .HasForeignKey("CustomerId")
@@ -923,8 +879,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Bill");
 
                     b.Navigation("Customer");
 
@@ -959,12 +913,6 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.FinishedProduct", b =>
                 {
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Bill", "Bill")
-                        .WithMany()
-                        .HasForeignKey("BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Customer", "Customer")
                         .WithMany("FinishedProducts")
                         .HasForeignKey("CustomerId")
@@ -977,8 +925,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bill");
-
                     b.Navigation("Customer");
 
                     b.Navigation("File");
@@ -986,19 +932,11 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.FundingApplication", b =>
                 {
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Bill", "Bill")
-                        .WithMany()
-                        .HasForeignKey("BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Bill");
 
                     b.Navigation("Employee");
                 });
@@ -1041,29 +979,15 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.PhotoEquipment", b =>
                 {
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Bill", "Bill")
-                        .WithMany()
-                        .HasForeignKey("BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
-
-                    b.Navigation("Bill");
 
                     b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Project", b =>
                 {
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Bill", "Bill")
-                        .WithMany()
-                        .HasForeignKey("BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Customer", "Customer")
                         .WithMany("Projects")
                         .HasForeignKey("CustomerId")
@@ -1075,8 +999,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Bill");
 
                     b.Navigation("Customer");
 

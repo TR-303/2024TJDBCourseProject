@@ -21,5 +21,8 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string PaymentStatus { get; set; }//Ö§¸¶×´Ì¬
 
         public Customer Customer { get; set; }
+
+        [Required]
+        public Bill Bill { get; set; }
     }
 }
