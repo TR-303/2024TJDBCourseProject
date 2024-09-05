@@ -239,7 +239,7 @@ Mock.mock(RegExp('/api/blockPurchaseOrders/unprocessed' + ".*"), 'get', (params)
     }
 });
 
-// 拦截 POST 请求，路径为 /api/equipmentLeasing/markProcessed
+// 拦截 POST 请求，路径为 /api/blockPurchaseOrders/markProcessed
 Mock.mock('/api/blockPurchaseOrders/markProcessed', 'post', (params) => {
     // 解析请求数据
     const requestBody = JSON.parse(params.body);
@@ -298,11 +298,8 @@ Mock.mock(RegExp('/api/blockPurchaseOrders/processed' + ".*"), 'get', (params) =
 });
 
 
-
-
-
 // 工资数据
-let salaryList = [
+let unprocessedSalaryList = [
     { payrollNumber: 'S001', ratingRecordId: 'R001', ratingResult: '优秀', rateeId: '1', basePay: 5000 },
     { payrollNumber: 'S002', ratingRecordId: 'R002', ratingResult: '良好', rateeId: '2', basePay: 4500 },
     { payrollNumber: 'S003', ratingRecordId: 'R003', ratingResult: '合格', rateeId: '3', basePay: 4000 },
@@ -320,7 +317,7 @@ Mock.mock(RegExp('/api/salary/unprocessed' + ".*"), 'get', (params) => {
     if (evaluationStatus === 'complete') {
         return {
             code: 200,
-            data: salaryList // 返回符合条件的数据
+            data: unprocessedSalaryList // 返回符合条件的数据
         };
     } else {
         return {
@@ -329,6 +326,67 @@ Mock.mock(RegExp('/api/salary/unprocessed' + ".*"), 'get', (params) => {
         };
     }
 });
+
+// 拦截 POST 请求，路径为 /api/salary/markProcessed
+Mock.mock('/api/salary/markProcessed', 'post', (params) => {
+    // 解析请求数据
+    const requestBody = JSON.parse(params.body);
+    const projectId = requestBody.projectId;
+
+    // 查找并移除未处理列表中的记录
+    const salaryIndex = unprocessedSalaryList.findIndex(item => item.projectId === projectId);
+    if (salaryIndex !== -1) {
+        // 从未处理列表中移除记录
+        const salary = unprocessedSalaryList.splice(salaryIndex, 1)[0];
+        // 添加到已处理列表中
+        const processedSalary = {
+            ...salary,
+            processedDate: requestBody.processedDate // 返回请求中传递的处理日期
+        };
+        processedSalaryList.push(processedSalary);
+
+        return {
+            code: 200,
+            message: '处理成功',
+            data: processedSalary // 返回处理后的数据
+        };
+    } else {
+        return {
+            code: 404,
+            message: '设备租赁记录未找到'
+        };
+    }
+});
+
+// 模拟已处理的设备租赁数据
+let processedSalaryList = [
+    //{ projectId: 'P003', dockingManagementId: 'D003', orderDate: '2024-09-05', invoiceNumber: '20240905', amount: 20000, expenseType: '设备租赁费用', processedDate: '2024-09-01' },
+    //{ projectId: 'P004', dockingManagementId: 'D004', orderDate: '2024-09-12', invoiceNumber: '20240912', amount: 10000, expenseType: '设备维护费用', processedDate: '2024-09-02' }
+];
+
+// 获取已处理设备租赁数据
+Mock.mock(RegExp('/api/salary/processed' + ".*"), 'get', (params) => {
+    const url = new URL(params.url, 'http://localhost'); // 创建 URL 对象
+    const query = new URLSearchParams(url.search); // 获取查询参数
+    const financialStatus = query.get('financialStatus'); // 获取 financialStatus 参数
+
+    console.log('Received Equipment Leasing query22:', { financialStatus }); // 调试信息
+
+    if (financialStatus === 'processed') {
+        return {
+            code: 200,
+            data: processedSalaryList // 返回符合条件的数据
+        };
+    } else {
+        return {
+            code: 200,
+            data: [] // 如果不符合条件，则返回空数组
+        };
+    }
+});
+
+
+
 
 // 项目收入数据
 let projectIncomeList = [

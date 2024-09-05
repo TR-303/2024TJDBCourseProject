@@ -63,9 +63,17 @@
                 </li>
 
                 <!-- 二级导航项 -->
-                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_4" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showSalaryData">
+                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_4" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleSalarySubMenu">
                     查看工资
                 </li>
+                <!-- 三级导航项 -->
+                <li v-if="showSalarySubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_salary_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedSalaryF">
+                    未处理
+                </li>
+                <li v-if="showSalarySubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_salary_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedSalaryF">
+                    已处理
+                </li>
+
 
                 <!-- 二级导航项 -->
                 <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_5" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProjectIncomeData">
@@ -213,24 +221,50 @@
             </div>
         </div>
 
-        <!-- 工资数据显示部分 -->
-        <div class="container" v-if="showSalary">
+        <!-- 工资未处理数据显示部分 -->
+        <div class="container" v-if="showUnprocessedSalary">
             <div class="container_head">
-                <label class="container_head_left">查看工资</label>
-                <button class="container_head_right" @click="refreshSalaryData()">
+                <label class="container_head_left">未处理工资</label>
+                <button class="container_head_right" @click="refreshUnprocessedSalaryData">
                     刷新数据
                 </button>
             </div>
             <div>
-                <el-table :data="salaryList" style="width: 100%">
+                <el-table :data="unprocessedSalaryList" style="width: 100%">
                     <el-table-column prop="payrollNumber" label="工资表编号" />
                     <el-table-column prop="ratingRecordId" label="评定记录ID" />
                     <el-table-column prop="ratingResult" label="评定结果" />
                     <el-table-column prop="rateeId" label="被评定者ID" />
                     <el-table-column prop="basePay" label="基本工资" />
+                    <el-table-column label="操作">
+                        <template #default="scope">
+                            <el-button @click="markSalaryAsProcessed(scope.row)">处理完成</el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </div>
         </div>
+
+        <!-- 工资已处理数据显示部分 -->
+        <div class="container" v-if="showProcessedSalary">
+            <div class="container_head">
+                <label class="container_head_left">已处理工资</label>
+                <button class="container_head_right" @click="refreshProcessedSalaryData">
+                    刷新数据
+                </button>
+            </div>
+            <div>
+                <el-table :data="processedSalaryList" style="width: 100%">
+                    <el-table-column prop="payrollNumber" label="工资表编号" />
+                    <el-table-column prop="ratingRecordId" label="评定记录ID" />
+                    <el-table-column prop="ratingResult" label="评定结果" />
+                    <el-table-column prop="rateeId" label="被评定者ID" />
+                    <el-table-column prop="basePay" label="基本工资" />
+                    <el-table-column prop="processedDate" label="处理完成日期" />
+                </el-table>
+            </div>
+        </div>
+
 
         <!-- 项目收入数据显示部分 -->
         <div class="container" v-if="showProjectIncome">
@@ -272,9 +306,10 @@
                 unprocessedBlockPurchaseOrderList: [], // 未处理成片购买订单数据列表
                 processedBlockPurchaseOrderList: [], // 已处理成片购买订单数据列表
 
+                unprocessedSalaryList: [], // 未处理工资数据列表
+                processedSalaryList: [], // 已处理工资数据列表
 
                 //旧数据
-                salaryList: [], // 工资数据列表
                 projectIncomeList: [], // 项目收入数据列表
 
 
@@ -292,8 +327,11 @@
                 showUnprocessedBlockPurchaseOrder: false, // 控制未处理成片购买订单数据显示
                 showProcessedBlockPurchaseOrder: false, // 控制已处理成片购买订单数据显示
 
+                showSalarySubMenu: false, // 控制工资三级导航显示
+                showUnprocessedSalary: false, // 控制未处理工资数据显示
+                showProcessedSalary: false, // 控制已处理工资数据显示
+
                 //旧数据
-                showSalary: false, // 控制工资数据显示
                 showProjectIncome: false // 控制项目收入数据显示
             };
         },
@@ -327,6 +365,8 @@
                     this.showLeasingSubMenu = false;
                 if (this.showBlockPurchaseOrderSubMenu === true)
                     this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
             },
             toggleInvesSubMenu() {
                 // 切换显示外部投资的三级菜单
@@ -340,6 +380,10 @@
                 // 切换显示成片购买订单的三级菜单
                 this.showBlockPurchaseOrderSubMenu = !this.showBlockPurchaseOrderSubMenu;
             },
+            toggleSalarySubMenu() {
+                // 切换显示工资的三级菜单
+                this.showSalarySubMenu = !this.showSalarySubMenu;
+            },
             // 显示未处理外部投资数据
             showUnprocessedInvestmentF() {
                 this.showUnprocessedInvestment = true;
@@ -348,8 +392,9 @@
                 this.showProcessedLeasing = false;
                 this.showProcessedBlockPurchaseOrder = false;
                 this.showUnprocessedBlockPurchaseOrder = false;
-
-                this.showSalary = false; // 关闭工资数据
+                this.showProcessedSalary = false;
+                this.showUnprocessedSalary = false;
+                
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshUnprocessedInvestmentData(); // 获取未处理外部投资数据
             },
@@ -361,8 +406,9 @@
                 this.showProcessedLeasing = false;
                 this.showProcessedBlockPurchaseOrder = false;
                 this.showUnprocessedBlockPurchaseOrder = false;
-
-                this.showSalary = false; // 关闭工资数据
+                this.showProcessedSalary = false;
+                this.showUnprocessedSalary = false;
+                
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshProcessedInvestmentData(); // 获取已处理外部投资数据
             },
@@ -375,8 +421,9 @@
                 this.showProcessedInvestment = false;
                 this.showProcessedBlockPurchaseOrder = false;
                 this.showUnprocessedBlockPurchaseOrder = false;
-
-                this.showSalary = false; // 关闭工资数据
+                this.showProcessedSalary = false;
+                this.showUnprocessedSalary = false;
+                
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshUnprocessedLeasingData(); // 获取未处理设备租赁数据
             },
@@ -388,8 +435,9 @@
                 this.showProcessedInvestment = false;
                 this.showProcessedBlockPurchaseOrder = false;
                 this.showUnprocessedBlockPurchaseOrder = false;
+                this.showProcessedSalary = false;
+                this.showUnprocessedSalary = false;
 
-                this.showSalary = false; // 关闭工资数据
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshProcessedLeasingData(); // 获取已处理设备租赁数据
             },
@@ -402,8 +450,9 @@
                 this.showProcessedInvestment = false;
                 this.showUnprocessedLeasing = false;
                 this.showProcessedLeasing = false;
-
-                this.showSalary = false; // 关闭工资数据
+                this.showProcessedSalary = false;
+                this.showUnprocessedSalary = false;
+                
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshUnprocessedBlockPurchaseOrderData(); // 获取未处理成片购买订单数据
             },
@@ -415,24 +464,42 @@
                 this.showProcessedInvestment = false;
                 this.showUnprocessedLeasing = false;
                 this.showProcessedLeasing = false;
-
-                this.showSalary = false; // 关闭工资数据
+                this.showProcessedSalary = false;
+                this.showUnprocessedSalary = false;
+                
                 this.showProjectIncome = false; // 关闭项目收入数据
                 this.refreshProcessedBlockPurchaseOrderData(); // 获取已处理成片购买订单数据
             },
 
-            showSalaryData() {
-                this.showSalary = true; // 显示工资数据
+            // 显示未处理工资数据
+            showUnprocessedSalaryF() {
+                this.showUnprocessedSalary = true;
+                this.showProcessedSalary = false;
                 this.showUnprocessedInvestment = false;
                 this.showProcessedInvestment = false;
                 this.showUnprocessedLeasing = false;
                 this.showProcessedLeasing = false;
+                this.showProcessedBlockPurchaseOrder = false;
+                this.showUnprocessedBlockPurchaseOrder = false;
 
-
-                this.showBlockPurchaseOrder = false; // 关闭成片购买订单数据
-                this.showProjectIncome = false; // 关闭项目收入数据
-                this.getSalaryData(); // 获取工资数据
+                this.showProjectIncome = false;
+                this.refreshUnprocessedSalaryData(); // 获取未处理工资数据
             },
+            // 显示已处理工资数据
+            showProcessedSalaryF() {
+                this.showProcessedSalary = true;
+                this.showUnprocessedSalary = false;
+                this.showUnprocessedInvestment = false;
+                this.showProcessedInvestment = false;
+                this.showUnprocessedLeasing = false;
+                this.showProcessedLeasing = false;
+                this.showProcessedBlockPurchaseOrder = false;
+                this.showUnprocessedBlockPurchaseOrder = false;
+                
+                this.showProjectIncome = false;
+                this.refreshProcessedSalaryData(); // 获取已处理工资数据
+            },
+
             showProjectIncomeData() {
                 this.showProjectIncome = true; // 显示项目收入数据
                 this.showUnprocessedInvestment = false;
@@ -568,23 +635,50 @@
                 });
             },
 
-            refreshSalaryData() {
-                this.getSalaryData();
-            },
-            refreshProjectIncomeData() {
-                this.getProjectIncomeData();
-            },
-
             /**************** 工资 ****************/
-            getSalaryData() {
+            // 获取未处理工资数据
+            refreshUnprocessedSalaryData() {
                 axios.get('/api/salary/unprocessed', {
-                    params: { evaluationStatus: 'complete' } // 添加请求参数
+                    params: { evaluationStatus: 'complete' }
                 }).then(response => {
-                    this.salaryList = response.data.data;
+                    this.unprocessedSalaryList = response.data.data;
                 }).catch(error => {
-                    console.error('Error fetching salary data:', error);
+                    console.error('Error fetching unprocessed salary data:', error);
                 });
             },
+            // 获取已处理工资数据
+            refreshProcessedSalaryData() {
+                axios.get('/api/salary/processed', {
+                    params: { financialStatus: 'processed' }
+                }).then(response => {
+                    this.processedSalaryList = response.data.data;
+                }).catch(error => {
+                    console.error('Error fetching processed salary data:', error);
+                });
+            },
+            // 将未处理工资标记为已处理
+            markSalaryAsProcessed(row) {
+                const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
+                axios.post('/api/salary/markProcessed', {
+                    payrollNumber: row.payrollNumber, // 根据当前行的数据传递 payrollNumber
+                    processedDate: currentDate // 添加 processedDate
+                }).then(response => {
+                    if (response.data.success) {
+                        this.unprocessedSalaryList = this.unprocessedSalaryList.filter(item => item.payrollNumber !== row.payrollNumber);
+                        this.refreshUnprocessedSalaryData();
+                        this.refreshProcessedSalaryData();
+                    } else {
+                        console.error('标记处理失败:', response.data.message);
+                    }
+                }).catch(error => {
+                    console.error('请求失败:', error);
+                });
+            },
+
+            
+            refreshProjectIncomeData() {
+                this.getProjectIncomeData();
+            }, 
 
             /**************** 项目收入 ****************/
             getProjectIncomeData() {
