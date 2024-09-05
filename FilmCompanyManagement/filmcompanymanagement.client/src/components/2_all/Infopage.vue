@@ -125,7 +125,7 @@
         methods: {
             async infomation() {
                 try {
-                    const response = await axios.post("./api/LoginController.cs", {
+                    const response = await axios.post("/api/LoginController.cs", {
                         username: this.username,
                         password: this.password,
                         department: this.department,

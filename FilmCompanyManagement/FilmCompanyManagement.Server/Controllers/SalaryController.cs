@@ -18,31 +18,39 @@ namespace FilmCompanyManagement.Controllers
         [HttpGet("unprocessed")]
         public async Task<IActionResult> GetUnprocessed()
         {
-            var ret = await _context.Employees.Where(i => i.SalaryStatus == "unprocessed").ToListAsync();
+            var ret = await _context.Employees.Where(i => i.SalaryStatus == "unprocessed").Select(e => new
+            {
+                payrollNumber=e.SalaryBill.Id,
+                basePay=e.Salary
+            }).ToListAsync();
             return Ok(ret);
         }
 
         [HttpGet("processed")]
         public async Task<IActionResult> GetProcessed()
         {
-            var ret = await _context.Employees.Where(i => i.SalaryStatus == "processed").ToListAsync();
+            var ret = await _context.Employees.Where(i => i.SalaryStatus == "processed").Select(e => new
+            {
+                payrollNumber = 0,
+                basePay = e.Salary
+            }).ToListAsync();
             return Ok(ret);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> MarkAsProcessed([FromBody] string id)
+        [HttpPost("markprocessed")]
+        public async Task<IActionResult> MarkProcessed([FromBody] string id)
         {
-            Employee emp
-                = await _context.Employees.SingleAsync(i => i.Id == id);
+            Employee emp = await _context.Employees.SingleAsync(i => i.Id == id && i.SalaryStatus == "unprocessed");
             if (emp == null) return BadRequest(new
             {
                 status = "failed",
-                message = "Id doesnt exist"
+                message = "Id doesnt exist or already processed"
             });
 
             emp.SalaryStatus = "processed";
-            
+            emp.SalaryBill.Account.Balance -= emp.Salary;
             await _context.SaveChangesAsync();
+
             return Ok(new
             {
                 status = "success"

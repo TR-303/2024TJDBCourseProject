@@ -16,16 +16,16 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public TimeSpan? CheckInTime { get; set; } // 上班打卡时间（可空）
         public TimeSpan? CheckOutTime { get; set; } // 下班打卡时间（可空）
 
-        [Required, Column(TypeName = "NUMBER(1)")]
+        [Column(TypeName = "NUMBER(1)")]
         public int IsLate { get; set; } // 是否迟到
 
-        [Required, Column(TypeName = "NUMBER(1)")]
+        [Column(TypeName = "NUMBER(1)")]
         public int IsEarlyLeave { get; set; } // 是否早退
 
-        [Required, Column(TypeName = "NUMBER(1)")]
+        [Column(TypeName = "NUMBER(1)")]
         public int IsOnLeave { get; set; } // 是否请假
 
-        [Required, Column(TypeName = "NUMBER(1)")]
+        [Column(TypeName = "NUMBER(1)")]
         public int IsOvertime { get; set; } // 是否加班
 
         [StringLength(500)] // 将此属性映射为数据库中的nvarchar(500)类型

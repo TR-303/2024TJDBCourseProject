@@ -11,8 +11,8 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         // 对单关系Customers
         public Customer? Customer { get; set; }
 
-        [Required, Column(TypeName = "Date")]
-        public DateTime Date { get; set; }
+        [Column(TypeName = "Date")]
+        public DateTime? Date { get; set; }
 
         [Required, StringLength(20)]
         public string BillStatus { get; set; }

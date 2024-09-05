@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 namespace FilmCompanyManagement.Controllers
 {
     [ApiController, Route("api/[controller]")]
-    public class EquipmentLeasingController : ControllerBase
+    public class ProjectIncomeController : ControllerBase
     {
         private readonly FCMDbContext _context;
 
-        public EquipmentLeasingController(FCMDbContext context)
+        public ProjectIncomeController(FCMDbContext context)
         {
             _context = context;
         }
@@ -18,7 +18,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpGet("unprocessed")]
         public async Task<IActionResult> GetUnprocessed()
         {
-            var ret = await _context.EquipmentLeases.Where(i => i.OrderStatus == "unprocessed").Select(e => new
+            var ret = await _context.Projects.Where(i => i.OrderStatus == "unprocessed").Select(e => new
             {
                 projectId = e.Id,
                 orderDate = e.Bill.Date,
@@ -32,33 +32,33 @@ namespace FilmCompanyManagement.Controllers
         [HttpGet("processed")]
         public async Task<IActionResult> GetProcessed()
         {
-            var ret = await _context.EquipmentLeases.Where(i => i.OrderStatus == "processed").Select(e => new
+            var ret = await _context.Projects.Where(i => i.OrderStatus == "processed").Select(e => new
             {
-                projectId = e.Id,
+                orderId = e.Id,
                 orderDate = e.Bill.Date,
                 invoiceNumber = e.Bill.Id,
                 amount = e.Bill.Amount,
                 expenseType = e.Bill.Type,
-                processedDate = e.OrderDate
+                processedDate = e.Date
             }).ToListAsync();
             return Ok(ret);
         }
 
         [HttpPost("markprocessed")]
-        public async Task<IActionResult> MarkProcessed(ProcessingEquipmentLeasing proc)
+        public async Task<IActionResult> MarkProcessed(ProcessingProjecIncome proc)
         {
-            string projectId = proc.projectId;
+            string id = proc.id;
             string processedDate = proc.processedDate;
 
-            EquipmentLease eql = await _context.EquipmentLeases.SingleAsync(i => i.Id == projectId);
-            if (eql == null) return BadRequest(new
+            Project prj = await _context.Projects.SingleAsync(i => i.Id == id);
+            if (prj == null) return BadRequest(new
             {
                 status = "failed",
                 message = "Id doesnt exist"
             });
 
-            eql.OrderStatus = "processed";
-            eql.OrderDate = DateTime.Parse(processedDate);
+            prj.OrderStatus = "processed";
+            prj.Date = DateTime.Parse(processedDate);
             await _context.SaveChangesAsync();
             return Ok(new
             {
@@ -67,9 +67,9 @@ namespace FilmCompanyManagement.Controllers
         }
     }
 
-    public class ProcessingEquipmentLeasing
+    public class ProcessingProjecIncome
     {
-        public string projectId { get; set; }
+        public string id { get; set; }
         public string processedDate { get; set; }
     }
 }

@@ -147,7 +147,6 @@
             <div>
                 <el-table :data="unprocessedLeasingList" style="width: 100%">
                     <el-table-column prop="projectId" label="项目编号" />
-                    <el-table-column prop="dockingManagementId" label="对接管理ID" />
                     <el-table-column prop="orderDate" label="订单日期" />
                     <el-table-column prop="invoiceNumber" label="账单编号" />
                     <el-table-column prop="amount" label="费用数额" />
@@ -172,7 +171,6 @@
             <div>
                 <el-table :data="processedLeasingList" style="width: 100%">
                     <el-table-column prop="projectId" label="项目编号" />
-                    <el-table-column prop="dockingManagementId" label="对接管理ID" />
                     <el-table-column prop="orderDate" label="订单日期" />
                     <el-table-column prop="invoiceNumber" label="账单编号" />
                     <el-table-column prop="amount" label="费用数额" />
@@ -193,7 +191,6 @@
             <div>
                 <el-table :data="unprocessedBlockPurchaseOrderList" style="width: 100%">
                     <el-table-column prop="orderId" label="订单编号" />
-                    <el-table-column prop="blockFileId" label="对接管理ID" />
                     <el-table-column prop="orderDate" label="订单日期" />
                     <el-table-column prop="invoiceNumber" label="账单编号" />
                     <el-table-column prop="amount" label="费用数额" />
@@ -218,7 +215,6 @@
             <div>
                 <el-table :data="processedBlockPurchaseOrderList" style="width: 100%">
                     <el-table-column prop="orderId" label="订单编号" />
-                    <el-table-column prop="blockFileId" label="对接管理ID" />
                     <el-table-column prop="orderDate" label="订单日期" />
                     <el-table-column prop="invoiceNumber" label="账单编号" />
                     <el-table-column prop="amount" label="费用数额" />
@@ -239,9 +235,9 @@
             <div>
                 <el-table :data="unprocessedSalaryList" style="width: 100%">
                     <el-table-column prop="payrollNumber" label="工资表编号" />
-                    <el-table-column prop="ratingRecordId" label="评定记录ID" />
-                    <el-table-column prop="ratingResult" label="评定结果" />
-                    <el-table-column prop="rateeId" label="被评定者ID" />
+                    <!--<el-table-column prop="ratingRecordId" label="评定记录ID" />-->
+                    <!--<el-table-column prop="ratingResult" label="评定结果" />-->
+                    <!--<el-table-column prop="rateeId" label="被评定者ID" />-->
                     <el-table-column prop="basePay" label="基本工资" />
                     <el-table-column label="操作">
                         <template #default="scope">
@@ -263,11 +259,10 @@
             <div>
                 <el-table :data="processedSalaryList" style="width: 100%">
                     <el-table-column prop="payrollNumber" label="工资表编号" />
-                    <el-table-column prop="ratingRecordId" label="评定记录ID" />
-                    <el-table-column prop="ratingResult" label="评定结果" />
-                    <el-table-column prop="rateeId" label="被评定者ID" />
+                    <!--<el-table-column prop="ratingRecordId" label="评定记录ID" />-->
+                    <!--<el-table-column prop="ratingResult" label="评定结果" />-->
+                    <!--<el-table-column prop="rateeId" label="被评定者ID" />-->
                     <el-table-column prop="basePay" label="基本工资" />
-                    <el-table-column prop="processedDate" label="处理完成日期" />
                 </el-table>
             </div>
         </div>
@@ -283,7 +278,6 @@
             <div>
                 <el-table :data="unprocessedProjectIncomeList" style="width: 100%">
                     <el-table-column prop="projectId" label="项目编号" />
-                    <el-table-column prop="dockingManagementId" label="对接管理ID" />
                     <el-table-column prop="orderDate" label="订单日期" />
                     <el-table-column prop="invoiceNumber" label="账单编号" />
                     <el-table-column prop="amount" label="费用数额" />
@@ -308,7 +302,6 @@
             <div>
                 <el-table :data="processedProjectIncomeList" style="width: 100%">
                     <el-table-column prop="projectId" label="项目编号" />
-                    <el-table-column prop="dockingManagementId" label="对接管理ID" />
                     <el-table-column prop="orderDate" label="订单日期" />
                     <el-table-column prop="invoiceNumber" label="账单编号" />
                     <el-table-column prop="amount" label="费用数额" />
@@ -657,7 +650,7 @@
             /**************** 成片购买订单 ****************/
             // 获取未处理成片购买订单数据
             refreshUnprocessedBlockPurchaseOrderData() {
-                axios.get('/api/blockPurchaseOrders/unprocessed', {
+                axios.get('/api/FinishedProduct/unprocessed', {
                     params: { orderStatus: 'approved' } // 添加请求参数
                 }).then(response => {
                     this.unprocessedBlockPurchaseOrderList = response.data.data;
@@ -667,7 +660,7 @@
             },
             // 获取已处理成片购买订单数据
             refreshProcessedBlockPurchaseOrderData() {
-                axios.get('/api/blockPurchaseOrders/processed', {
+                axios.get('/api/FinishedProduct/processed', {
                     params: { financialStatus: 'processed' } // 添加请求参数
                 }).then(response => {
                     this.processedBlockPurchaseOrderList = response.data.data;
@@ -678,7 +671,7 @@
             // 将未处理成片购买订单标记为已处理
             markBlockPurchaseOrderAsProcessed(row) {
                 const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
-                axios.post('/api/blockPurchaseOrders/markProcessed', {
+                axios.post('/api/FinishedProduct/markProcessed', {
                     orderId: row.orderId, // 根据当前行的数据传递 orderId
                     processedDate: currentDate // 添加 processedDate
                 }).then(response => {

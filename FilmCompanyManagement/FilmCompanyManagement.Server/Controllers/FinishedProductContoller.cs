@@ -18,20 +18,38 @@ namespace FilmCompanyManagement.Controllers
         [HttpGet("unprocessed")]
         public async Task<IActionResult> GetUnprocessed()
         {
-            var ret=await _context.FinishedProducts.Where(i=>i.OrderStatus=="unprocessed").ToListAsync();
+            var ret=await _context.FinishedProducts.Where(i=>i.OrderStatus=="unprocessed").Select(e => new
+            {
+                orderId = e.Id,
+                orderDate = e.Bill.Date,
+                invoiceNumber = e.Bill.Id,
+                amount = e.Bill.Amount,
+                expenseType = e.Bill.Type
+            }).ToListAsync();
             return Ok(ret);
         }
 
         [HttpGet("processed")]
         public async Task<IActionResult> GetProcessed()
         {
-            var ret = await _context.FinishedProducts.Where(i => i.OrderStatus == "processed").ToListAsync();
+            var ret = await _context.FinishedProducts.Where(i => i.OrderStatus == "processed").Select(e => new
+            {
+                orderId = e.Id,
+                orderDate = e.Bill.Date,
+                invoiceNumber = e.Bill.Id,
+                amount = e.Bill.Amount,
+                expenseType = e.Bill.Type,
+                processedDate = e.Date
+            }).ToListAsync();
             return Ok(ret);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> MarkAsProcessed([FromBody] string id)
+        [HttpPost("markprocessed")]
+        public async Task<IActionResult> MarkProcessed(ProcessingFinishedProduct proc )
         {
+            string id = proc.id;
+            string processedDate = proc.processedDate;
+
             FinishedProduct fnp = await _context.FinishedProducts.SingleAsync(i => i.Id == id);
             if (fnp == null) return BadRequest(new
             {
@@ -40,11 +58,18 @@ namespace FilmCompanyManagement.Controllers
             });
 
             fnp.OrderStatus = "processed";
+            fnp.Date = DateTime.Parse(processedDate);
             await _context.SaveChangesAsync();
             return Ok(new
             {
                 status = "success"
             });
         }
+    }
+
+    public class ProcessingFinishedProduct
+    {
+        public string id { get; set; }
+        public string processedDate { get; set; }
     }
 }
