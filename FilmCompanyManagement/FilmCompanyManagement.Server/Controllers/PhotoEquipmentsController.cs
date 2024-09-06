@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using FilmCompanyManagement.Server.EntityFrame;
 using FilmCompanyManagement.Server.EntityFrame.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FilmCompanyManagement.Controllers
 {
@@ -21,14 +22,22 @@ namespace FilmCompanyManagement.Controllers
         public async Task<ActionResult> InsertPhotoEquipment(string userName, string equipmentName, string equipmentModel, int price)
         {
             var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
-            await _context.AddAsync(new PhotoEquipment
+            var bill = new Bill
+            {
+                Id = "B" + DateTime.Now.ToString("yyyyMMddhhmmss"),
+                Amount = price,
+                Type = "InsertPhotoEquipment",
+                Date = DateTime.Now
+            };
+            await _context.Set<Bill>().AddAsync(bill);
+            await _context.Set<PhotoEquipment>().AddAsync(new PhotoEquipment
             {
                 Id = "PE" + DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Name = equipmentName,
                 Model = equipmentModel,
-                Price = price,
-                Status = 0,
-                Employee = user
+                Status = false,
+                Employee = user,
+                Bill = bill
             });
             await _context.SaveChangesAsync();
             

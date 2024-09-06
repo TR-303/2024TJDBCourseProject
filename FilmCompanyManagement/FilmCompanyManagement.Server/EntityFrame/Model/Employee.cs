@@ -5,7 +5,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class Employee//员工
     {
-        [Key, StringLength(12)]
+        [Key, StringLength(20)]
         public string Id { get; set; }//员工ID——PK
 
         [Required, StringLength(20)]

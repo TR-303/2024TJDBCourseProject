@@ -5,7 +5,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class Project//项目
     {
-        [Key, StringLength(12)]
+        [Key, StringLength(20)]
         public string Id { get; set; }//项目编号
 
         [Required]

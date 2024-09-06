@@ -6,7 +6,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class Drill
     {
-        [Key, StringLength(12)]
+        [Key, StringLength(20)]
         public string Id { get; set; } // 编号
 
         public string? TeacherId { get; set; } // 培训讲师Id

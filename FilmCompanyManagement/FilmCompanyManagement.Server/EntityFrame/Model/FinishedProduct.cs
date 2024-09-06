@@ -7,7 +7,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class FinishedProduct//³ÉÆ¬¹ºÂò¶©µ¥
     {
-        [Key, StringLength(12)]
+        [Key, StringLength(20)]
         public string Id { get; set; }//¶©µ¥±àºÅ
 
         [Required, StringLength(20)]

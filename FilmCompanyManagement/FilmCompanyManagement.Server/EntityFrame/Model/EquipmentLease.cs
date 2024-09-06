@@ -5,7 +5,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class EquipmentLease//Éè±¸×âÁÞ
     {
-        [Key, StringLength(12)]
+        [Key, StringLength(20)]
         public string Id { get; set; }//±àºÅ
 
         [Required]

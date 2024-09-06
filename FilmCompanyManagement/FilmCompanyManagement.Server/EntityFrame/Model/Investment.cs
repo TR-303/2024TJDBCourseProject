@@ -5,7 +5,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class Investment
     {
-        [Key, StringLength(8)]
+        [Key, StringLength(20)]
         public string Id { get; set; }
 
         // 对单关系Customers
