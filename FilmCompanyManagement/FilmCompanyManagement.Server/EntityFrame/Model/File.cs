@@ -11,7 +11,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Required, StringLength(50)]
         public string Name { get; set; }//文件名
 
-        [StringLength(20)]
+        [StringLength(100)]
         public string? FileType { get; set; }//文件类型
 
         [StringLength(100)]

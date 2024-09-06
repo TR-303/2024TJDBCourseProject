@@ -57,7 +57,7 @@
             </div>
 
             <div class="dataTable">
-                <el-table :data="businesses_list" style="width: 1000">
+                 <el-table :data="businesses_list" style="width: 1000">
                     <el-table-column prop="id" label="投资编号" width="auto"></el-table-column>
                     <el-table-column prop="billDate" label="投资日期" width="auto"></el-table-column>
                     <el-table-column prop="customerName" label="投资方" width="auto"></el-table-column>
@@ -131,7 +131,7 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                <el-table :data="businesses_list" style="width: 1000">
+                 <el-table :data="businesses_list" style="width: 1000">
                     <el-table-column prop="id" label="购买编号" width="auto"></el-table-column>
                     <el-table-column prop="billDate" label="购买日期" width="auto"></el-table-column>
                     <el-table-column prop="customerName" label="购买人" width="auto"></el-table-column>
@@ -251,7 +251,7 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                <el-table :data="businesses_list" style="width: 1000">
+                 <el-table :data="businesses_list" style="width: 1000">
                     <el-table-column prop="id" label="租赁编号" width="auto"></el-table-column>
                     <el-table-column prop="billDate" label="租赁日期" width="auto"></el-table-column>
                     <el-table-column prop="customerName" label="租赁人" width="auto"></el-table-column>
@@ -409,23 +409,22 @@
                         </el-select>
                     </el-form-item>
 
-
-                    <el-form-item label="参与人员">
-                        <el-table :data="form.employees">
-                            <el-table-column label="姓名">
-                                <template v-slot="scope">
-                                    <el-input v-model="scope.row" @input="updateStudent(scope.row, scope.$index)"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="操作">
-                                <template v-slot="scope">
-                                    <el-button type="danger" @click="removeStudent(scope.$index)">删除</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <el-button type="primary" @click="addStudent">添加人员</el-button>
+                    <el-form-item label="项目员工">
+                      <el-table :data="form.employees">
+                        <el-table-column label="姓名">
+                          <template v-slot="scope">
+                            <el-input v-model="scope.row" @input="updateEmployee(scope.row, scope.$index)"></el-input>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="操作">
+                          <template v-slot="scope">
+                            <el-button type="danger" @click="removeEmployee(scope.$index)">删除</el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                      <el-button type="primary" @click="addEmployee">添加人员</el-button>
                     </el-form-item>
-
+                                        
                     <el-form-item label="绩效评定时间">
                         <el-date-picker v-model="form.kpiDate" type="date" placeholder="选择日期"></el-date-picker>
                     </el-form-item>
@@ -469,7 +468,7 @@
                         </el-select>
                     </el-form-item>
                 </el-form>
-
+                
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -495,9 +494,9 @@
                     { id: '2', name: '设备租赁' },
                     { id: '3', name: '公司项目' },
                 ],
-                businesses_list: [],
-                template_form: { id: '0' },
-                form: { id: '' },
+                businesses_list:[],
+                template_form:  {id:'0', billId:'0', fileId:'0', employees:['']},
+                form:           { id: '' },
             }
         },
         computed: {
@@ -549,25 +548,26 @@
                 this.businessID = id;
                 this.getIncome();
             },
-
+            
             //表单用
-            addStudent() {
-                this.form.drillEmployees.push(''); // 添加一个新的空行
+            addEmployee() {
+              this.form.employees.push(''); // 添加一个新的空行
             },
-            updateStudent(value, index) {
-                this.form.drillEmployees[index] = value; // 更新学生信息
+            updateEmployee(value, index) {
+              this.form.employees[index] = value; // 更新学生信息
             },
-            removeStudent(index) {
-                this.form.drillEmployees.splice(index, 1); // 删除指定索引的学生
+            removeEmployee(index) {
+              this.form.employees.splice(index, 1); // 删除指定索引的学生
             },
+
             //获取信息
             getIncome() {
                 let path;
-                switch (this.businessID) {
-                    case '0': path = '/api/get-invest'; break;
-                    case '1': path = '/api/get-buy'; break;
-                    case '2': path = '/api/get-lease'; break;
-                    case '3': path = '/api/get-project'; break;
+                switch(this.businessID){
+                    case '0':path='/api/get-invest';break;
+                    case '1':path='/api/get-buy';break;
+                    case '2':path='/api/get-lease';break;
+                    case '3':path='/api/get-project';break;
                 }
                 axios.get(path)
                     .then(response => {
@@ -580,11 +580,11 @@
             //提交表单
             submitForm() {
                 let path;
-                switch (this.businessID) {
-                    case '0': path = '/api/submit-invest-form'; break;
-                    case '1': path = '/api/submit-buy-form'; break;
-                    case '2': path = '/api/submit-lease-form'; break;
-                    case '3': path = '/api/submit-project-form'; break;
+                switch(this.businessID){
+                    case '0':path='/api/submit-invest-form';break;
+                    case '1':path='/api/submit-buy-form';break;
+                    case '2':path='/api/submit-lease-form';break;
+                    case '3':path='/api/submit-project-form';break;
                 }
                 axios.post(path, this.form)
                     .then(response => {
@@ -605,8 +605,8 @@
                 //重新请求数据
                 getIncome();
             },
-            //新建
-            createNew() {
+                        //新建
+            createNew(){
                 this.form = this.template_form;
                 this.dialogVisible = true;
             },
@@ -636,21 +636,21 @@
                     });
             },
             // 查看详情
-            viewDetails(row) {
+            viewDetails(row) {      
                 let path;
-                switch (this.businessID) {
-                    case '0': path = '/api/details-invest'; break;
-                    case '1': path = '/api/details-buy'; break;
-                    case '2': path = '/api/details-lease'; break;
-                    case '3': path = '/api/details-project'; break;
+                switch(this.businessID){
+                    case '0':path='/api/details-invest';break;
+                    case '1':path='/api/details-buy';break;
+                    case '2':path='/api/details-lease';break;
+                    case '3':path='/api/details-project';break;
                 }
-                axios.post(path, { id: row.id }).then(response => {
+                axios.post(path, { id: row.id}).then(response => {
                     this.form = response.data[0];
                     // 显示表单
                     this.dialogVisible = true;
-                }).catch(error => {
-                    console.error('获取表单数据失败', error);
-                });
+                    }).catch(error => {
+                        console.error('获取表单数据失败', error);
+                    });
             },
         },
         mounted() {

@@ -2,44 +2,42 @@
 using Microsoft.EntityFrameworkCore;
 using FilmCompanyManagement.Server.EntityFrame;
 using FilmCompanyManagement.Server.EntityFrame.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FilmCompanyManagement.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PhotoEquipmentsController : ControllerBase
+    public class EquipmentRepairController : ControllerBase
     {
 
         private readonly FCMDbContext _context;
 
-        public PhotoEquipmentsController(FCMDbContext context)
+        public EquipmentRepairController(FCMDbContext context)
         {
             _context = context;
         }
 
         [HttpPost]
-        public async Task<ActionResult> InsertPhotoEquipment(string userName, string equipmentName, string equipmentModel, int price, string opinion)
+        public async Task<ActionResult> InsertEquipmentRepair(string userName, int equipmentID, int price)
         {
             var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
             var bill = new Bill
             {
                 Amount = price,
-                Type = "InsertPhotoEquipment",
+                Type = "EquipmentRepair",
                 AssignDate = DateTime.Now
             };
             await _context.Bills.AddAsync(bill);
-            await _context.PhotoEquipments.AddAsync(new PhotoEquipment
+            var photoEquipment = await _context.PhotoEquipments.Where(pe => pe.Id == equipmentID).SingleAsync();
+            var equipmentRepair = new EquipmentRepair
             {
-                Name = equipmentName,
-                Model = equipmentModel,
-                Status = 0,
-                Opinion = opinion,
-                Employee = user,
-                Bill = bill
-            });
+                PhotoEquipment = photoEquipment,
+                Bill = bill,
+                Employee = user
+            };
+            await _context.EquipmentRepairs.AddAsync(equipmentRepair);
             await _context.SaveChangesAsync();
-
+            
             return Ok();
         }
     }

@@ -56,7 +56,7 @@
         </div>
 
         <!--表单显示-->
-        <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+         <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
             <el-form :model="form" label-width="120px">
                 <el-form-item label="申请编号">
                     <el-input v-model="form.id" disabled></el-input>
@@ -96,7 +96,7 @@
                     <el-input v-model="form.billStatus" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="申请状态">
-                    <el-select v-model="form.status" placeholder="请选择状态">
+                    <el-select v-model="form.status" placeholder="请选择状态" >
                         <el-option label="待定" value="待定"></el-option>
                         <el-option label="通过" value="通过"></el-option>
                         <el-option label="拒绝" value="拒绝"></el-option>
@@ -125,7 +125,7 @@
                 name: '', // 获取登入姓名
                 requisition: [], //默认申请数据
                 dialogVisible: false,
-                form: { id: '', type: '', name: '', status: '', date: '', price: '', remark: '' },
+                form:    { id: ''},
             }
         },
         computed: {
