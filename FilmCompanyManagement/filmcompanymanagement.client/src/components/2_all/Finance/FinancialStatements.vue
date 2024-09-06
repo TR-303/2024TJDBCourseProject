@@ -226,24 +226,25 @@
         </div>
 
         <!-- 工资已处理数据显示部分 -->
-        <!--<div class="container" v-if="showProcessedSalary">
-        <div class="container_head">
-            <label class="container_head_left">已处理工资</label>
-            <button class="container_head_right" @click="refreshProcessedSalaryData">
-                刷新数据
-            </button>
+        <div class="container" v-if="showProcessedSalary">
+            <div class="container_head">
+                <label class="container_head_left">已处理工资</label>
+                <button class="container_head_right" @click="refreshProcessedSalaryData">
+                    刷新数据
+                </button>
+            </div>
+            <div>
+                <el-table :data="processedSalaryList" style="width: 100%">
+                    <el-table-column prop="employeeId" label="员工ID" />
+                    <el-table-column prop="employeeName" label="员工" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
+                    <el-table-column prop="salary" label="基本工资" />
+                    <el-table-column prop="processedDate" label="发放日期" />
+                </el-table>
+            </div>
         </div>
-        <div>
-            <el-table :data="processedSalaryList" style="width: 100%">
-                <el-table-column prop="employeeId" label="员工ID" />
-                <el-table-column prop="employeeName" label="员工" />
-                <el-table-column prop="orderId" label="账单编号" />
-                <el-table-column prop="orderDate" label="帐单日期" />
-                <el-table-column prop="salary" label="基本工资" />
-                <el-table-column prop="processedDate" label="发放日期" />
-            </el-table>
-        </div>
-    </div>-->
+
         <!-- 项目收入未处理数据显示部分 -->
         <div class="container" v-if="showUnprocessedProjectIncome">
             <div class="container_head">
