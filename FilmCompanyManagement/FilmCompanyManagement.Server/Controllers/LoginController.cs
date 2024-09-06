@@ -19,7 +19,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> IsUserUni(string userName)
         {
-            return Ok(await _context.Employees.Where(e => e.UserName == userName).ToListAsync() != null);
+            return Ok(await _context.Employees.Where(e => e.UserName == userName).FirstOrDefaultAsync() != null);
         }
 
         [HttpPost]

@@ -26,14 +26,14 @@ namespace FilmCompanyManagement.Controllers
             {
                 Amount = price,
                 Type = "InsertPhotoEquipment",
-                Date = DateTime.Now
+                AssignDate = DateTime.Now
             };
-            await _context.Set<Bill>().AddAsync(bill);
-            await _context.Set<PhotoEquipment>().AddAsync(new PhotoEquipment
+            await _context.Bills.AddAsync(bill);
+            await _context.PhotoEquipments.AddAsync(new PhotoEquipment
             {
                 Name = equipmentName,
                 Model = equipmentModel,
-                Status = false,
+                Status = 0,
                 Employee = user,
                 Bill = bill
             });

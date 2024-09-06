@@ -21,18 +21,14 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> GetFundingApplications(string userName)
         {//worker:报销申请
-            var fundingApplications = await _context.FundingApplications.Where(fa => fa.Employee.UserName == userName).ToListAsync();
-            return Ok(fundingApplications);
+            return Ok(await _context.FundingApplications.Where(fa => fa.Employee.UserName == userName).ToListAsync());
         }
 
         [HttpPost]
         public async Task<ActionResult> GetUnfinishedDrills(string userName)
         {//worker:培训通知
-            var user = await _context.Employees.
-                Where(d => d.UserName == userName).SingleAsync();
-            var unfinishedDrills = await _context.Drills.
-                Where(d => DateTime.Now < d.DateTime && d.Employees.Contains(user)).ToListAsync();
-            return Ok(unfinishedDrills);
+            var user = await _context.Employees.Where(d => d.UserName == userName).SingleAsync();
+            return Ok(await _context.Drills.Where(d => DateTime.Now < d.EndTime && d.Students.Contains(user)).ToListAsync());
         }
 
         [HttpPost]
@@ -55,27 +51,27 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> GetEquipmentLeases(string userName)
         {//finance:设备租赁
-            return Ok(await _context.EquipmentLeases.Where(el => el.OrderStatus == "未完成").ToListAsync());
+            return Ok(await _context.EquipmentLeases.Where(el => el.Status == "未完成").ToListAsync());
         }
 
 
         [HttpPost]
         public async Task<ActionResult> GetFinishedProducts(string userName)
         {//finance:成片购买
-            return Ok(await _context.FinishedProducts.Where(fp => fp.OrderStatus == "未完成").ToListAsync());
+            return Ok(await _context.FinishedProducts.Where(fp => fp.Status == 0).ToListAsync());
         }
 
 
         [HttpPost]
         public async Task<ActionResult> GetSalaryBills(string userName)
         {//finance:工资数据
-            return Ok(await _context.Employees.Where(e => e.SalaryStatus == "未完成").ToListAsync());
+            return Ok(await _context.Employees.Where(e => e.SalaryStatus == false).ToListAsync());
         }
 
         [HttpPost]
         public async Task<ActionResult> GetInvestments(string userName)
         {//finance:投资数据
-            return Ok(await _context.Investments.Where(i => i.BillStatus == "未完成").ToListAsync());
+            return Ok(await _context.Investments.Where(i => i.Bill.Status == 0).ToListAsync());
         }
 
         //考勤板块
@@ -89,26 +85,17 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> InsertAttendenceRecord(string userName, int state)
         {
-            var date = DateTime.Now;
-          
-            var attendance = await _context.Attendances.FirstOrDefaultAsync(a => a.Employee.UserName == userName && a.Date == date);
-            if (attendance == null)
+            var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
+            if (await _context.Attendances.FirstOrDefaultAsync(a => a.Employee.UserName == userName && a.Date == DateTime.Now) == null)
             {
-                attendance = new Attendance
+                await _context.Attendances.AddAsync(new Attendance
                 {
-                    Id = "A" + date.ToString("yyyyMMdd") + userName,
-                    Date = date,
-                    IsLate = false,
-                    IsEarlyLeave = false,
-                    IsOnLeave = false,
-                    IsOvertime = false
-                };
-                await _context.Attendances.AddAsync(attendance);
+                    Date = DateTime.Now,
+                    Employee = user,
+                    CheckInTime = state == 1? DateTime.Now : null,
+                    CheckOutTime = state == 0? DateTime.Now : null
+                });
             }
-            if (state == 1)//上班
-                attendance.CheckInTime = date;
-            else if (state == 0)//下班
-                attendance.CheckOutTime = date;
             await _context.SaveChangesAsync();
             return Ok();
         }

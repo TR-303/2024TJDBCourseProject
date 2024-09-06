@@ -18,14 +18,15 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetReceiver(string fileID)
+        public async Task<ActionResult> GetReceiver(int fileID)
         {
             var file = await _context.Files.Where(f => f.Id == fileID).SingleAsync();
+            
             var receivers = new List<Customer>();
-            foreach (var project in file.Projects)
-                receivers.Add(project.Customer);
-            foreach (var finishedProduct in file.FinishedProducts)
-                receivers.Add(finishedProduct.Customer);
+            if (file.Projects != null)
+                receivers.Add(file.Projects.Customer);
+            if (file.FinishedProducts != null)
+                receivers.Add(file.FinishedProducts.Customer);
             return Ok(receivers);
         }
 
@@ -40,7 +41,7 @@ namespace FilmCompanyManagement.Controllers
                 Path = filePath,
                 Size = fileSize,
                 UploadDate = DateTime.Now,
-                Status = "Pending approval",
+                Status = "待审批",
             });
             await _context.SaveChangesAsync();
             return Ok();

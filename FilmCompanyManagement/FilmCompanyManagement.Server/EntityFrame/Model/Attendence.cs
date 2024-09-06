@@ -12,8 +12,11 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Column(TypeName = "Date")] // 将此属性映射为数据库中的date类型
         public DateTime? Date { get; set; } // 记录日期
 
-        public TimeSpan? CheckInTime { get; set; } // 上班打卡时间（可空）
-        public TimeSpan? CheckOutTime { get; set; } // 下班打卡时间（可空）
+        [Column(TypeName = "Date")]
+        public DateTime? CheckInTime { get; set; } // 上班打卡时间（可空）
+
+        [Column(TypeName = "Date")]
+        public DateTime? CheckOutTime { get; set; } // 下班打卡时间（可空）
 
         [Column(TypeName = "NUMBER(1)")]
         public int IsLate { get; set; } = 0; // 是否迟到

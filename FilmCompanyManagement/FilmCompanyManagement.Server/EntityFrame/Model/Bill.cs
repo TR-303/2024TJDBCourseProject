@@ -15,7 +15,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [StringLength(20)]
         public string? Type { get; set; }
 
-        [Required]
+        [Required, Column(TypeName = "NUMBER(1)")]
         public int Status { get; set; } = 0;
 
         [Required, Column(TypeName = "Date")]

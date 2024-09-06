@@ -3,6 +3,7 @@ using System;
 using FilmCompanyManagement.Server.EntityFrame;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace FilmCompanyManagement.Server.Migrations
 {
     [DbContext(typeof(FCMDbContext))]
-    partial class FCMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240906115428_update1")]
+    partial class update1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,10 +90,10 @@ namespace FilmCompanyManagement.Server.Migrations
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CheckInTime")
-                        .HasColumnType("Date");
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<DateTime?>("CheckOutTime")
-                        .HasColumnType("Date");
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<DateTime?>("Date")
                         .HasColumnType("Date");

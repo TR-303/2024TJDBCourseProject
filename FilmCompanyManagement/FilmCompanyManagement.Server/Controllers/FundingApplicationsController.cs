@@ -18,16 +18,20 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> InsertFundingApplication(string userName, string date, string billStatus, string accountStatus)
+        public async Task<ActionResult> InsertFundingApplication(string userName, int amount, string opinion)
         {
             var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
+            var bill = new Bill
+            {
+                AssignDate = DateTime.Now,
+                Amount = amount
+            };
+            await _context.Bills.AddAsync(bill);
             var fundingApplication = new FundingApplication
             {
-                Id = "FA" + DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Employee = user,
-                Date = Convert.ToDateTime(date),
-                BillStatus = billStatus,
-                AccountStatus = accountStatus
+                Bill = bill,
+                Opinion = opinion
             };
             await _context.FundingApplications.AddAsync(fundingApplication);
             await _context.SaveChangesAsync();
