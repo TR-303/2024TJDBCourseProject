@@ -108,7 +108,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/data/userdata', { id: userId })
+                axios.post('/api/data/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
                     })
@@ -117,9 +117,10 @@
                     });
             },
             getProjects() {
-                axios.get('/api/projects')
+                const userID = this.$route.query.id;
+                axios.post('/api/projects', { userID })
                     .then(response => {
-                        this.projects = response.data.projects || [];
+                        this.projects = response.data.projects;
                     })
                     .catch(error => {
                         console.error('Error fetching projects:', error);

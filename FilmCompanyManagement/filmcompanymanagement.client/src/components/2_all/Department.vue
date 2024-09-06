@@ -42,9 +42,8 @@
             <li v-if="showBossMenu" role="menuitem" id="menu_7" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 业务管理
             </li>
-            <li role="menuitem" id="menu_8" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
+            <li v-if="showFinanceMenu" role="menuitem" id="menu_8" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="jump($event)">
                 查看财政表
-
             </li>
         </ul>
     </div>
@@ -89,6 +88,9 @@
             showBossMenu() {
                 return this.$route.query.id === '1';
             },
+            showFinanceMenu() {
+                return this.$route.query.id === '2';
+            },
             showWorkerMenu() {
                 return this.$route.query.id === '3';
             }
@@ -96,6 +98,7 @@
         watch: {
             '$route.query.id'(newId) {
                 this.showBossMenu = newId === '1';
+                this.showFinanceMenu = newId === '2';
                 this.showWorkerMenu = newId === '3';
             }
         },

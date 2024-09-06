@@ -323,6 +323,7 @@
         data() {
             return {
                 name: '',
+                id:'2',
                 unprocessedInvestmentList: [], // 未处理投资数据列表
                 processedInvestmentList: [], // 已处理投资数据列表
                 
@@ -755,9 +756,17 @@
                     console.error('请求失败:', error);
                 });
             },
-
+            //获取数据
+            getdata() {
+                axios.post('/api/data/userdata', { id: this.id }).then(result => {
+                    this.name = result.data.name;// 将服务器返回的 name 更新到组件的 name 属性
+                }).catch(error => {
+                    console.error('Error fetching mock data:', error);
+                });
+            },
         },
         mounted() {
+            this.getdata();
             // 可以在页面加载时预加载投资数据，或留给用户手动触发
             // this.getInvestmentData();
         }

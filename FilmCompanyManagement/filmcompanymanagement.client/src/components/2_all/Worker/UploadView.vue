@@ -119,23 +119,16 @@
             const route = useRoute();
             const router = useRouter();
 
+            const userID = this.$route.query.id;
+
             onMounted(async () => {
                 try {
-                    // 获取当前 workerID
-                    const workerResponse = await axios.get('/api/workers');
-                    if (workerResponse.data.projects && workerResponse.data.projects.length > 0) {
-                        currentWorkerID.value = workerResponse.data.projects[0].workerID;
-                        console.log("Current Worker ID:", currentWorkerID.value); // 打印当前 workerID
-                    } else {
-                        alert("未能获取当前 workerID");
-                        return;
-                    }
 
                     // 获取所有文件
-                    const fileResponse = await axios.get('/api/files');
+                    const fileResponse = await axios.get('/api/worker/files');
                     if (fileResponse.data.files) {
                         // 根据当前 workerID 过滤文件
-                        fileList.value = fileResponse.data.files.filter(file => file.workerID === currentWorkerID.value);
+                        fileList.value = fileResponse.data.files.filter(file => file.workerID === userID);
                         console.log("Filtered File List:", fileList.value); // 打印过滤后的文件列表
                         if (fileList.value.length === 0) {
                             alert("没有找到相关的文件");
@@ -174,12 +167,20 @@
                 }
 
                 try {
-                    const response = await axios.post('/api/upload', form.value);
-                    if (response.status === 200) {
-                        alert("提交成功");
-                    } else {
-                        alert("提交失败");
-                    }
+                    console.log('begin 1');
+                    axios.post('/api/worker/upload', {
+                        id: userID,
+                        name: form.value.fileName,
+                        type: form.value.fileType,
+                        size: form.value.fileSize,
+                        description: form.value.fileDescription
+                    }).then(function (res) {
+                        if (1) {
+                            alert("提交成功")
+                        } else {
+                            alert("提交失败")
+                        }
+                    })
                 } catch (error) {
                     console.error(error);
                     alert("提交失败");

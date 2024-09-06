@@ -29,6 +29,8 @@
                 amount: 0
             })
 
+            const userID = this.$route.query.id;
+
             const inputAmount = ref('')
 
             const validateAmount = (event) => {
@@ -59,7 +61,12 @@
 					}
 
 					console.log('begin 1');
-					axios.post('/api/repair').then(function (res) {
+                    axios.post('/api/worker/repair', {
+                        id: userID,
+                        equipmentID: form.value.equipment,
+                        date: form.value.repairDate,
+                        amount: form.value.amount
+                    }).then(function (res) {
 
 						if (1) {
 							alert("提交成功")

@@ -24,7 +24,6 @@ namespace FilmCompanyManagement.Controllers
             var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
             var bill = new Bill
             {
-                Id = "B" + DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Amount = price,
                 Type = "InsertPhotoEquipment",
                 Date = DateTime.Now
@@ -32,7 +31,6 @@ namespace FilmCompanyManagement.Controllers
             await _context.Set<Bill>().AddAsync(bill);
             await _context.Set<PhotoEquipment>().AddAsync(new PhotoEquipment
             {
-                Id = "PE" + DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Name = equipmentName,
                 Model = equipmentModel,
                 Status = false,
