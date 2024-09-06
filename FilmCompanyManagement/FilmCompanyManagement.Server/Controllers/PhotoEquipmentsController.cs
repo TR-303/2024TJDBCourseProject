@@ -21,15 +21,15 @@ namespace FilmCompanyManagement.Controllers
         public async Task<ActionResult> InsertPhotoEquipment(string userName, string equipmentName, string equipmentModel, int price)
         {
             var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
-            var photoEquipment = new PhotoEquipment
+            await _context.AddAsync(new PhotoEquipment
             {
+                Id = "PE" + DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Name = equipmentName,
                 Model = equipmentModel,
                 Price = price,
                 Status = 0,
                 Employee = user
-            };
-            await _context.AddAsync(photoEquipment);
+            });
             await _context.SaveChangesAsync();
             
             return Ok();

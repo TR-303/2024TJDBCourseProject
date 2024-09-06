@@ -23,6 +23,7 @@ namespace FilmCompanyManagement.Controllers
             var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
             var fundingApplication = new FundingApplication
             {
+                Id = "FA" + DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Employee = user,
                 Date = Convert.ToDateTime(date),
                 BillStatus = billStatus,
