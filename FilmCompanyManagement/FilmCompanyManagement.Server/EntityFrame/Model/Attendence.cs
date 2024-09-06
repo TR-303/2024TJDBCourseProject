@@ -6,7 +6,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     [Table("Attendance")] // 将此类映射到数据库中的"Attendance"表
     public class Attendance
     {
-        [Key, StringLength(12)]
+        [Key, StringLength(20)]
         public string Id { get; set; }
 
         [Required]

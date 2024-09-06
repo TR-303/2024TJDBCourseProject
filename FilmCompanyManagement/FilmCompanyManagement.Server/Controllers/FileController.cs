@@ -32,8 +32,9 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> InsertFile(string filename, string fileType, string contentType, string filePath, int fileSize)
         {
-            var file = new Server.EntityFrame.Models.File
+            await _context.AddAsync(new Server.EntityFrame.Models.File
             {
+                Id = "F" + DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Name = filename,
                 FileType = fileType,
                 ContentType = contentType,
@@ -41,8 +42,7 @@ namespace FilmCompanyManagement.Controllers
                 Size = fileSize,
                 UploadDate = DateTime.Now,
                 Status = "Pending approval",
-            };
-            await _context.AddAsync(file);
+            });
             await _context.SaveChangesAsync();
             return Ok();
         }

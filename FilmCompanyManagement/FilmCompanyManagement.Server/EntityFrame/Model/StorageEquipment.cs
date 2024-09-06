@@ -5,7 +5,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
     // ¥Ê¥¢…Ë±∏
     public class StorageEquipment
     {
-        [Key, StringLength(8)]
+        [Key, StringLength(20)]
         public string Id { get; set; }
 
         [Required, StringLength(20)]

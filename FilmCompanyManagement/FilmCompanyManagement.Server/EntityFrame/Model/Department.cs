@@ -5,7 +5,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class Department
     {
-        [Key, StringLength(8)]
+        [Key, StringLength(20)]
         public string Id { get; set; } // 部门编号
 
         [Required, StringLength(30)]
