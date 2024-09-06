@@ -38,21 +38,70 @@
         <div id="message_box" class="window1">
             <p style="font-size: 30px;text-align: center;">通知栏</p>  
             <ul v-infinite-scroll class="infinite-list" style="overflow: auto">
+                <!--boss-->
+                <p style="font-size: 15px;text-align: center;">报销账单申请</p>
                 <el-table :data="userdataList" style="width: 100%" height="150px">
                     <el-table-column prop="department" label="部门" />
                     <el-table-column prop='id' label='员工id' />
                     <el-table-column prop='phone' label='员工电话' />
                 </el-table>
+                <p style="font-size: 15px;text-align: center;">设备购买申请</p>
                 <el-table :data="userdataList" style="width: 100%" height="150px">
                     <el-table-column prop="department" label="部门" />
                     <el-table-column prop='id' label='员工id' />
                     <el-table-column prop='phone' label='员工电话' />
                 </el-table>
+                <p style="font-size: 15px;text-align: center;">设备维修申请</p>
                 <el-table :data="userdataList" style="width: 100%" height="150px">
                     <el-table-column prop="department" label="部门" />
                     <el-table-column prop='id' label='员工id' />
                     <el-table-column prop='phone' label='员工电话' />
                 </el-table>
+                <!--worker-->
+                <p style="font-size: 15px;text-align: center;">培训通知</p>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <p style="font-size: 15px;text-align: center;">账单通知</p>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <p style="font-size: 15px;text-align: center;">设备购买通知</p>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <p style="font-size: 15px;text-align: center;">设备维修通知</p>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <!--finance-->
+                <p style="font-size: 15px;text-align: center;">设备租赁通知</p>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <p style="font-size: 15px;text-align: center;">成片购买通知</p>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <p style="font-size: 15px;text-align: center;">工资发放通知</p>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <p style="font-size: 15px;text-align: center;">投资注入通知</p>
                 <el-table :data="userdataList" style="width: 100%" height="150px">
                     <el-table-column prop="department" label="部门" />
                     <el-table-column prop='id' label='员工id' />
