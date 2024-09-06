@@ -35,8 +35,10 @@ namespace FilmCompanyManagement.Controllers
         {
             var ret = await _context.Investments.Where(i => i.BillStatus == "processed").Select(i => new
             {
-                orderId = i.Bill.Id,
+                investmentId = i.Id,
+                customerId = i.Customer.Id,
                 orderDate = i.Date,
+                invoiceNumber = i.Bill.Id,
                 amount = i.Bill.Amount,
                 expenseType = i.Bill.Type,
                 processedDate = i.Date
@@ -50,7 +52,7 @@ namespace FilmCompanyManagement.Controllers
             string investmentId = proc.investmentId;
             string processedDate = proc.processedDate;
 
-            Investment inv = await _context.Investments.SingleAsync(i => i.Id == investmentId);
+            Investment inv = await _context.Investments.Include(i => i.Bill).ThenInclude(b => b.Account).SingleAsync(i => i.Id == investmentId);
             if (inv == null) return BadRequest(new
             {
                 status = "failed",

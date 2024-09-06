@@ -5,23 +5,23 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class Recruiter
     {
-        [Key, StringLength(20)]
-        public string Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required, StringLength(20)]
         public string Name { get; set; }
 
-        [Required, StringLength(2)]
-        public string Gender { get; set; } // 性别
-
-        [Required]
-        public DateTime DateOfBirth { get; set; } // 生日
+        [StringLength(2)]
+        public string? Gender { get; set; } // 性别
 
         [StringLength(500)] // 将此属性映射为数据库中的nvarchar(500)类型
         public string? Resume { get; set; } //简历
 
         [Required]
-        public Position Position { get; set; }
+        public string Position { get; set; }
+
+        [Required, Column(TypeName = "decimal(12, 2)")]
+        public int Salary;
 
         [StringLength(14)]
         public string? Phone { get; set; } // 电话
@@ -29,13 +29,12 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [StringLength(50)]
         public string? Email { get; set; } // 邮箱
 
-        [Required]
-        public Employee Interviewer { get; set; }
+        public Employee? Interviewer { get; set; }
 
-        [StringLength(20)]
-        public string? InterviewStage { get; set; }//面试阶段：如一面二面，一笔试等
+        [Required]
+        public int InterviewStage { get; set; } = 0;//面试阶段：如一面二面，一笔试等
 
         [Required, Column(TypeName = "NUMBER(1)")]
-        public int State { get; set; }//0表示未录用，1表示录用，当1时触发自动信息录入员工表
+        public bool State { get; set; }//0表示未录用，1表示录用，当1时触发自动信息录入员工表
     }
 }

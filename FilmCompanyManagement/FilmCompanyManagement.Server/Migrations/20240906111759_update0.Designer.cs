@@ -12,8 +12,8 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace FilmCompanyManagement.Server.Migrations
 {
     [DbContext(typeof(FCMDbContext))]
-    [Migration("20240905143947_update4")]
-    partial class update4
+    [Migration("20240906111759_update0")]
+    partial class update0
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,26 +27,26 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("DrillEmployee", b =>
                 {
-                    b.Property<string>("DrillsId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("DrillsId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("EmployeesId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.HasKey("DrillsId", "EmployeesId");
+                    b.HasKey("DrillsId", "StudentsId");
 
-                    b.HasIndex("EmployeesId");
+                    b.HasIndex("StudentsId");
 
                     b.ToTable("DrillEmployee");
                 });
 
             modelBuilder.Entity("EmployeeProject", b =>
                 {
-                    b.Property<string>("EmployeesId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("ProjectsId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("EmployeesId", "ProjectsId");
 
@@ -55,56 +55,15 @@ namespace FilmCompanyManagement.Server.Migrations
                     b.ToTable("EmployeeProject");
                 });
 
-            modelBuilder.Entity("FileProject", b =>
-                {
-                    b.Property<string>("FilesId")
-                        .HasColumnType("NVARCHAR2(12)");
-
-                    b.Property<string>("ProjectsId")
-                        .HasColumnType("NVARCHAR2(12)");
-
-                    b.HasKey("FilesId", "ProjectsId");
-
-                    b.HasIndex("ProjectsId");
-
-                    b.ToTable("FileProject");
-                });
-
-            modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Account", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.Property<DateTime?>("OpenDate")
-                        .HasColumnType("Date");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Accounts");
-                });
-
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.AdvicerIntern", b =>
                 {
-                    b.Property<string>("AdvicerId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("AdvicerId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("InternId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("InternId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<DateTime>("InternshipEndDate")
+                    b.Property<DateTime?>("InternshipEndDate")
                         .HasColumnType("Date");
 
                     b.Property<DateTime>("InternshipStartDate")
@@ -124,9 +83,11 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Attendance", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<TimeSpan?>("CheckInTime")
                         .HasColumnType("INTERVAL DAY(8) TO SECOND(7)");
@@ -134,11 +95,11 @@ namespace FilmCompanyManagement.Server.Migrations
                     b.Property<TimeSpan?>("CheckOutTime")
                         .HasColumnType("INTERVAL DAY(8) TO SECOND(7)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("Date");
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("IsEarlyLeave")
                         .HasColumnType("NUMBER(1)");
@@ -147,9 +108,6 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasColumnType("NUMBER(1)");
 
                     b.Property<int>("IsOnLeave")
-                        .HasColumnType("NUMBER(1)");
-
-                    b.Property<int>("IsOvertime")
                         .HasColumnType("NUMBER(1)");
 
                     b.Property<string>("Remarks")
@@ -165,39 +123,42 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Bill", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("AccountId")
-                        .HasColumnType("NVARCHAR2(20)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(12, 2)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("AssignDate")
                         .HasColumnType("Date");
 
+                    b.Property<DateTime?>("ProcessedDate")
+                        .HasColumnType("Date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
+
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
 
                     b.ToTable("Bills");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Customer", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BusinessType")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
@@ -210,19 +171,12 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasColumnType("NVARCHAR2(50)");
 
                     b.Property<string>("CustomerName")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
                     b.Property<string>("CustomerPhone")
-                        .IsRequired()
                         .HasMaxLength(14)
                         .HasColumnType("NVARCHAR2(14)");
-
-                    b.Property<string>("CustomerType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
 
                     b.HasKey("Id");
 
@@ -231,53 +185,42 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Department", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(8)
-                        .HasColumnType("NVARCHAR2(8)");
+                    b.Property<string>("Name")
+                        .HasMaxLength(30)
+                        .HasColumnType("NVARCHAR2(30)");
 
                     b.Property<string>("ContactNumber")
                         .HasMaxLength(14)
                         .HasColumnType("NVARCHAR2(14)");
 
-                    b.Property<string>("LeaderId")
-                        .HasColumnType("NVARCHAR2(12)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("NVARCHAR2(30)");
-
-                    b.Property<string>("ParentDeptId")
-                        .HasColumnType("NVARCHAR2(8)");
-
-                    b.Property<int>("TotalEmployees")
+                    b.Property<int?>("LeaderId")
                         .HasColumnType("NUMBER(10)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Name");
 
                     b.HasIndex("LeaderId")
                         .IsUnique()
                         .HasFilter("\"LeaderId\" IS NOT NULL");
-
-                    b.HasIndex("ParentDeptId");
 
                     b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Drill", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<DateTime>("DateTime")
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("TIMESTAMP(7)");
 
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("TIMESTAMP(7)");
 
-                    b.Property<TimeSpan>("TimeSpan")
-                        .HasColumnType("INTERVAL DAY(8) TO SECOND(7)");
+                    b.Property<int?>("TeacherId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
@@ -288,26 +231,26 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Employee", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("Date");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DepartmentId")
+                    b.Property<string>("DepartmentName")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(8)");
+                        .HasColumnType("NVARCHAR2(30)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("NVARCHAR2(50)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("NVARCHAR2(2)");
+
+                    b.Property<int>("KPI")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -320,25 +263,21 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasColumnType("NVARCHAR2(30)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(14)
                         .HasColumnType("NVARCHAR2(14)");
 
                     b.Property<string>("Position")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(12, 2)");
 
-                    b.Property<string>("SalaryBillId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int?>("SalaryBillId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("SalaryStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<bool>("SalaryStatus")
+                        .HasColumnType("NUMBER(1)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -347,7 +286,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DepartmentName");
 
                     b.HasIndex("SalaryBillId");
 
@@ -356,32 +295,22 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.EquipmentLease", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int>("BillId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("Date");
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("OrderStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
+                    b.Property<string>("Status")
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
@@ -398,25 +327,37 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.EquipmentRepair", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BillId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)");
 
-                    b.Property<string>("PhotoEquipmentId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(8)");
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Opinion")
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR2(100)");
+
+                    b.Property<int>("PhotoEquipmentId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BillId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("PhotoEquipmentId");
 
@@ -425,16 +366,17 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.File", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ContentType")
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
                     b.Property<string>("FileType")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
@@ -444,64 +386,50 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasColumnType("NVARCHAR2(50)");
 
                     b.Property<string>("Path")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("Size")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
-                    b.Property<string>("StorageEquipmentId")
-                        .HasColumnType("NVARCHAR2(8)");
-
-                    b.Property<DateTime>("UploadDate")
+                    b.Property<DateTime?>("UploadDate")
                         .HasColumnType("Date");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StorageEquipmentId");
+                    b.HasIndex("ReceiverId");
 
                     b.ToTable("Files");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.FinishedProduct", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int>("BillId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("Date");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("FileId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("FileId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("OrderStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
@@ -511,36 +439,33 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("FileId");
+                    b.HasIndex("FileId")
+                        .IsUnique();
 
                     b.ToTable("FinishedProducts");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.FundingApplication", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("AccountStatus")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BillId")
+                    b.Property<int>("BillId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Opinion")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR2(100)");
 
-                    b.Property<string>("BillStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("Date");
-
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
@@ -553,28 +478,17 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Investment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(8)
-                        .HasColumnType("NVARCHAR2(8)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("AccountStatus")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("BillId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("BillStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("Date");
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
@@ -587,20 +501,20 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.KPI", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("Date");
 
-                    b.Property<string>("JudgerId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("JudgerId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("ProjectId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("Result")
                         .HasColumnType("NUMBER(1)");
@@ -616,16 +530,21 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.PhotoEquipment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(8)
-                        .HasColumnType("NVARCHAR2(8)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("BillId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("NVARCHAR2(500)");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Model")
                         .HasMaxLength(20)
@@ -636,11 +555,13 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("NVARCHAR2(20)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("NUMBER(10)");
+                    b.Property<string>("Opinion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR2(100)");
 
                     b.Property<int>("Status")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
@@ -651,55 +572,37 @@ namespace FilmCompanyManagement.Server.Migrations
                     b.ToTable("PhotoEquipments");
                 });
 
-            modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Position", b =>
-                {
-                    b.Property<string>("PositionTitle")
-                        .HasColumnType("NVARCHAR2(450)");
-
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("decimal(12, 2)");
-
-                    b.HasKey("PositionTitle");
-
-                    b.ToTable("Position");
-                });
-
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Project", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int>("BillId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("Date");
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("ManagerId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("FileId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("OrderStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int?>("ManagerId")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BillId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("FileId")
+                        .IsUnique();
 
                     b.HasIndex("ManagerId");
 
@@ -708,29 +611,25 @@ namespace FilmCompanyManagement.Server.Migrations
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Recruiter", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(12)
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("TIMESTAMP(7)");
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
                         .HasColumnType("NVARCHAR2(50)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("NVARCHAR2(2)");
 
-                    b.Property<string>("InterviewStage")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
+                    b.Property<int>("InterviewStage")
+                        .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("InterviewerId")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(12)");
+                    b.Property<int?>("InterviewerId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -741,47 +640,22 @@ namespace FilmCompanyManagement.Server.Migrations
                         .HasMaxLength(14)
                         .HasColumnType("NVARCHAR2(14)");
 
-                    b.Property<string>("PositionTitle")
+                    b.Property<string>("Position")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Resume")
                         .HasMaxLength(500)
                         .HasColumnType("NVARCHAR2(500)");
 
-                    b.Property<int>("State")
+                    b.Property<bool>("State")
                         .HasColumnType("NUMBER(1)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InterviewerId");
 
-                    b.HasIndex("PositionTitle");
-
                     b.ToTable("Recruiters");
-                });
-
-            modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.StorageEquipment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(8)
-                        .HasColumnType("NVARCHAR2(8)");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.Property<string>("Model")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StorageEquipments");
                 });
 
             modelBuilder.Entity("DrillEmployee", b =>
@@ -794,7 +668,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", null)
                         .WithMany()
-                        .HasForeignKey("EmployeesId")
+                        .HasForeignKey("StudentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -804,21 +678,6 @@ namespace FilmCompanyManagement.Server.Migrations
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("EmployeesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FileProject", b =>
-                {
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.File", null)
-                        .WithMany()
-                        .HasForeignKey("FilesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -852,18 +711,11 @@ namespace FilmCompanyManagement.Server.Migrations
                 {
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Employee")
                         .WithMany("Attendances")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Bill", b =>
-                {
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Account", "Account")
-                        .WithMany("Bills")
-                        .HasForeignKey("AccountId");
-
-                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Department", b =>
@@ -872,19 +724,13 @@ namespace FilmCompanyManagement.Server.Migrations
                         .WithOne()
                         .HasForeignKey("FilmCompanyManagement.Server.EntityFrame.Models.Department", "LeaderId");
 
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Department", "ParentDepartment")
-                        .WithMany("SubDepartments")
-                        .HasForeignKey("ParentDeptId");
-
                     b.Navigation("Leader");
-
-                    b.Navigation("ParentDepartment");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Drill", b =>
                 {
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Teacher")
-                        .WithMany()
+                        .WithMany("Teachs")
                         .HasForeignKey("TeacherId");
 
                     b.Navigation("Teacher");
@@ -894,7 +740,7 @@ namespace FilmCompanyManagement.Server.Migrations
                 {
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("DepartmentName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -917,12 +763,10 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Customer", "Customer")
                         .WithMany("EquipmentLeases")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EquipmentLeases")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -942,6 +786,12 @@ namespace FilmCompanyManagement.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Employee")
+                        .WithMany("EquipmentRepairs")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.PhotoEquipment", "PhotoEquipment")
                         .WithMany()
                         .HasForeignKey("PhotoEquipmentId")
@@ -950,14 +800,20 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.Navigation("Bill");
 
+                    b.Navigation("Employee");
+
                     b.Navigation("PhotoEquipment");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.File", b =>
                 {
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.StorageEquipment", null)
-                        .WithMany("Files")
-                        .HasForeignKey("StorageEquipmentId");
+                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.FinishedProduct", b =>
@@ -975,8 +831,8 @@ namespace FilmCompanyManagement.Server.Migrations
                         .IsRequired();
 
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.File", "File")
-                        .WithMany("FinishedProducts")
-                        .HasForeignKey("FileId")
+                        .WithOne("FinishedProducts")
+                        .HasForeignKey("FilmCompanyManagement.Server.EntityFrame.Models.FinishedProduct", "FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -996,7 +852,7 @@ namespace FilmCompanyManagement.Server.Migrations
                         .IsRequired();
 
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("FundingApplications")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1026,7 +882,7 @@ namespace FilmCompanyManagement.Server.Migrations
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.KPI", b =>
                 {
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Judger")
-                        .WithMany("KPIs")
+                        .WithMany()
                         .HasForeignKey("JudgerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1069,19 +925,23 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Customer", "Customer")
                         .WithMany("Projects")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.File", "File")
+                        .WithOne("Projects")
+                        .HasForeignKey("FilmCompanyManagement.Server.EntityFrame.Models.Project", "FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Manager")
                         .WithMany("ManageProjects")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ManagerId");
 
                     b.Navigation("Bill");
 
                     b.Navigation("Customer");
+
+                    b.Navigation("File");
 
                     b.Navigation("Manager");
                 });
@@ -1090,24 +950,9 @@ namespace FilmCompanyManagement.Server.Migrations
                 {
                     b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Employee", "Interviewer")
                         .WithMany()
-                        .HasForeignKey("InterviewerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FilmCompanyManagement.Server.EntityFrame.Models.Position", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionTitle")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InterviewerId");
 
                     b.Navigation("Interviewer");
-
-                    b.Navigation("Position");
-                });
-
-            modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Account", b =>
-                {
-                    b.Navigation("Bills");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Customer", b =>
@@ -1122,8 +967,6 @@ namespace FilmCompanyManagement.Server.Migrations
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Department", b =>
                 {
                     b.Navigation("Employees");
-
-                    b.Navigation("SubDepartments");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Employee", b =>
@@ -1132,21 +975,24 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.Navigation("Attendances");
 
+                    b.Navigation("EquipmentLeases");
+
+                    b.Navigation("EquipmentRepairs");
+
+                    b.Navigation("FundingApplications");
+
                     b.Navigation("Interns");
 
-                    b.Navigation("KPIs");
-
                     b.Navigation("ManageProjects");
+
+                    b.Navigation("Teachs");
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.File", b =>
                 {
                     b.Navigation("FinishedProducts");
-                });
 
-            modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.StorageEquipment", b =>
-                {
-                    b.Navigation("Files");
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

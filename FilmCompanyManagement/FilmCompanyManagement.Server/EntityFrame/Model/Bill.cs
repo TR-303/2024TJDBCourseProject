@@ -6,19 +6,22 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class Bill
     {
-        [Key, StringLength(20)]
-        public string Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required, Column(TypeName = "decimal(12, 2)")]
         public decimal Amount { get; set; }
 
-        [Required, StringLength(20)]
-        public string Type { get; set; }
+        [StringLength(20)]
+        public string? Type { get; set; }
+
+        [Required]
+        public int Status { get; set; } = 0;
 
         [Required, Column(TypeName = "Date")]
-        public DateTime Date { get; set; }
+        public DateTime AssignDate { get; set; }
 
-        // 对单关系Accounts
-        public Account? Account { get; set; }
+        [Column(TypeName = "Date")]
+        public DateTime? ProcessedDate { get; set; }
     }
 }

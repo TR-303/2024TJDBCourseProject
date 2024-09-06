@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using FilmCompanyManagement.Server.EntityFrame.Models;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FilmCompanyManagement.Server.EntityFrame
 {
@@ -8,13 +9,9 @@ namespace FilmCompanyManagement.Server.EntityFrame
         public FCMDbContext(DbContextOptions<FCMDbContext> options) : base(options) { }
 
         //=======================================添加数据库对应的表========================================
-
-
         public DbSet<Bill> Bills { get; set; }
-        public DbSet<StorageEquipment> StorageEquipments { get; set; }
         public DbSet<Investment> Investments { get; set; }
         public DbSet<FundingApplication> FundingApplications { get; set; }
-        public DbSet<Account> Accounts { get; set; }
         public DbSet<EquipmentRepair> EquipmentRepairs { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
@@ -28,14 +25,10 @@ namespace FilmCompanyManagement.Server.EntityFrame
         public DbSet<Project> Projects { get; set; }
         public DbSet<AdvicerIntern> AdvicerIntern { get; set; }
         public DbSet<KPI> KPI { get; set; }
-        public DbSet<Position> Positions { get; set; }
         public DbSet<Recruiter> Recruiters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AdvicerIntern>()
-            .HasKey(ai => new { ai.AdvicerId, ai.InternId });
-
             modelBuilder.Entity<AdvicerIntern>()
                 .HasOne(ai => ai.Advicer)
                 .WithMany(e => e.Interns);
@@ -62,10 +55,10 @@ namespace FilmCompanyManagement.Server.EntityFrame
 
             modelBuilder.Entity<Drill>()
                 .HasOne(d => d.Teacher)
-                .WithMany();
+                .WithMany(e=>e.Teachs);
 
             modelBuilder.Entity<Drill>()
-                .HasMany(d => d.Employees)
+                .HasMany(d => d.Students)
                 .WithMany(e => e.Drills);
 
             base.OnModelCreating(modelBuilder);

@@ -5,22 +5,18 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class FundingApplication
     {
-        [Key, StringLength(20)]
-        public string Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required]
         public Employee Employee { get; set; }
 
-        [Required, Column(TypeName = "Date")]
-        public DateTime Date { get; set; }
+        public int Status { get; set; } = 0;
 
-        [Required, StringLength(20)]
-        public string BillStatus { get; set; }
+        [StringLength(100)]
+        public string Opinion { get; set; }
 
         [Required]
         public Bill Bill { get; set; }
-
-        [StringLength(20)]
-        public string? AccountStatus { get; set; }
     }
 }

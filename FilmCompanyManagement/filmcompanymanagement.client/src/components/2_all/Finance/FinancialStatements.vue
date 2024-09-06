@@ -569,7 +569,7 @@
             refreshUnprocessedInvestmentData() {
                 axios.get('/api/externalInvestments/unprocessed')
                     .then(response => {
-                    this.unprocessedInvestmentList = response.data.data;
+                    this.unprocessedInvestmentList = response.data;
                 }).catch(error => {
                     console.error('Error fetching investment data:', error);
                 });
@@ -578,7 +578,7 @@
             refreshProcessedInvestmentData() {
                 axios.get('/api/externalInvestments/processed')
                     .then(response => {
-                    this.processedInvestmentList = response.data.data;
+                    this.processedInvestmentList = response.data;
                 }).catch(error => {
                     console.error('Error fetching processed investment data:', error);
                 });
@@ -610,7 +610,7 @@
             refreshUnprocessedLeasingData() {
                 axios.get('/api/equipmentLeasing/unprocessed')
                     .then(response => {
-                    this.unprocessedLeasingList = response.data.data;
+                    this.unprocessedLeasingList = response.data;
                 }).catch(error => {
                     console.error('Error fetching unprocessed leasing data:', error);
                 });
@@ -619,7 +619,7 @@
             refreshProcessedLeasingData() {
                 axios.get('/api/equipmentLeasing/processed')
                     .then(response => {
-                    this.processedLeasingList = response.data.data;
+                    this.processedLeasingList = response.data;
                 }).catch(error => {
                     console.error('Error fetching processed leasing data:', error);
                 });
@@ -648,7 +648,7 @@
             refreshUnprocessedBlockPurchaseOrderData() {
                 axios.get('/api/FinishedProduct/unprocessed')
                     .then(response => {
-                    this.unprocessedBlockPurchaseOrderList = response.data.data;
+                    this.unprocessedBlockPurchaseOrderList = response.data;
                 }).catch(error => {
                     console.error('Error fetching unprocessed block purchase order data:', error);
                 });
@@ -657,7 +657,7 @@
             refreshProcessedBlockPurchaseOrderData() {
                 axios.get('/api/FinishedProduct/processed')
                     .then(response => {
-                    this.processedBlockPurchaseOrderList = response.data.data;
+                    this.processedBlockPurchaseOrderList = response.data;
                 }).catch(error => {
                     console.error('Error fetching processed block purchase order data:', error);
                 });
@@ -686,7 +686,7 @@
             refreshUnprocessedSalaryData() {
                 axios.get('/api/salary/unprocessed')
                     .then(response => {
-                    this.unprocessedSalaryList = response.data.data;
+                    this.unprocessedSalaryList = response.data;
                 }).catch(error => {
                     console.error('Error fetching unprocessed salary data:', error);
                 });
@@ -695,7 +695,7 @@
             refreshProcessedSalaryData() {
                 axios.get('/api/salary/processed')
                     .then(response => {
-                    this.processedSalaryList = response.data.data;
+                    this.processedSalaryList = response.data;
                 }).catch(error => {
                     console.error('Error fetching processed salary data:', error);
                 });
@@ -724,7 +724,7 @@
             refreshUnprocessedProjectIncomeData() {
                 axios.get('/api/projectIncome/unprocessed')
                     .then(response => {
-                    this.unprocessedProjectIncomeList = response.data.data;
+                    this.unprocessedProjectIncomeList = response.data;
                 }).catch(error => {
                     console.error('Error fetching unprocessed project income data:', error);
                 });
@@ -732,7 +732,7 @@
             // 获取已处理项目收入数据
             refreshProcessedProjectIncomeData() {
                 axios.get('/api/projectIncome/processed').then(response => {
-                    this.processedProjectIncomeList = response.data.data;
+                    this.processedProjectIncomeList = response.data;
                 }).catch(error => {
                     console.error('Error fetching processed project income data:', error);
                 });

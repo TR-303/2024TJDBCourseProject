@@ -5,22 +5,16 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class EquipmentLease//设备租赁
     {
-        [Key, StringLength(20)]
-        public string Id { get; set; }//编号
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }//编号
 
         [Required]
-        public Employee Employee { get; set; }//对接管理ID——FK员工id
+        public Employee Employee { get; set; }
 
-        [Required, Column(TypeName = "Date")]
-        public DateTime OrderDate { get; set; }//订单日期
+        public Customer? Customer { get; set; }
 
-        [Required, StringLength(20)]
-        public string OrderStatus { get; set; }//订单状态
-
-        [Required, StringLength(20)]
-        public string PaymentStatus { get; set; }//支付状态
-
-        public Customer Customer { get; set; }
+        [StringLength(20)]
+        public string? Status { get; set; }
 
         [Required]
         public Bill Bill { get; set; }

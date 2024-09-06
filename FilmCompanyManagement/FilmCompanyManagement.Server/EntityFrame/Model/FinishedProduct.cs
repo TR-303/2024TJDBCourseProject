@@ -7,22 +7,18 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class FinishedProduct//成片购买订单
     {
-        [Key, StringLength(20)]
-        public string Id { get; set; }//订单编号
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }//订单编号
 
-        [Required, StringLength(20)]
-        public string Type { get; set; }//订单类型
-
-        [Required, Column(TypeName = "Date")]
-        public DateTime Date { get; set; }//订单日期
-
-        [Required, StringLength(20)]
-        public string OrderStatus { get; set; }//订单状态
-
-        [Required, StringLength(20)]
-        public string PaymentStatus { get; set; }//支付状态
+        [StringLength(20)]
+        public string? Type { get; set; }//订单类型
 
         [Required]
+        public int Status { get; set; } = 0;
+
+        [Required]
+        public int FileId { get; set; }
+        [ForeignKey("FileId")]
         public File File { get; set; }
 
         [Required]

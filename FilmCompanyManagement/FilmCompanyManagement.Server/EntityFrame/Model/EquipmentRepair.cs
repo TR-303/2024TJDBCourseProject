@@ -5,8 +5,11 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 {
     public class EquipmentRepair
     {
-        [Key, StringLength(20)]
-        public string Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [Required]
+        public Employee Employee { get; set; }
 
         [Required]
         public PhotoEquipment PhotoEquipment { get; set; }
@@ -16,5 +19,11 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 
         [Required]
         public Bill Bill { get; set; }
+
+        [Required]
+        public int Status { get; set; } = 0;
+
+        [StringLength(100)]
+        public string? Opinion {  get; set; }
     }
 }
