@@ -37,7 +37,7 @@ namespace FilmCompanyManagement.Controllers
             }
 
             // 更新申请状态和备注
-            application.BillStatus = status;
+            //application.BillStatus = status;
 
             await _context.SaveChangesAsync();
             return Ok();

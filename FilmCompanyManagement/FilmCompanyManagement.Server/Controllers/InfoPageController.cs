@@ -86,7 +86,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> GetFinishedProducts()
         {//finance:成片购买
-            return Ok(await _context.FinishedProducts.Where(fp => fp.Status == 0).ToListAsync());
+            return Ok(await _context.FinishedProducts.Include(fp => fp.Bill).Include(fp => fp.Customer).Include(fp => fp.File).Where(fp => fp.Status == 0).ToListAsync());
         }
 
 
