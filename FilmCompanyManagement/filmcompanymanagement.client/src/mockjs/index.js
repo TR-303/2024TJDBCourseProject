@@ -117,10 +117,58 @@ Mock.mock('/data/checksign', 'post', (params) => {
 //boss
 //人员管理部分
 let inviteList = [
-    { id: '001', name: '张三', type:'实习生', salary: '10000', status: '实习中', remark: '即将结束考察' },
-    { id: '002', name: '李四', type:'求职者', salary: '0', status: '未招聘', remark: '可以考虑' },
-    { id: '003', name: '王二', type:'求职者', salary: '0', status: '已拒绝', remark: '不能胜任' },
-] 
+    {
+        id: '001', // 招聘人员的唯一标识符
+        name: '张三', // 招聘人员姓名
+        gender: '男', // 性别
+        dateOfBirth: '1990-01-01', // 出生日期
+        resume: '详见附件简历.pdf', // 简历
+        positionTitle: '实习生', // 职位名称
+        phone: '13800000000', // 联系电话
+        email: 'zhangsan@example.com', // 电子邮件
+        interviewer: '面试官1', // 面试官
+        interviewerStage: '一面', // 面试阶段
+        state: '招聘中', // 状态
+        adviser: '导师1', // 实习导师
+        internshipStartDate: '2023-06-01', // 实习开始日期
+        internshipEndDate: '2023-08-31', // 实习结束日期
+        remarks: '表现优秀，考虑转正' // 实习相关的备注
+      },
+      {
+        id: '002', // 招聘人员的唯一标识符
+        name: '李四', // 招聘人员姓名
+        gender: '女', // 性别
+        dateOfBirth: '1992-04-22', // 出生日期
+        resume: '详见附件简历.pdf', // 简历
+        positionTitle: '助理', // 职位名称
+        phone: '13911223344', // 联系电话
+        email: 'lisi@example.com', // 电子邮件
+        interviewer: '面试官2', // 面试官
+        interviewerStage: '二面', // 面试阶段
+        state: '进入实习', // 状态
+        adviser: '导师2', // 实习导师
+        internshipStartDate: '2023-09-01', // 实习开始日期
+        internshipEndDate: '2023-12-31', // 实习结束日期
+        remarks: '专业技能强，团队合作佳' // 实习相关的备注
+      },
+      {
+        id: '003', // 招聘人员的唯一标识符
+        name: '王五', // 招聘人员姓名
+        gender: '男', // 性别
+        dateOfBirth: '1988-07-05', // 出生日期
+        resume: '详见附件简历.pdf', // 简历
+        positionTitle: '分析师', // 职位名称
+        phone: '13799887766', // 联系电话
+        email: 'wangwu@example.com', // 电子邮件
+        interviewer: '面试官3', // 面试官
+        interviewerStage: '终面', // 面试阶段
+        state: '待定', // 状态
+        adviser: '导师3', // 实习导师
+        internshipStartDate: '2024-01-01', // 实习开始日期
+        internshipEndDate: '2024-04-30', // 实习结束日期
+        remarks: '沟通能力强，有创新思维' // 实习相关的备注
+      }
+]
 
 Mock.mock('/api/get-invite', 'get', {
     employee_list: inviteList,
@@ -172,9 +220,34 @@ Mock.mock('/api/delete-overview-form', 'post', {
 })
 
 let trainList = [
-    { id: '001', teacher: '张三', date:'9.5', student: '小王', status: '等待批准', remark: '时间不足' },
-    { id: '002', teacher: '李四', date:'10.8', student: '小刘', status: '正在开课', remark: '无' },
-    { id: '003', teacher: '王二', date:'6.6', student: '小王、小刘', status: '已结课', remark: '需要进行效果评估' },
+    {
+        id: '001', // 演练的唯一标识符
+        teacher: '张三', // 主持演练的教师姓名
+        dateTime: '2023-09-05 10:00', // 演练的时间
+        timeSpan: '2小时', // 演练持续时间
+        drillEmployees: ['老张', '老王'] // 参与演练的员工姓名数组
+      },
+      {
+        id: '002', // 演练的唯一标识符
+        teacher: '李四', // 主持演练的教师姓名
+        dateTime: '2023-09-12 14:00', // 演练的时间
+        timeSpan: '3小时', // 演练持续时间
+        drillEmployees: ['小李', '小陈'] // 参与演练的员工姓名数组
+      },
+      {
+        id: '003', // 演练的唯一标识符
+        teacher: '王五', // 主持演练的教师姓名
+        dateTime: '2023-09-19 09:30', // 演练的时间
+        timeSpan: '1.5小时', // 演练持续时间
+        drillEmployees: ['老王', '小赵'] // 参与演练的员工姓名数组
+      },
+      {
+        id: '004', // 演练的唯一标识符
+        teacher: '赵六', // 主持演练的教师姓名
+        dateTime: '2023-09-22 15:00', // 演练的时间
+        timeSpan: '2.5小时', // 演练持续时间
+        drillEmployees: ['赵工', '钱师傅'] // 参与演练的员工姓名数组
+      }
 ] 
 
 Mock.mock('/api/get-train', 'get', {
@@ -200,10 +273,44 @@ Mock.mock('/api/delete-train-form', 'post', {
 
 //申请管理部分
 let requiredataList = [
-    { id: '001', type: '维修申请', name: '张a', status: '等待批准', date: '9.1', price: '1000', remark: '照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机照相机' },
-    { id: '002', type: '报销申请', name: '张b', status: '维修完成', date: '9.1', price: '1000', remark: '无人机' },
-    { id: '003', type: '维修申请', name: '张c', status: '维修中', date: '9.1', price: '1000', remark: '麦克风' },
-    { id: '004', type: '购买申请', name: '张d', status: '等待批准', date: '9.1', price: '1000', remark: '闪光灯' },
+    {
+        id: '008', // 维修申请的唯一标识符
+        type: '维修申请', // 维修申请类型
+        status: '通过',
+        employee: '张三', // 员工姓名
+        billId: 'B005', // 关联的账单ID
+        amount: '1500', // 账单金额
+        date: '2023-11-10', // 账单日期
+        accountId: 'ACC-202', // 关联的账户ID
+        photoEquipmentId: 'PE005', // 需要维修的摄影设备ID
+        name: '相机电池', // 设备名称
+        model: 'BT-102', // 设备型号
+        description: '电池无法充电', // 维修描述
+      },
+      {
+        id: '009', // 报销申请的唯一标识符
+        type: '报销申请', // 报销申请类型
+        status: '拒绝',
+        employee: '李四', // 员工姓名
+        billId: 'B006', // 关联的账单ID
+        amount: '2000', // 账单金额
+        date: '2023-11-15', // 账单日期
+        accountId: 'ACC-303', // 关联的账户ID
+      },
+      {
+        id: '010', // 购买申请的唯一标识符
+        type: '购买申请', // 购买申请类型
+        status: '等待',
+        employee: '王五', // 员工姓名
+        billId: 'B007', // 关联的账单ID
+        amount: '5000', // 账单金额
+        date: '2023-11-20', // 账单日期
+        accountId: 'ACC-404', // 关联的账户ID
+        photoEquipmentId: 'PE006', // 需要购买的摄影设备ID
+        name: '专业镜头', // 设备名称
+        model: 'LN-PRO', // 设备型号
+        description: '购买新镜头', // 购买描述
+      }
 ] 
 
 Mock.mock('/api/requisition', 'get', {

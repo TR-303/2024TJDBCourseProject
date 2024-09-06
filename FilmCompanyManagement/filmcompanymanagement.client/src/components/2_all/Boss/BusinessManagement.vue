@@ -33,6 +33,8 @@
             </ul>
         </div>
 
+        <h2>业务管理</h2>
+
         <div>
             <el-button class="main_button" 
                 :style="{ backgroundColor: businessID === '0' ? '#409EFF' : '', color: businessID === '0' ? 'white' : '' }" 
@@ -73,30 +75,30 @@
             <!--表单显示-->
             <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                 <!--根据表单数据结构动态生成表单-->
-                <el-form :model="investment_form" label-width="120px">
+                <el-form :model="form" label-width="120px">
                     <el-form-item label="投资编号">
-                        <el-input v-model="investment_form.id" disabled></el-input>
+                        <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="投资日期">
-                        <el-date-picker v-model="investment_form.date"
+                        <el-date-picker v-model="form.date"
                                         type="date"
                                         placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="投资人">
-                        <el-input v-model="investment_form.client"></el-input>
+                        <el-input v-model="form.client"></el-input>
                     </el-form-item>
                     <el-form-item label="投资金额">
-                        <el-input-number v-model="investment_form.price"></el-input-number>
+                        <el-input-number v-model="form.price"></el-input-number>
                     </el-form-item>
                     <el-form-item label="投资负责人">
-                        <el-input v-model="investment_form.functionary"></el-input>
+                        <el-input v-model="form.functionary"></el-input>
                     </el-form-item>
                     <el-form-item label="投资状态">
-                        <el-input v-model="investment_form.status"></el-input>
+                        <el-input v-model="form.status"></el-input>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="investment_form.remark"></el-input>
+                        <el-input type="textarea" v-model="form.remark"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -127,30 +129,30 @@
                 <!--表单显示-->
                 <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                     <!--根据表单数据结构动态生成表单-->
-                    <el-form :model="buy_form" label-width="120px">
-                        <el-form-item label="投资编号">
-                            <el-input v-model="buy_form.id" disabled></el-input>
+                    <el-form :model="form" label-width="120px">
+                        <el-form-item label="购买编号">
+                            <el-input v-model="form.id" disabled></el-input>
                         </el-form-item>
-                        <el-form-item label="投资日期">
-                            <el-date-picker v-model="buy_form.date"
+                        <el-form-item label="购买日期">
+                            <el-date-picker v-model="form.date"
                                             type="date"
                                             placeholder="选择日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="投资人">
-                            <el-input v-model="buy_form.client"></el-input>
+                        <el-form-item label="购买人">
+                            <el-input v-model="form.client"></el-input>
                         </el-form-item>
-                        <el-form-item label="投资金额">
-                            <el-input-number v-model="buy_form.price"></el-input-number>
+                        <el-form-item label="购买金额">
+                            <el-input-number v-model="form.price"></el-input-number>
                         </el-form-item>
-                        <el-form-item label="投资负责人">
-                            <el-input v-model="buy_form.functionary"></el-input>
+                        <el-form-item label="销售负责人">
+                            <el-input v-model="form.functionary"></el-input>
                         </el-form-item>
-                        <el-form-item label="投资状态">
-                            <el-input v-model="buy_form.status"></el-input>
+                        <el-form-item label="购买状态">
+                            <el-input v-model="form.status"></el-input>
                         </el-form-item>
                         <el-form-item label="备注">
-                            <el-input type="textarea" v-model="buy_form.remark"></el-input>
+                            <el-input type="textarea" v-model="form.remark"></el-input>
                         </el-form-item>
                     </el-form>
                     <span slot="footer" class="dialog-footer">
@@ -183,30 +185,30 @@
             <!--表单显示-->
             <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                 <!--根据表单数据结构动态生成表单-->
-                <el-form :model="lease_form" label-width="120px">
-                    <el-form-item label="投资编号">
-                        <el-input v-model="lease_form.id" disabled></el-input>
+                <el-form :model="form" label-width="120px">
+                    <el-form-item label="租赁编号">
+                        <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="投资日期">
-                        <el-date-picker v-model="lease_form.date"
+                    <el-form-item label="租赁日期">
+                        <el-date-picker v-model="form.date"
                                         type="date"
                                         placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="投资人">
-                        <el-input v-model="lease_form.client"></el-input>
+                    <el-form-item label="租赁人">
+                        <el-input v-model="form.client"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资金额">
-                        <el-input-number v-model="lease_form.price"></el-input-number>
+                    <el-form-item label="租赁金额">
+                        <el-input-number v-model="form.price"></el-input-number>
                     </el-form-item>
-                    <el-form-item label="投资负责人">
-                        <el-input v-model="lease_form.functionary"></el-input>
+                    <el-form-item label="租赁负责人">
+                        <el-input v-model="form.functionary"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资状态">
-                        <el-input v-model="lease_form.status"></el-input>
+                    <el-form-item label="租赁状态">
+                        <el-input v-model="form.status"></el-input>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="lease_form.remark"></el-input>
+                        <el-input type="textarea" v-model="form.remark"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -238,30 +240,30 @@
             <!--表单显示-->
             <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                 <!--根据表单数据结构动态生成表单-->
-                <el-form :model="project_form" label-width="120px">
-                    <el-form-item label="投资编号">
-                        <el-input v-model="project_form.id" disabled></el-input>
+                <el-form :model="form" label-width="120px">
+                    <el-form-item label="项目编号">
+                        <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="投资日期">
-                        <el-date-picker v-model="project_form.date"
+                    <el-form-item label="项目日期">
+                        <el-date-picker v-model="form.date"
                                         type="date"
                                         placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="投资人">
-                        <el-input v-model="project_form.client"></el-input>
+                    <el-form-item label="项目发起人人">
+                        <el-input v-model="form.client"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资金额">
-                        <el-input-number v-model="project_form.price"></el-input-number>
+                    <el-form-item label="项目金额">
+                        <el-input-number v-model="form.price"></el-input-number>
                     </el-form-item>
-                    <el-form-item label="投资负责人">
-                        <el-input v-model="project_form.functionary"></el-input>
+                    <el-form-item label="项目负责人">
+                        <el-input v-model="form.functionary"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资状态">
-                        <el-input v-model="project_form.status"></el-input>
+                    <el-form-item label="项目状态">
+                        <el-input v-model="form.status"></el-input>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="project_form.remark"></el-input>
+                        <el-input type="textarea" v-model="form.remark"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -290,11 +292,8 @@
                   { id: '3', name: '公司项目'},
                 ],
                 businesses_list:[],
-                template_form:{id:'0'},
-                investment_form:    { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
-                buy_form:           { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
-                lease_form:         { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
-                project_form:       { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
+                template_form:  {id:'0'},
+                form:           { id: '' },
             }
         },
         computed: {
@@ -350,18 +349,10 @@
             getIncome(){
                 let path;
                 switch(this.businessID){
-                    case '0':
-                        path='/api/get-invest';
-                        break;
-                    case '1':
-                        path='/api/get-buy';
-                        break;
-                    case '2':
-                        path='/api/get-lease';
-                        break;
-                    case '3':
-                        path='/api/get-project';
-                        break;
+                    case '0':path='/api/get-invest';break;
+                    case '1':path='/api/get-buy';break;
+                    case '2':path='/api/get-lease';break;
+                    case '3':path='/api/get-project';break;
                 }
                 axios.get(path)
                     .then(response => {
@@ -374,26 +365,13 @@
             //提交表单
             submitForm() {
                 let path;
-                let form;
                 switch(this.businessID){
-                    case '0':
-                        path='/api/submit-invest-form';
-                        form=this.investment_form;
-                        break;
-                    case '1':
-                        path='/api/submit-buy-form';
-                        form=this.buy_form;
-                        break;
-                    case '2':
-                        path='/api/submit-lease-form';
-                        form=this.lease_form;
-                        break;
-                    case '3':
-                        path='/api/submit-project-form';
-                        form=this.project_form;
-                        break;
+                    case '0':path='/api/submit-invest-form';break;
+                    case '1':path='/api/submit-buy-form';break;
+                    case '2':path='/api/submit-lease-form';break;
+                    case '3':path='/api/submit-project-form';break;
                 }
-                axios.post(path, form)
+                axios.post(path, this.form)
                     .then(response => {
                         console.log('提交成功:', response.data.message); // 打印消息
                         this.$message({
@@ -414,12 +392,7 @@
             },
                         //新建
             createNew(){
-                switch(this.businessID){
-                    case '0':this.investment_form = this.template_form;break;
-                    case '1':this.buy_form = this.template_form;break;
-                    case '2':this.lease_form = this.template_form;break;
-                    case '3':this.project_form = this.template_form;break;
-                }
+                this.form = this.template_form;
                 this.dialogVisible = true;
             },
             //删除
@@ -449,45 +422,20 @@
             },
             // 查看详情
             viewDetails(row) {      
-                // 根据申请类型发送请求
+                let path;
                 switch(this.businessID){
-                    case '0':
-                        axios.post('/api/details-invest', { id: row.id}).then(response => {
-                            this.investment_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取外部投资表单数据失败', error);
-                        });
-                        break;
-                    case '1':
-                        axios.post('/api/details-buy', { id: row.id}).then(response => {
-                            this.buy_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取成片购买表单数据失败', error);
-                        });
-                        break;
-                    case '2':
-                        axios.post('/api/details-lease', { id: row.id}).then(response => {
-                            this.lease_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取设备租赁表单数据失败', error);
-                        });
-                        break;
-                    case '3':
-                        axios.post('/api/details-project', { id: row.id}).then(response => {
-                            this.project_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取公司项目表单数据失败', error);
-                        });
-                        break;
+                    case '0':path='/api/details-invest';break;
+                    case '1':path='/api/details-buy';break;
+                    case '2':path='/api/details-lease';break;
+                    case '3':path='/api/details-project';break;
                 }
+                axios.post(path, { id: row.id}).then(response => {
+                    this.form = response.data[0];
+                    // 显示表单
+                    this.dialogVisible = true;
+                    }).catch(error => {
+                        console.error('获取表单数据失败', error);
+                    });
             },
         },
         mounted() {
