@@ -116,59 +116,40 @@ Mock.mock('/data/checksign', 'post', (params) => {
 
 //boss
 //人员管理部分
+
+
+//！！！！！实习生是员工的追加
 let inviteList = [
     {
         id: '001', // 招聘人员的唯一标识符
         name: '张三', // 招聘人员姓名
         gender: '男', // 性别
-        dateOfBirth: '1990-01-01', // 出生日期
-        resume: '详见附件简历.pdf', // 简历
         positionTitle: '实习生', // 职位名称
+        salary: '5000.00', // 工资
         phone: '13800000000', // 联系电话
         email: 'zhangsan@example.com', // 电子邮件
+
         interviewer: '面试官1', // 面试官
+
         interviewerStage: '一面', // 面试阶段
-        state: '招聘中', // 状态
-        adviser: '导师1', // 实习导师
-        internshipStartDate: '2023-06-01', // 实习开始日期
-        internshipEndDate: '2023-08-31', // 实习结束日期
-        remarks: '表现优秀，考虑转正' // 实习相关的备注
+        state:'未录用'             //
       },
-      {
-        id: '002', // 招聘人员的唯一标识符
-        name: '李四', // 招聘人员姓名
-        gender: '女', // 性别
-        dateOfBirth: '1992-04-22', // 出生日期
-        resume: '详见附件简历.pdf', // 简历
-        positionTitle: '助理', // 职位名称
-        phone: '13911223344', // 联系电话
-        email: 'lisi@example.com', // 电子邮件
-        interviewer: '面试官2', // 面试官
-        interviewerStage: '二面', // 面试阶段
-        state: '进入实习', // 状态
-        adviser: '导师2', // 实习导师
-        internshipStartDate: '2023-09-01', // 实习开始日期
-        internshipEndDate: '2023-12-31', // 实习结束日期
-        remarks: '专业技能强，团队合作佳' // 实习相关的备注
-      },
-      {
-        id: '003', // 招聘人员的唯一标识符
-        name: '王五', // 招聘人员姓名
-        gender: '男', // 性别
-        dateOfBirth: '1988-07-05', // 出生日期
-        resume: '详见附件简历.pdf', // 简历
-        positionTitle: '分析师', // 职位名称
-        phone: '13799887766', // 联系电话
-        email: 'wangwu@example.com', // 电子邮件
-        interviewer: '面试官3', // 面试官
-        interviewerStage: '终面', // 面试阶段
-        state: '待定', // 状态
-        adviser: '导师3', // 实习导师
-        internshipStartDate: '2024-01-01', // 实习开始日期
-        internshipEndDate: '2024-04-30', // 实习结束日期
-        remarks: '沟通能力强，有创新思维' // 实习相关的备注
-      }
 ]
+let internshipList = [
+    {
+        //
+        advicerId: '123456', // 顾问
+        advicer: '张三', // 顾问姓名
+        //
+        internId: '789012', // 实习生
+        intern: '李四', // 实习生姓名
+
+        internshipStartDate: '2024-09-01', // 实习开始日期
+        internshipEndDate: '2025-09-01', // 实习结束日期
+        remarks: '无', // 备注信息
+    },
+]
+
 
 Mock.mock('/api/get-invite', 'get', {
     employee_list: inviteList,
@@ -192,9 +173,38 @@ Mock.mock('/api/delete-invite-form', 'post', {
 })
 
 let overviewList = [
-    { id: '001', name: '张三', salary: '10000', status: '休假中', remark: '无' },
-    { id: '002', name: '李四', salary: '0', status: '在岗', remark: '无' },
-    { id: '003', name: '王二', salary: '0', status: '出差', remark: '长期外派' },
+    {
+        id: '123456', // 员工ID——PK
+        name: '张三', // 姓名
+        gender: '男', // 性别
+        position: '软件工程师', // 职位
+
+        phone: '13800138000', // 联系电话
+        email: 'zhangsan@example.com', // 电子邮箱
+        salary: '5000.00', // 工资
+        salaryStatus: '正常', // 工资状态
+        
+        //bill
+        bill_id: 'ACC123456', // 编号
+        amount: 1000.00, // 金额
+        type: '存款', // 类型
+        date: '2024-09-01', // 日期
+        billStatus: '已完成',
+
+        interns: [], // 实习生集合
+
+        projects: [], // 项目集合
+
+        manageProjects: [], // 管理的项目集合
+
+        department: '管理部', // 部门
+        
+        kpi:'10', // KPI集合
+
+        attendances: [], // 考勤集合
+
+        drills: [] // 演练集合
+    }
 ] 
 
 
@@ -220,34 +230,16 @@ Mock.mock('/api/delete-overview-form', 'post', {
 })
 
 let trainList = [
-    {
-        id: '001', // 演练的唯一标识符
-        teacher: '张三', // 主持演练的教师姓名
-        dateTime: '2023-09-05 10:00', // 演练的时间
-        timeSpan: '2小时', // 演练持续时间
-        drillEmployees: ['老张', '老王'] // 参与演练的员工姓名数组
-      },
       {
-        id: '002', // 演练的唯一标识符
-        teacher: '李四', // 主持演练的教师姓名
-        dateTime: '2023-09-12 14:00', // 演练的时间
-        timeSpan: '3小时', // 演练持续时间
-        drillEmployees: ['小李', '小陈'] // 参与演练的员工姓名数组
+        id: '123456', // 编号
+
+        teacher: '王老师', // 培训讲师
+
+        dateTime: '2024-09-10T09:00:00', // 培训开始时间
+        endTime: '2024-09-10T17:00:00', // 培训结束时间，假设培训时长为8小时
+
+        employees: ['老李', '老赵', '老钱', '老孙', '老周', '老吴', '老郑', '老王', '老冯', '老陈'], // 参与者集合
       },
-      {
-        id: '003', // 演练的唯一标识符
-        teacher: '王五', // 主持演练的教师姓名
-        dateTime: '2023-09-19 09:30', // 演练的时间
-        timeSpan: '1.5小时', // 演练持续时间
-        drillEmployees: ['老王', '小赵'] // 参与演练的员工姓名数组
-      },
-      {
-        id: '004', // 演练的唯一标识符
-        teacher: '赵六', // 主持演练的教师姓名
-        dateTime: '2023-09-22 15:00', // 演练的时间
-        timeSpan: '2.5小时', // 演练持续时间
-        drillEmployees: ['赵工', '钱师傅'] // 参与演练的员工姓名数组
-      }
 ] 
 
 Mock.mock('/api/get-train', 'get', {
@@ -274,46 +266,54 @@ Mock.mock('/api/delete-train-form', 'post', {
 //申请管理部分
 let requiredataList = [
       {
-        id: '008', // 维修申请的唯一标识符
         type: '维修申请', // 维修申请类型
+
+        id: 'P001', // 编号
         employee: '张三', // 员工姓名
-        billId: 'B005', // 关联的账单ID
-        amount: '1500', // 账单金额
-        date: '2023-11-10', // 账单日期
-        accountId: 'ACC-202', // 关联的账户ID
-        photoEquipmentId: 'PE005', // 需要维修的摄影设备ID
-        name: '相机电池', // 设备名称
-        model: 'BT-102', // 设备型号
-        description: '电池无法充电', // 维修描述
+        //设备
+        photoEquipment: '数码相机', // 摄影设备
+        description: '高性能数码相机，适合专业摄影。', // 描述
+        //bill
+        bill_id: 'ACC123456', // 编号
+        amount: 1000.00, // 金额
+        type: '存款', // 类型
+        date: '2024-09-01', // 日期
+        billStatus: '已完成',
+
         status: '通过', // 申请的处理状态
         remark: '请尽快处理，电池已影响正常工作。' // 额外的备注信息
       },
       {
-        id: '009', // 报销申请的唯一标识符
-        type: '报销申请', // 报销申请类型
-        
-        employee: '李四', // 员工姓名
-        billId: 'B006', // 关联的账单ID
-        amount: '2000', // 账单金额
-        date: '2023-11-15', // 账单日期
-        accountId: 'ACC-303', // 关联的账户ID
-        status: '拒绝', // 申请的处理状态
-        remark: '报销申请不符合公司政策。' // 额外的备注信息
+        type: '维修申请', // 维修申请类型
+
+        id: 'EQ001', // 设备编号
+        employee: '张三', // 申请人
+        //设备
+        name: '打印机', // 设备名称
+        model: 'MX-310', // 设备型号
+        //bill
+        bill_id: 'ACC123456', // 编号
+        amount: 1000.00, // 金额
+        type: '存款', // 类型
+        date: '2024-09-01', // 日期
+
+        status: true, // 审核状态
+        remark: '请尽快处理，电池已影响正常工作。' // 额外的备注信息
       },
       {
-        id: '010', // 购买申请的唯一标识符
-        type: '购买申请', // 购买申请类型
-        employee: '王五', // 员工姓名
-        billId: 'B007', // 关联的账单ID
-        amount: '5000', // 账单金额
-        date: '2023-11-20', // 账单日期
-        accountId: 'ACC-404', // 关联的账户ID
-        photoEquipmentId: 'PE006', // 需要购买的摄影设备ID
-        name: '专业镜头', // 设备名称
-        model: 'LN-PRO', // 设备型号
-        description: '购买新镜头', // 购买描述
-        status: '等待', // 申请的处理状态
-        remark: '建议购买此镜头以提升拍摄质量。' // 额外的备注信息
+        type: '维修申请', // 维修申请类型
+
+        id: '123456', // 设备编号
+        employee: '张三', // 员工
+        //bill
+        bill_id: 'ACC123456', // 编号
+        amount: 1000.00, // 金额
+        type: '存款', // 类型
+        date: '2024-09-01', // 日期
+        billStatus: '已完成',
+
+        status: true, // 审核状态
+        remark: '请尽快处理，电池已影响正常工作。' // 额外的备注信息
       }
 ] 
 
@@ -342,53 +342,24 @@ Mock.mock('/api/delete-form', 'post', {
 
 //业务管理部分
 let investList = [
-    {
-        id: "002",
-        customer: "银行b",
-        date: "2024-09-07",
-        billStatus: "待支付",
-        accountStatus: "已冻结",
-        billId: "B654321",
-        amount: "15000",
-        type: "活期存款",
-        billDate: "2024-09-11",
-        accountId: "ACC987654"
-      },
       {
-        id: "003",
-        customer: "银行c",
-        date: "2024-09-08",
-        billStatus: "已支付",
-        accountStatus: "活跃",
-        billId: "B111222",
-        amount: "20000",
-        type: "定期存款",
-        billDate: "2024-09-12",
-        accountId: "ACC333666"
-      },
-      {
-        id: "004",
-        customer: "银行d",
-        date: "2024-09-09",
-        billStatus: "已支付",
-        accountStatus: "活跃",
-        billId: "B777888",
-        amount: "35000",
-        type: "定期存款",
-        billDate: "2024-09-13",
-        accountId: "ACC555999"
-      },
-      {
-        id: "005",
-        customer: "银行e",
-        date: "2024-09-10",
-        billStatus: "待支付",
-        accountStatus: "已冻结",
-        billId: "B999000",
-        amount: "10000",
-        type: "活期存款",
-        billDate: "2024-09-14",
-        accountId: "ACC444777"
+        id: 'BILL123456', // 文件ID
+
+        //customer
+        customerid: 'CUST123456', // 客户方ID——PK
+        customerType: '企业', // 客户类型
+        customerName: '蓝天科技', // 客户名称
+        businessType: 'IT服务', // 业务类型
+        customerPhone: '12345678901', // 联系电话
+        customerEmail: 'info@blueskytech.com', // 电子邮箱
+        customerAddress: '科技园区创新路1号', // 客户地址
+
+        //bill
+        bill_id: 'ACC123456', // 编号
+        amount: 1000.00, // 金额
+        billtype: '存款', // 类型
+        date: '2024-09-01', // 日期
+        billStatus: '已完成'
       }
 ] 
 
@@ -415,37 +386,39 @@ Mock.mock('/api/delete-invest-form', 'post', {
 })
 
 let buyList = [
-    { id: '003', date: '9.5', client:'tim', price: '10000', functionary: '员工2', status: '进行中', remark: '即将交付' },
-    { id: '002', date: '12.5', client:'安东', price: '10000', functionary: '员工6', status: '已经完成', remark: '无' },
-    { id: '005', date: '6.6', client:'chy', price: '50000', functionary: '员工4', status: '已撤销', remark: '时间紧迫' },
-    { id: '001', date: '2.28', client:'yc', price: '10600', functionary: '员工1', status: '发起流程', remark: '6' },
     {
-        id: "P001",
-        type: "电子产品",
-        date: "2024-09-06",
-        customer: "aaa",
-        
 
-        status: "待发货",
+        id: 'ORD123456', // 订单编号
+        type: '标准', // 订单类型
 
-        paymentStatus: "已支付",
-        billId: 'B123499',
-        billType: "订单",
-        amount: "500",
-        billDate: "2024-09-07",
-        accountId: "ACC456",
+        //file
+        fileid: 'FILE123456', // 文件ID
+        name: '报告总结', // 文件名
+        fileType: '文档', // 文件类型
+        contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // 内容类型
+        size: 2048, // 文件大小，单位为KB
+        path: '/uploads/2024/09/', // 文件路径
+        uploadDate: '2024-09-06', // 上传日期
+        filestatus: '已上传', // 状态
 
-        fileName: "产品说明书",
-        fileType: "PDF",
-        contentType: "application/pdf",
-        size: "2MB",
-        path: "/documents/product/P001.pdf",
-        uploadDate: "2024-09-05",
-        fileStatus: "已上传",
-        storageEquipmentId: "SE123",
+        //customer
+        customerid: 'CUST123456', // 客户方ID——PK
+        customerType: '企业', // 客户类型
+        customerName: '蓝天科技', // 客户名称
+        businessType: 'IT服务', // 业务类型
+        customerPhone: '12345678901', // 联系电话
+        customerEmail: 'info@blueskytech.com', // 电子邮箱
+        customerAddress: '科技园区创新路1号', // 客户地址
 
-        remark:'无',
-      }
+        //bill
+        bill_id: 'ACC123456', // 编号
+        amount: 1000.00, // 金额
+        billtype: '存款', // 类型
+        date: '2024-09-01', // 日期
+        billStatus: '已完成',
+
+        status: '待发货', // 申请的处理状态
+    }
 ] 
 
 Mock.mock('/api/get-buy', 'get', {
@@ -471,10 +444,28 @@ Mock.mock('/api/delete-buy-form', 'post', {
 })
 
 let leaseList = [
-    { id: '003', date: '9.5', client:'团队m', price: '10000', functionary: '老李', status: '已租赁', remark: '刚开始' },
-    { id: '002', date: '12.5', client:'yj', price: '10000', functionary: 'oceancat', status: '已经完成', remark: '无' },
-    { id: '005', date: '6.6', client:'老六', price: '50000', functionary: 'bvvd', status: '已租赁', remark: '即将稻妻' },
-    { id: '001', date: '2.28', client:'abcd', price: '10600', functionary: '老李', status: '发起租赁', remark: '6' },
+    {
+        id: 'ORD789012', // 编号
+        employee: '员工001', // 对接管理ID——FK员工id
+
+        //customer
+        customerid: 'CUST123456', // 客户方ID——PK
+        customerType: '企业', // 客户类型
+        customerName: '蓝天科技', // 客户名称
+        businessType: 'IT服务', // 业务类型
+        customerPhone: '12345678901', // 联系电话
+        customerEmail: 'info@blueskytech.com', // 电子邮箱
+        customerAddress: '科技园区创新路1号', // 客户地址
+
+        //bill
+        bill_id: 'ACC123456', // 编号
+        amount: 1000.00, // 金额
+        billtype: '存款', // 类型
+        date: '2024-09-01', // 日期
+        billStatus: '已完成',
+
+        Status: '待确认', // 订单状态
+    }
 ] 
 
 Mock.mock('/api/get-lease', 'get', {
@@ -500,10 +491,44 @@ Mock.mock('/api/delete-lease-form', 'post', {
 })
 
 let projectList = [
-    { id: '003', date: '9.5', client:'aaa', price: '10000', functionary: 'GB', status: '进行中', remark: '成员1，成员2，成员3' },
-    { id: '002', date: '12.5', client:'kkk', price: '10000', functionary: '内斯塔', status: '已经完成', remark: '成员1，成员2，成员3' },
-    { id: '005', date: '6.6', client:'xxx', price: '50000', functionary: 'bvvd', status: '进行中', remark: '成员a，成员b，成员c' },
-    { id: '001', date: '2.28', client:'abcd', price: '10600', functionary: '乪', status: '进行中', remark: '无' },
+    {
+        id: 'PRO123456', // 项目编号
+
+        manager: '项目经理001', // 对接管理ID——FK员工id
+
+        employees: [], // 项目员工集合
+        kpiDate: '2024-09-06', // 绩效评定时间
+        result: 1, // 评定结果打分
+        judger: '评定员001', // 导航属性，追究评定者信息
+
+        //file
+        fileid: 'FILE123456', // 文件ID
+        name: '报告总结', // 文件名
+        fileType: '文档', // 文件类型
+        contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // 内容类型
+        size: 2048, // 文件大小，单位为KB
+        path: '/uploads/2024/09/', // 文件路径
+        uploadDate: '2024-09-06', // 上传日期
+        filestatus: '已上传', // 状态
+
+        //customer
+        customerid: 'CUST123456', // 客户方ID——PK
+        customerType: '企业', // 客户类型
+        customerName: '蓝天科技', // 客户名称
+        businessType: 'IT服务', // 业务类型
+        customerPhone: '12345678901', // 联系电话
+        customerEmail: 'info@blueskytech.com', // 电子邮箱
+        customerAddress: '科技园区创新路1号', // 客户地址
+
+        //bill
+        bill_id: 'ACC123456', // 编号
+        amount: 1000.00, // 金额
+        billtype: '存款', // 类型
+        date: '2024-09-01', // 日期
+        billStatus: '已完成',
+
+        Status: '进行中', // 订单状态
+    }
 ] 
 
 Mock.mock('/api/get-project', 'get', {
