@@ -57,14 +57,13 @@
             </div>
 
             <div class="dataTable">
-                 <el-table :data="businesses_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
-                    <el-table-column prop="client" label="投资人" width="120"></el-table-column>
-                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
-                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                 <el-table :data="businesses_list" style="width: 1000">
+                    <el-table-column prop="id" label="编号" width="auto"></el-table-column>
+                    <el-table-column prop="date" label="日期" width="auto"></el-table-column>
+                    <el-table-column prop="customer" label="投资人" width="auto"></el-table-column>
+                    <el-table-column prop="amount" label="金额" width="auto"></el-table-column>
+                    <el-table-column prop="billStatus" label="状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -86,21 +85,38 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="投资人">
-                        <el-input v-model="form.client"></el-input>
+                        <el-input v-model="form.customer"></el-input>
                     </el-form-item>
                     <el-form-item label="投资金额">
-                        <el-input-number v-model="form.price"></el-input-number>
+                        <el-input-number v-model="form.amount"></el-input-number>
                     </el-form-item>
-                    <el-form-item label="投资负责人">
-                        <el-input v-model="form.functionary"></el-input>
+                    <el-form-item label="投资类型">
+                        <el-input v-model="form.type"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资状态">
-                        <el-input v-model="form.status"></el-input>
+                    <el-form-item label="账单日期">
+                        <el-date-picker v-model="form.billDate"
+                                        type="date"
+                                        placeholder="选择日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="关联账户ID">
+                        <el-input v-model="form.accountId"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账单状态">
+                        <el-input v-model="form.billStatus"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账户状态">
+                        <el-input v-model="form.accountStatus"></el-input>
+                    </el-form-item>
+                    <el-form-item label="关联账单ID">
+                        <el-input v-model="form.billId"></el-input>
                     </el-form-item>
                     <el-form-item label="备注">
                         <el-input type="textarea" v-model="form.remark"></el-input>
                     </el-form-item>
                 </el-form>
+
+
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -112,14 +128,14 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                 <el-table :data="businesses_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
-                    <el-table-column prop="client" label="购买人" width="120"></el-table-column>
-                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
-                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                 <el-table :data="businesses_list" style="width: 1000">
+                    <el-table-column prop="id" label="编号" width="auto"></el-table-column>
+                    <el-table-column prop="date" label="日期" width="auto"></el-table-column>
+                    <el-table-column prop="client" label="购买人" width="auto"></el-table-column>
+                    <el-table-column prop="price" label="金额" width="auto"></el-table-column>
+                    <el-table-column prop="functionary" label="负责人" width="auto"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -167,14 +183,14 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                 <el-table :data="businesses_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
-                    <el-table-column prop="client" label="租赁人" width="120"></el-table-column>
-                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
-                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                 <el-table :data="businesses_list" style="width: 1000">
+                    <el-table-column prop="id" label="编号" width="auto"></el-table-column>
+                    <el-table-column prop="date" label="日期" width="auto"></el-table-column>
+                    <el-table-column prop="client" label="租赁人" width="auto"></el-table-column>
+                    <el-table-column prop="price" label="金额" width="auto"></el-table-column>
+                    <el-table-column prop="functionary" label="负责人" width="auto"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -222,14 +238,14 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                <el-table :data="businesses_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
-                    <el-table-column prop="client" label="客户" width="120"></el-table-column>
-                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
-                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                <el-table :data="businesses_list" style="width: 1000">
+                    <el-table-column prop="id" label="编号" width="auto"></el-table-column>
+                    <el-table-column prop="date" label="日期" width="auto"></el-table-column>
+                    <el-table-column prop="client" label="客户" width="auto"></el-table-column>
+                    <el-table-column prop="price" label="金额" width="auto"></el-table-column>
+                    <el-table-column prop="functionary" label="负责人" width="auto"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>

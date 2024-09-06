@@ -273,10 +273,9 @@ Mock.mock('/api/delete-train-form', 'post', {
 
 //申请管理部分
 let requiredataList = [
-    {
+      {
         id: '008', // 维修申请的唯一标识符
         type: '维修申请', // 维修申请类型
-        status: '通过',
         employee: '张三', // 员工姓名
         billId: 'B005', // 关联的账单ID
         amount: '1500', // 账单金额
@@ -286,21 +285,24 @@ let requiredataList = [
         name: '相机电池', // 设备名称
         model: 'BT-102', // 设备型号
         description: '电池无法充电', // 维修描述
+        status: '通过', // 申请的处理状态
+        remark: '请尽快处理，电池已影响正常工作。' // 额外的备注信息
       },
       {
         id: '009', // 报销申请的唯一标识符
         type: '报销申请', // 报销申请类型
-        status: '拒绝',
+        
         employee: '李四', // 员工姓名
         billId: 'B006', // 关联的账单ID
         amount: '2000', // 账单金额
         date: '2023-11-15', // 账单日期
         accountId: 'ACC-303', // 关联的账户ID
+        status: '拒绝', // 申请的处理状态
+        remark: '报销申请不符合公司政策。' // 额外的备注信息
       },
       {
         id: '010', // 购买申请的唯一标识符
         type: '购买申请', // 购买申请类型
-        status: '等待',
         employee: '王五', // 员工姓名
         billId: 'B007', // 关联的账单ID
         amount: '5000', // 账单金额
@@ -310,6 +312,8 @@ let requiredataList = [
         name: '专业镜头', // 设备名称
         model: 'LN-PRO', // 设备型号
         description: '购买新镜头', // 购买描述
+        status: '等待', // 申请的处理状态
+        remark: '建议购买此镜头以提升拍摄质量。' // 额外的备注信息
       }
 ] 
 
@@ -338,10 +342,54 @@ Mock.mock('/api/delete-form', 'post', {
 
 //业务管理部分
 let investList = [
-    { id: '003', date: '9.5', client:'银行a', price: '10000', functionary: '老李', status: '进行中', remark: '注意随时跟进' },
-    { id: '002', date: '12.5', client:'yj', price: '10000', functionary: 'oceancat', status: '已经完成', remark: '无' },
-    { id: '005', date: '6.6', client:'银行a', price: '50000', functionary: 'bvvd', status: '进行中', remark: '时间紧迫' },
-    { id: '001', date: '2.28', client:'abcd', price: '10600', functionary: '老李', status: '进行中', remark: '6' },
+    {
+        id: "002",
+        customer: "银行b",
+        date: "2024-09-07",
+        billStatus: "待支付",
+        accountStatus: "已冻结",
+        billId: "B654321",
+        amount: "15000",
+        type: "活期存款",
+        billDate: "2024-09-11",
+        accountId: "ACC987654"
+      },
+      {
+        id: "003",
+        customer: "银行c",
+        date: "2024-09-08",
+        billStatus: "已支付",
+        accountStatus: "活跃",
+        billId: "B111222",
+        amount: "20000",
+        type: "定期存款",
+        billDate: "2024-09-12",
+        accountId: "ACC333666"
+      },
+      {
+        id: "004",
+        customer: "银行d",
+        date: "2024-09-09",
+        billStatus: "已支付",
+        accountStatus: "活跃",
+        billId: "B777888",
+        amount: "35000",
+        type: "定期存款",
+        billDate: "2024-09-13",
+        accountId: "ACC555999"
+      },
+      {
+        id: "005",
+        customer: "银行e",
+        date: "2024-09-10",
+        billStatus: "待支付",
+        accountStatus: "已冻结",
+        billId: "B999000",
+        amount: "10000",
+        type: "活期存款",
+        billDate: "2024-09-14",
+        accountId: "ACC444777"
+      }
 ] 
 
 Mock.mock('/api/get-invest', 'get', {
@@ -371,6 +419,33 @@ let buyList = [
     { id: '002', date: '12.5', client:'安东', price: '10000', functionary: '员工6', status: '已经完成', remark: '无' },
     { id: '005', date: '6.6', client:'chy', price: '50000', functionary: '员工4', status: '已撤销', remark: '时间紧迫' },
     { id: '001', date: '2.28', client:'yc', price: '10600', functionary: '员工1', status: '发起流程', remark: '6' },
+    {
+        id: "P001",
+        type: "电子产品",
+        date: "2024-09-06",
+        customer: "aaa",
+        
+
+        status: "待发货",
+
+        paymentStatus: "已支付",
+        billId: 'B123499',
+        billType: "订单",
+        amount: "500",
+        billDate: "2024-09-07",
+        accountId: "ACC456",
+
+        fileName: "产品说明书",
+        fileType: "PDF",
+        contentType: "application/pdf",
+        size: "2MB",
+        path: "/documents/product/P001.pdf",
+        uploadDate: "2024-09-05",
+        fileStatus: "已上传",
+        storageEquipmentId: "SE123",
+
+        remark:'无',
+      }
 ] 
 
 Mock.mock('/api/get-buy', 'get', {

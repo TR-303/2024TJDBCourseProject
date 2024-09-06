@@ -201,8 +201,8 @@
                   <el-form-item label="授课老师">
                     <el-input v-model="form.teacher"></el-input>
                   </el-form-item>
-                  <el-form-item label="授课日期">
-                    <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
+                  <el-form-item label="授课时间">
+                    <el-date-picker v-model="form.dateTime" type="datetime" placeholder="选择日期"></el-date-picker>
                   </el-form-item>
                   <el-form-item label="参与人员">
                     <el-table :data="form.drillEmployees">
