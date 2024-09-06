@@ -731,7 +731,7 @@ let projectList = [
 
         manager: '项目经理001', // 对接管理ID——FK员工id
 
-        employees: [], // 项目员工集合
+        employees: ['老李', '老赵', '老钱', '老孙', '老周', '老吴', '老郑', '老王', '老冯', '老陈'], // 项目员工集合
         kpiDate: '2024-09-06', // 绩效评定时间
         result: 1, // 评定结果打分
         judger: '评定员001', // 导航属性，追究评定者信息
@@ -763,6 +763,93 @@ let projectList = [
         billStatus: '已完成',
 
         status: '进行中', // 订单状态
+    },
+    {
+        id: 'PRO123457',
+        manager: '项目经理002',
+        employees: ['小张', '小李', '小刘'],
+        kpiDate: '2024-09-07',
+        result: 2,
+        judger: '评定员002',
+        fileId: 'FILE123457',
+        fileName: '市场分析报告',
+        fileType: '文档',
+        fileContentType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        fileSize: 1024,
+        filePath: '/uploads/2024/09/',
+        fileUploadDate: '2024-09-07',
+        fileStatus: '已上传',
+        customerid: 'CUST123457',
+        customerType: '政府',
+        customerName: '市政建设部',
+        customerBusinessType: '城市建设',
+        customerPhone: '12345678902',
+        customerEmail: 'contact@cityconstruction.gov',
+        customerAddress: '市政府路1号',
+        billId: 'ACC123457',
+        billAmount: 2500.00,
+        billType: '拨款',
+        billDate: '2024-09-08',
+        billStatus: '进行中',
+        status: '已完成'
+    },
+    {
+        id: 'PRO123458',
+        manager: '项目经理003',
+        employees: ['王经理', '赵主管', '钱专员'],
+        kpiDate: '2024-09-08',
+        result: 3,
+        judger: '评定员003',
+        fileId: 'FILE123458',
+        fileName: '财务报表',
+        fileType: '表格',
+        fileContentType: 'application/vnd.ms-excel',
+        fileSize: 512,
+        filePath: '/uploads/2024/09/',
+        fileUploadDate: '2024-09-08',
+        fileStatus: '未上传',
+        customerid: 'CUST123458',
+        customerType: '个人',
+        customerName: '孙小姐',
+        customerBusinessType: '咨询服务',
+        customerPhone: '12345678903',
+        customerEmail: 'sunshine@example.com',
+        customerAddress: '阳光小区2号',
+        billId: 'ACC123458',
+        billAmount: 1500.00,
+        billType: '服务费',
+        billDate: '2024-09-09',
+        billStatus: '已完成',
+        status: '待确认'
+    },
+    {
+        id: 'PRO123459',
+        manager: '项目经理004',
+        employees: ['吴工', '郑工', '冯工'],
+        kpiDate: '2024-09-09',
+        result: 4,
+        judger: '评定员004',
+        fileId: 'FILE123459',
+        fileName: '项目计划书',
+        fileType: '文档',
+        fileContentType: 'application/pdf',
+        fileSize: 3072,
+        filePath: '/uploads/2024/09/',
+        fileUploadDate: '2024-09-09',
+        fileStatus: '已上传',
+        customerid: 'CUST123459',
+        customerType: '企业',
+        customerName: '红星制造',
+        customerBusinessType: '机械制造',
+        customerPhone: '12345678904',
+        customerEmail: 'info@redstarmfg.com',
+        customerAddress: '工业大道3号',
+        billId: 'ACC123459',
+        billAmount: 3000.00,
+        billType: '项目款',
+        billDate: '2024-09-10',
+        billStatus: '已完成',
+        status: '进行中'
     }
 ] 
 

@@ -360,28 +360,116 @@
                     <el-form-item label="项目编号">
                         <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="项目日期">
-                        <el-date-picker v-model="form.date"
-                                        type="date"
-                                        placeholder="选择日期">
-                        </el-date-picker>
+                    <el-form-item label="对接管理ID">
+                        <el-input v-model="form.manager"></el-input>
                     </el-form-item>
-                    <el-form-item label="项目发起人人">
-                        <el-input v-model="form.client"></el-input>
+
+                    <el-form-item label="客户类型">
+                        <el-select v-model="form.customerType" placeholder="请选择客户类型">
+                            <el-option label="企业" value="企业"></el-option>
+                            <el-option label="政府" value="政府"></el-option>
+                            <el-option label="个人" value="个人"></el-option>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="项目金额">
-                        <el-input-number v-model="form.price"></el-input-number>
+                    <el-form-item label="客户名称">
+                        <el-input v-model="form.customerName"></el-input>
                     </el-form-item>
-                    <el-form-item label="项目负责人">
-                        <el-input v-model="form.functionary"></el-input>
+                    <el-form-item label="业务类型">
+                        <el-input v-model="form.customerBusinessType"></el-input>
                     </el-form-item>
-                    <el-form-item label="项目状态">
-                        <el-input v-model="form.status"></el-input>
+                    <el-form-item label="联系电话">
+                        <el-input v-model="form.customerPhone"></el-input>
                     </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input type="textarea" v-model="form.remark"></el-input>
+                    <el-form-item label="电子邮箱">
+                        <el-input v-model="form.customerEmail"></el-input>
+                    </el-form-item>
+                    <el-form-item label="客户地址">
+                        <el-input v-model="form.customerAddress"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="账单编号">
+                        <el-input v-model="form.billId" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="金额">
+                        <el-input v-model="form.billAmount"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账单类型">
+                        <el-select v-model="form.billType" placeholder="请选择账单类型">
+                            <el-option label="存款" value="存款"></el-option>
+                            <el-option label="支出" value="支出"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="账单日期">
+                        <el-date-picker v-model="form.billDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="账单状态">
+                        <el-select v-model="form.billStatus" placeholder="请选择账单状态">
+                            <el-option label="已完成" value="已完成"></el-option>
+                            <el-option label="进行中" value="进行中"></el-option>
+                        </el-select>
+                    </el-form-item>
+
+
+                    <el-form-item label="参与人员">
+                        <el-table :data="form.employees">
+                          <el-table-column label="姓名">
+                            <template v-slot="scope">
+                              <el-input v-model="scope.row" @input="updateStudent(scope.row, scope.$index)"></el-input>
+                            </template>
+                          </el-table-column>
+                          <el-table-column label="操作">
+                            <template v-slot="scope">
+                              <el-button type="danger" @click="removeStudent(scope.$index)">删除</el-button>
+                            </template>
+                          </el-table-column>
+                        </el-table>
+                        <el-button type="primary" @click="addStudent">添加人员</el-button>
+                    </el-form-item>
+                                        
+                    <el-form-item label="绩效评定时间">
+                        <el-date-picker v-model="form.kpiDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="评定结果打分">
+                        <el-input-number v-model="form.result"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="评定者">
+                        <el-input v-model="form.judger"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="文件名">
+                        <el-input v-model="form.fileName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="文件类型">
+                        <el-input v-model="form.fileType"></el-input>
+                    </el-form-item>
+                    <el-form-item label="内容类型">
+                        <el-input v-model="form.fileContentType"></el-input>
+                    </el-form-item>
+                    <el-form-item label="文件大小">
+                        <el-input-number v-model="form.fileSize"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="文件路径">
+                        <el-input v-model="form.filePath"></el-input>
+                    </el-form-item>
+                    <el-form-item label="上传日期">
+                        <el-date-picker v-model="form.fileUploadDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="文件状态">
+                        <el-select v-model="form.fileStatus" placeholder="请选择文件状态">
+                            <el-option label="已上传" value="已上传"></el-option>
+                            <el-option label="未上传" value="未上传"></el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="订单状态">
+                        <el-select v-model="form.status" placeholder="请选择订单状态">
+                            <el-option label="进行中" value="进行中"></el-option>
+                            <el-option label="已完成" value="已完成"></el-option>
+                            <el-option label="已取消" value="已取消"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
+                
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -460,6 +548,17 @@
             setBusinessID(id) {
                 this.businessID = id;
                 this.getIncome();
+            },
+            
+            //表单用
+            addStudent() {
+              this.form.drillEmployees.push(''); // 添加一个新的空行
+            },
+            updateStudent(value, index) {
+              this.form.drillEmployees[index] = value; // 更新学生信息
+            },
+            removeStudent(index) {
+              this.form.drillEmployees.splice(index, 1); // 删除指定索引的学生
             },
             //获取信息
             getIncome(){
