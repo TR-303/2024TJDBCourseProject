@@ -70,9 +70,9 @@
                 <li v-if="showSalarySubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_salary_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedSalaryF">
                     未处理
                 </li>
-                <li v-if="showSalarySubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_salary_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedSalaryF">
+                <!--<li v-if="showSalarySubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_salary_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedSalaryF">
                     已处理
-                </li>
+                </li>-->
 
 
                 <!-- 二级导航项 -->
@@ -228,7 +228,7 @@
             </div>
             <div>
                 <el-table :data="unprocessedSalaryList" style="width: 100%">
-                    <el-table-column prop="employeeID" label="员工ID" />
+                    <el-table-column prop="employeeId" label="员工ID" />
                     <el-table-column prop="employeeName" label="员工" />
                     <el-table-column prop="orderId" label="账单编号" />
                     <el-table-column prop="orderDate" label="帐单日期" />
@@ -243,7 +243,7 @@
         </div>
 
         <!-- 工资已处理数据显示部分 -->
-        <div class="container" v-if="showProcessedSalary">
+        <!--<div class="container" v-if="showProcessedSalary">
             <div class="container_head">
                 <label class="container_head_left">已处理工资</label>
                 <button class="container_head_right" @click="refreshProcessedSalaryData">
@@ -252,7 +252,7 @@
             </div>
             <div>
                 <el-table :data="processedSalaryList" style="width: 100%">
-                    <el-table-column prop="employeeID" label="员工ID" />
+                    <el-table-column prop="employeeId" label="员工ID" />
                     <el-table-column prop="employeeName" label="员工" />
                     <el-table-column prop="orderId" label="账单编号" />
                     <el-table-column prop="orderDate" label="帐单日期" />
@@ -260,7 +260,7 @@
                     <el-table-column prop="processedDate" label="发放日期" />
                 </el-table>
             </div>
-        </div>
+        </div>-->
 
         <!-- 项目收入未处理数据显示部分 -->
         <div class="container" v-if="showUnprocessedProjectIncome">
@@ -597,7 +597,7 @@
             /**************** 设备租赁 ****************/
             // 获取未处理设备租赁数据
             refreshUnprocessedLeasingData() {
-                axios.get('/api/equipmentLeasing/unprocessed')
+                axios.get('/api/finance/equipmentlease/false')
                     .then(response => {
                         this.unprocessedLeasingList = response.data;
                     }).catch(error => {
@@ -606,7 +606,7 @@
             },
             // 获取财务已处理的设备租赁数据
             refreshProcessedLeasingData() {
-                axios.get('/api/equipmentLeasing/processed')
+                axios.get('/api/finance/equipmentlease/true')
                     .then(response => {
                         this.processedLeasingList = response.data;
                     }).catch(error => {
@@ -616,26 +616,22 @@
             // 将未处理设备租赁标记为已处理
             markLeasingAsProcessed(row) {
                 const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
-                axios.post('/api/equipmentLeasing/markProcessed', {
-                    projectId: row.projectId, // 根据当前行的数据传递 projectId
+                axios.post('/api/finance/equipmentlease/process', {
+                    Id: row.projectId, // 根据当前行的数据传递 projectId
                     processedDate: currentDate // 添加 processedDate
                 }).then(response => {
-                    if (response.data.success) {
-                        this.unprocessedLeasingList = this.unprocessedLeasingList.filter(item => item.projectId !== row.projectId);
-                        this.refreshUnprocessedLeasingData();
-                        this.refreshProcessedLeasingData();
-                    } else {
-                        console.error('标记处理失败:', response.data.message);
-                    }
+                    this.unprocessedLeasingList = this.unprocessedLeasingList.filter(item => item.projectId !== row.projectId);
+                    this.refreshUnprocessedLeasingData();
+                    this.refreshProcessedLeasingData();
                 }).catch(error => {
-                    console.error('请求失败:', error);
+                    console.error('处理失败:', error);
                 });
             },
 
             /**************** 成片购买订单 ****************/
             // 获取未处理成片购买订单数据
             refreshUnprocessedBlockPurchaseOrderData() {
-                axios.get('/api/FinishedProduct/unprocessed')
+                axios.get('/api/finance/finishedproduct/false')
                     .then(response => {
                         this.unprocessedBlockPurchaseOrderList = response.data;
                     }).catch(error => {
@@ -644,7 +640,7 @@
             },
             // 获取已处理成片购买订单数据
             refreshProcessedBlockPurchaseOrderData() {
-                axios.get('/api/FinishedProduct/processed')
+                axios.get('/api/finance/finishedproduct/true')
                     .then(response => {
                         this.processedBlockPurchaseOrderList = response.data;
                     }).catch(error => {
@@ -654,26 +650,22 @@
             // 将未处理成片购买订单标记为已处理
             markBlockPurchaseOrderAsProcessed(row) {
                 const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
-                axios.post('/api/FinishedProduct/markProcessed', {
-                    orderId: row.orderId, // 根据当前行的数据传递 orderId
+                axios.post('/api/finance/finishedproduct/process', {
+                    Id: row.projectId, // 根据当前行的数据传递 orderId
                     processedDate: currentDate // 添加 processedDate
                 }).then(response => {
-                    if (response.data.success) {
-                        this.unprocessedBlockPurchaseOrderList = this.unprocessedBlockPurchaseOrderList.filter(item => item.orderId !== row.orderId);
-                        this.refreshUnprocessedBlockPurchaseOrderData();
-                        this.refreshProcessedBlockPurchaseOrderData();
-                    } else {
-                        console.error('标记处理失败:', response.data.message);
-                    }
+                    this.unprocessedBlockPurchaseOrderList = this.unprocessedBlockPurchaseOrderList.filter(item => item.orderId !== row.orderId);
+                    this.refreshUnprocessedBlockPurchaseOrderData();
+                    this.refreshProcessedBlockPurchaseOrderData();
                 }).catch(error => {
-                    console.error('请求失败:', error);
+                    console.error('处理失败:', error);
                 });
             },
 
             /**************** 工资 ****************/
             // 获取未处理工资数据
             refreshUnprocessedSalaryData() {
-                axios.get('/api/salary/unprocessed')
+                axios.get('/api/finance/salary/false')
                     .then(response => {
                         this.unprocessedSalaryList = response.data;
                     }).catch(error => {
@@ -682,7 +674,7 @@
             },
             // 获取已处理工资数据
             refreshProcessedSalaryData() {
-                axios.get('/api/salary/processed')
+                axios.get('/api/finance/salary/true')
                     .then(response => {
                         this.processedSalaryList = response.data;
                     }).catch(error => {
@@ -692,26 +684,22 @@
             // 将未处理工资标记为已处理
             markSalaryAsProcessed(row) {
                 const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
-                axios.post('/api/salary/markProcessed', {
-                    payrollNumber: row.payrollNumber, // 根据当前行的数据传递 payrollNumber
+                axios.post('/api/finance/salary/process', {
+                    Id: row.employeeId, // 根据当前行的数据传递 payrollNumber
                     processedDate: currentDate // 添加 processedDate
                 }).then(response => {
-                    if (response.data.success) {
-                        this.unprocessedSalaryList = this.unprocessedSalaryList.filter(item => item.payrollNumber !== row.payrollNumber);
-                        this.refreshUnprocessedSalaryData();
-                        this.refreshProcessedSalaryData();
-                    } else {
-                        console.error('标记处理失败:', response.data.message);
-                    }
+                    this.unprocessedSalaryList = this.unprocessedSalaryList.filter(item => item.payrollNumber !== row.payrollNumber);
+                    this.refreshUnprocessedSalaryData();
+                    this.refreshProcessedSalaryData();
                 }).catch(error => {
-                    console.error('请求失败:', error);
+                    console.error('处理失败:', error);
                 });
             },
 
             /**************** 项目收入 ****************/
             // 获取未处理项目收入数据
             refreshUnprocessedProjectIncomeData() {
-                axios.get('/api/projectIncome/unprocessed')
+                axios.get('/api/finance/projectIncome/false')
                     .then(response => {
                         this.unprocessedProjectIncomeList = response.data;
                     }).catch(error => {
@@ -720,7 +708,7 @@
             },
             // 获取已处理项目收入数据
             refreshProcessedProjectIncomeData() {
-                axios.get('/api/projectIncome/processed').then(response => {
+                axios.get('/api/finance/projectIncome/true').then(response => {
                     this.processedProjectIncomeList = response.data;
                 }).catch(error => {
                     console.error('Error fetching processed project income data:', error);
@@ -729,19 +717,15 @@
             // 将未处理项目收入标记为已处理
             markProjectIncomeAsProcessed(row) {
                 const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
-                axios.post('/api/projectIncome/markProcessed', {
-                    projectId: row.projectId, // 根据当前行的数据传递 projectId
+                axios.post('/api/finance/projectIncome/process', {
+                    Id: row.projectId, // 根据当前行的数据传递 projectId
                     processedDate: currentDate // 添加 processedDate
                 }).then(response => {
-                    if (response.data.success) {
-                        this.unprocessedProjectIncomeList = this.unprocessedProjectIncomeList.filter(item => item.projectId !== row.projectId);
-                        this.refreshUnprocessedProjectIncomeData();
-                        this.refreshProcessedProjectIncomeData();
-                    } else {
-                        console.error('标记处理失败:', response.data.message);
-                    }
+                    this.unprocessedProjectIncomeList = this.unprocessedProjectIncomeList.filter(item => item.projectId !== row.projectId);
+                    this.refreshUnprocessedProjectIncomeData();
+                    this.refreshProcessedProjectIncomeData();
                 }).catch(error => {
-                    console.error('请求失败:', error);
+                    console.error('处理失败:', error);
                 });
             },
             //获取数据
