@@ -286,7 +286,6 @@ let overviewList = [
         phone: '13800138000', // 联系电话
         email: 'zhangsan@example.com', // 电子邮箱
         salary: '5000.00', // 工资
-        salaryStatus: '正常', // 工资状态
         
         //bill
         billId: 'ACC123456', // 编号
@@ -295,26 +294,186 @@ let overviewList = [
         billDate: '2024-09-01', // 日期
         billStatus: '已完成',
 
-        interns: [], // 实习生集合
+        interns: [  { internId: 'I001', intern: '李四'},
+                    { internId: 'I004', intern: '孙七' },], // 实习生集合
 
-        projects: [], // 项目集合
+        projects: [{ id: 'P001', manager: '王总'},
+                    { id: 'P002', manager: '李经理', status: '进行中'},
+                    { id: 'P003', manager: '张经理', status: '已完成' },
+                    { id: 'P004', manager: '刘经理', status: '待确认' },
+                    { id: 'P005', manager: '陈经理', status: '进行中' },
+        ], // 项目集合
 
-        manageProjects: [], // 管理的项目集合
+        manageProjects: [{ id: 'P006', status: '进行中'},
+                        { id: 'P007', status: '待确认' },
+                        { id: 'P008', status: '已完成' },
+                        { id: 'P009', status: '进行中' }
+        ], // 管理的项目集合
 
         department: '管理部', // 部门
         
         kpi:'10', // KPI集合
 
-        attendances: [], // 考勤集合
+        attendances: [{ date: '2024-09-01', status: '出勤' },
+            { date: '2024-09-02', status: '迟到' }], // 考勤集合
 
-        drills: [] // 演练集合
-    }
+        drills: [{ id: 'T001', teacher: '王老师', dateTime: '2024-08-20'},
+            { id: 'T002', teacher: '张老师', dateTime: '2024-08-25'}] // 培训
+    },
+    {
+    id: '123457', // 员工ID——PK
+    name: '李四', // 姓名
+    gender: '男', // 性别
+    position: '项目经理', // 职位
+    phone: '13900139000', // 联系电话
+    email: 'lisi@example.com', // 电子邮箱
+    salary: '6000.00', // 工资
+    billId: 'ACC123457', // 编号
+    billAmount: 1200.00, // 金额
+    billType: '报销', // 类型
+    billDate: '2024-09-02', // 日期
+    billStatus: '进行中',
+    interns: [{ internId: 'I002', intern: '王五' }],
+    projects: [{ id: 'P006', manager: '赵经理', status: '待确认' }],
+    manageProjects: [{ id: 'P010', status: '待确认' }],
+    department: '研发部', // 部门
+    kpi: '15', // KPI
+    attendances: [{ date: '2024-09-03', status: '出勤' }],
+    drills: [{ id: 'T003', teacher: '刘老师', dateTime: '2024-08-30'}]
+},
+{
+    id: '123458',
+    name: '王五',
+    gender: '女',
+    position: '设计师',
+    phone: '13700137000',
+    email: 'wangwu@example.com',
+    salary: '5500.00',
+    billId: 'ACC123458',
+    billAmount: 1500.00,
+    billType: '借款',
+    billDate: '2024-09-03',
+    billStatus: '已完成',
+    interns: [{ internId: 'I003', intern: '赵六' }],
+    projects: [{ id: 'P007', manager: '钱经理', status: '进行中' }],
+    manageProjects: [{ id: 'P011', status: '已完成' }],
+    department: '设计部',
+    kpi: '12',
+    attendances: [{ date: '2024-09-04', status: '请假' }],
+    drills: [{ id: 'T004', teacher: '孙老师', dateTime: '2024-09-05'}]
+},
+{
+    id: '123459',
+    name: '赵六',
+    gender: '男',
+    position: '市场专员',
+    phone: '13600136000',
+    email: 'zhaoliu@example.com',
+    salary: '4800.00',
+    billId: 'ACC123459',
+    billAmount: 800.00,
+    billType: '报销',
+    billDate: '2024-09-04',
+    billStatus: '未开始',
+    interns: [{ internId: 'I005', intern: '钱七' }],
+    projects: [{ id: 'P008', manager: '孙经理', status: '已完成' }],
+    manageProjects: [{ id: 'P012', status: '待确认' }],
+    department: '市场部',
+    kpi: '8',
+    attendances: [{ date: '2024-09-05', status: '出勤' }],
+    drills: [{ id: 'T005', teacher: '李老师', dateTime: '2024-09-10'}]
+},
+{
+    id: '123460',
+    name: '钱七',
+    gender: '女',
+    position: '财务',
+    phone: '13500135000',
+    email: 'qianqi@example.com',
+    salary: '6200.00',
+    billId: 'ACC123460',
+    billAmount: 1600.00,
+    billType: '借款',
+    billDate: '2024-09-05',
+    billStatus: '已完成',
+    interns: [{ internId: 'I006', intern: '周八' }],
+    projects: [{ id: 'P009', manager: '周经理', status: '待确认' }],
+    manageProjects: [{ id: 'P013', status: '进行中' }],
+    department: '财务部',
+    kpi: '9',
+    attendances: [{ date: '2024-09-06', status: '迟到' }],
+    drills: [{ id: 'T006', teacher: '吴老师', dateTime: '2024-09-15'}]
+},
+{
+    id: '123461',
+    name: '周八',
+    gender: '男',
+    position: '人事',
+    phone: '13400134000',
+    email: 'zhouba@example.com',
+    salary: '5200.00',
+    billId: 'ACC123461',
+    billAmount: 1200.00,
+    billType: '存款',
+    billDate: '2024-09-06',
+    billStatus: '进行中',
+    interns: [{ internId: 'I007', intern: '吴九' }],
+    projects: [{ id: 'P010', manager: '郑经理', status: '已完成' }],
+    manageProjects: [{ id: 'P014', status: '已完成' }],
+    department: '人事部',
+    kpi: '7',
+    attendances: [{ date: '2024-09-07', status: '出勤' }],
+    drills: [{ id: 'T007', teacher: '郑老师', dateTime: '2024-09-20'}]
+},
+{
+    id: '123462',
+    name: '吴九',
+    gender: '女',
+    position: '销售',
+    phone: '13300133000',
+    email: 'wujiu@example.com',
+    salary: '5800.00',
+    billId: 'ACC123462',
+    billAmount: 1000.00,
+    billType: '报销',
+    billDate: '2024-09-07',
+    billStatus: '已完成',
+    interns: [{ internId: 'I008', intern: '郑十' }],
+    projects: [{ id: 'P011', manager: '王经理', status: '待确认' }],
+    manageProjects: [{ id: 'P015', status: '进行中' }],
+    department: '销售部',
+    kpi: '11',
+    attendances: [{ date: '2024-09-08', status: '请假' }],
+    drills: [{ id: 'T008', teacher: '冯老师', dateTime: '2024-09-25'}]
+},
+{
+    id: '123463',
+    name: '郑十',
+    gender: '男',
+    position: '技术支持',
+    phone: '13200132000',
+    email: 'zhengshi@example.com',
+    salary: '5600.00',
+    billId: 'ACC123463',
+    billAmount: 1300.00,
+    billType: '借款',
+    billDate: '2024-09-08',
+    billStatus: '未开始',
+    interns: [{ internId: 'I009', intern: '冯十一' }],
+    projects: [{ id: 'P012', manager: '陈经理', status: '已完成' }],
+    manageProjects: [{ id: 'P016', status: '待确认' }],
+    department: '技术支持部',
+    kpi: '13',
+    attendances: [{ date: '2024-09-09', status: '出勤' }],
+    drills: [{ id: 'T009', teacher: '陈老师', dateTime: '2024-09-30'}]
+},
 ] 
 
 
 Mock.mock('/api/get-overview', 'get', {
     employee_list: overviewList,
 })
+
 
 Mock.mock('/api/details-overview', 'post', (params) => {
     let data = JSON.parse(params.body);
@@ -343,35 +502,75 @@ let trainList = [
         dateTime: '2024-09-10T09:00:00', // 培训开始时间
         endTime: '2024-09-10T17:00:00', // 培训结束时间，假设培训时长为8小时
 
-        employees: ['老李', '老赵', '老钱', '老孙', '老周', '老吴', '老郑', '老王', '老冯', '老陈'], // 参与者集合
+        employees: [
+            { id: "100001", name: "老李" },
+            { id: "100002", name: "老赵" },
+            { id: "100003", name: "老钱" },
+            { id: "100004", name: "老孙" },
+            { id: "100005", name: "老周" },
+            { id: "100006", name: "老吴" },
+            { id: "100007", name: "老郑" },
+            { id: "100008", name: "老王" },
+            { id: "100009", name: "老冯" },
+            { id: "100010", name: "老陈" }
+        ], // 参与者集合
       },
       {
         id: '123457',
         teacher: '李老师',
         dateTime: '2024-09-11T09:30:00',
         endTime: '2024-09-11T17:30:00',
-        employees: ['赵经理', '钱主管', '孙工', '李工']
+        employees: [
+            { id: "100011", name: "马云" },
+            { id: "100012", name: "马化腾" },
+            { id: "100013", name: "丁磊" },
+            { id: "100014", name: "雷军" },
+            { id: "100015", name: "周鸿祎" }
+          ]
     },
     {
         id: '123458',
         teacher: '张老师',
         dateTime: '2024-09-12T10:00:00',
         endTime: '2024-09-12T18:00:00',
-        employees: ['周小姐', '吴先生', '郑女士', '王小姐']
+        employees: [
+            { id: "100016", name: "张一鸣" },
+            { id: "100017", name: "黄铮" },
+            { id: "100018", name: "刘强东" },
+            { id: "100019", name: "王兴" },
+            { id: "100020", name: "程维" }
+          ]
     },
     {
         id: '123459',
         teacher: '刘老师',
         dateTime: '2024-09-13T09:00:00',
         endTime: '2024-09-13T17:00:00',
-        employees: ['冯总', '陈总监', '褚专员', '卫助理']
+        employees: [
+            { id: "100021", name: "任正非" },
+            { id: "100022", name: "柳传志" },
+            { id: "100023", name: "董明珠" },
+            { id: "100024", name: "张近东" },
+            { id: "100025", name: "李书福" }
+          ]
     },
     {
         id: '123460',
         teacher: '陈老师',
         dateTime: '2024-09-14T10:30:00',
         endTime: '2024-09-14T18:30:00',
-        employees: ['蒋工', '沈主管', '韩专员', '杨助理']
+        employees: [
+            { id: "100026", name: "赵钱孙" },
+            { id: "100027", name: "李周吴" },
+            { id: "100028", name: "郑王冯" },
+            { id: "100029", name: "陈褚卫" },
+            { id: "100030", name: "蒋沈韩" },
+            { id: "100031", name: "杨秦尤" },
+            { id: "100032", name: "许何吕" },
+            { id: "100033", name: "施张孔" },
+            { id: "100034", name: "曹严华" },
+            { id: "100035", name: "金魏陶" }
+          ]
     }
 ] 
 
@@ -849,7 +1048,11 @@ let projectList = [
 
         manager: '项目经理001', // 对接管理ID——FK员工id
 
-        employees: ['老李', '老赵', '老钱', '老孙', '老周', '老吴', '老郑', '老王', '老冯', '老陈'], // 项目员工集合
+        employees: [
+            { id: "100011", name: "老蒋" },
+            { id: "100012", name: "老沈" },
+            { id: "100013", name: "老韩" }
+          ], // 项目员工集合
         kpiDate: '2024-09-06', // 绩效评定时间
         result: 1, // 评定结果打分
         judger: '评定员001', // 导航属性，追究评定者信息
@@ -885,7 +1088,12 @@ let projectList = [
     {
         id: 'PRO123457',
         manager: '项目经理002',
-        employees: ['小张', '小李', '小刘'],
+        employees: [
+            { id: "100014", name: "老杨" },
+            { id: "100015", name: "老朱" },
+            { id: "100016", name: "老秦" },
+            { id: "100017", name: "老尤" }
+          ],
         kpiDate: '2024-09-07',
         result: 2,
         judger: '评定员002',
@@ -914,7 +1122,13 @@ let projectList = [
     {
         id: 'PRO123458',
         manager: '项目经理003',
-        employees: ['王经理', '赵主管', '钱专员'],
+        employees: [
+            { id: "100018", name: "老许" },
+            { id: "100019", name: "老何" },
+            { id: "100020", name: "老吕" },
+            { id: "100021", name: "老施" },
+            { id: "100022", name: "老张" }
+          ],
         kpiDate: '2024-09-08',
         result: 3,
         judger: '评定员003',
@@ -943,7 +1157,15 @@ let projectList = [
     {
         id: 'PRO123459',
         manager: '项目经理004',
-        employees: ['吴工', '郑工', '冯工'],
+        employees: [
+            { id: "100023", name: "老孔" },
+            { id: "100024", name: "老曹" },
+            { id: "100025", name: "老严" },
+            { id: "100026", name: "老华" },
+            { id: "100027", name: "老金" },
+            { id: "100028", name: "老魏" },
+            { id: "100029", name: "老陶" }
+          ],
         kpiDate: '2024-09-09',
         result: 4,
         judger: '评定员004',

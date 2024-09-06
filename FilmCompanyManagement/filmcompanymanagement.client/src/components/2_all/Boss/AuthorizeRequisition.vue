@@ -220,6 +220,8 @@
                             message: error.response.data.message // 假设错误信息也在 message 字段中
                         });
                     });
+                //重新请求数据
+                getRequisition();
             },
             // 查看详情
             viewDetails(row) {
