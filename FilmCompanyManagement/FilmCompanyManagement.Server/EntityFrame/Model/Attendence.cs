@@ -19,13 +19,13 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public DateTime? CheckOutTime { get; set; } // 下班打卡时间（可空）
 
         [Column(TypeName = "NUMBER(1)")]
-        public int IsLate { get; set; } = 0; // 是否迟到
+        public bool IsLate { get; set; } = false; // 是否迟到
 
         [Column(TypeName = "NUMBER(1)")]
-        public int IsEarlyLeave { get; set; } = 0; // 是否早退
+        public bool IsEarlyLeave { get; set; } = false; // 是否早退
 
         [Column(TypeName = "NUMBER(1)")]
-        public int IsOnLeave { get; set; } = 0; // 是否请假
+        public bool IsOnLeave { get; set; } = false; // 是否请假
 
         [StringLength(500)]
         public string? Remarks { get; set; } // 备注信息（可空），用于记录额外说明（如请假原因、加班说明等）

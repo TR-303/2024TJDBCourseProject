@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using FilmCompanyManagement.Server.EntityFrame.Models;
 using FilmCompanyManagement.Server.EntityFrame;
+using System.Collections.Generic;
 
 namespace FilmCompanyManagement.Controllers
 {
@@ -25,6 +26,20 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult> GetEquipments(string userName)
+        {//worker:设备购买
+            var unfinishedProjects = await _context.PhotoEquipments.Include(p => p.Employee).Where(p => p.Employee.UserName == userName).ToListAsync();
+            return Ok(unfinishedProjects);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GetEquipmentsRepairs(string userName)
+        {//worker:设备维修
+            var unfinishedProjects = await _context.EquipmentRepairs.Include(p => p.Employee).Where(p => p.Employee.UserName == userName).ToListAsync();
+            return Ok(unfinishedProjects);
+        }
+
+        [HttpPost]
         public async Task<ActionResult> GetUnfinishedDrills(string userName)
         {//worker:培训通知
             var user = await _context.Employees.Where(d => d.UserName == userName).SingleAsync();
@@ -32,7 +47,7 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetWorkersFundingApplications(string userName)
+        public async Task<ActionResult> BossGetFundingApplications(string userName)
         {//boss:报销申请
             var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName).ToListAsync();
             var fundingApplications = new List<FundingApplication>();
@@ -42,9 +57,22 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetEquipments(string userName)
+        public async Task<ActionResult> BossGetEquipments(string userName)
         {//boss:设备购买
-            var unfinishedProjects = await _context.Projects.Include(p => p.Manager).Where(p => p.Manager.UserName == userName).ToListAsync();
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName).ToListAsync();
+            var unfinishedProjects = new List<PhotoEquipment>();
+            foreach (var worker in workers)
+                unfinishedProjects.AddRange(await _context.PhotoEquipments.Where(pe => pe.Employee == worker).ToListAsync());
+            return Ok(unfinishedProjects);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> BossGetEquipmentsRepairs(string userName)
+        {//boss:设备维修
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName).ToListAsync();
+            var unfinishedProjects = new List<EquipmentRepair>();
+            foreach (var worker in workers)
+                unfinishedProjects.AddRange(await _context.EquipmentRepairs.Where(pe => pe.Employee == worker).ToListAsync());
             return Ok(unfinishedProjects);
         }
 
@@ -63,7 +91,7 @@ namespace FilmCompanyManagement.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> GetSalaryBills()//500
+        public async Task<ActionResult> GetSalaryBills()
         {//finance:工资数据
             var salaryBills = new List<Bill>();
             foreach(var employee in await _context.Employees.Include(e => e.SalaryBill).Where(e => e.SalaryBill != null).ToListAsync())
@@ -86,7 +114,7 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> InsertAttendenceRecord(string userName, int state)//500
+        public async Task<ActionResult> InsertAttendenceRecord(string userName, int state)
         {
             var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
             if (await _context.Attendances.Include(a => a.Employee).FirstOrDefaultAsync(a => a.Employee.UserName == userName && a.Date == DateTime.Now) == null)
