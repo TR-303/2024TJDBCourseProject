@@ -59,7 +59,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> BossGetEquipments(thisRequest userName)
         {//boss:设备购买
-            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName).ToListAsync();
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName.id).ToListAsync();
             var photoEquipments = new List<PhotoEquipment>();
             foreach (var worker in workers)
                 photoEquipments.AddRange(await _context.PhotoEquipments.Include(pe => pe.Employee).Include(pe => pe.Bill).Where(pe => pe.Employee == worker).ToListAsync());
@@ -69,7 +69,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> BossGetEquipmentsRepairs(thisRequest userName)
         {//boss:设备维修
-            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName).ToListAsync();
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName.id).ToListAsync();
             var equipmentRepairs = new List<EquipmentRepair>();
             foreach (var worker in workers)
                 equipmentRepairs.AddRange(await _context.EquipmentRepairs.Include(er => er.Employee).Include(er => er.Bill).Include(er => er.PhotoEquipment).Where(pe => pe.Employee == worker).ToListAsync());
