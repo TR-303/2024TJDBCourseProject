@@ -59,21 +59,21 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> BossGetEquipments(thisRequest userName)
         {//boss:设备购买
-            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName.id).ToListAsync();
-            var unfinishedProjects = new List<PhotoEquipment>();
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName).ToListAsync();
+            var photoEquipments = new List<PhotoEquipment>();
             foreach (var worker in workers)
-                unfinishedProjects.AddRange(await _context.PhotoEquipments.Include(pe => pe.Employee).Include(pe => pe.Bill).Where(pe => pe.Employee == worker).ToListAsync());
-            return Ok(unfinishedProjects);
+                photoEquipments.AddRange(await _context.PhotoEquipments.Include(pe => pe.Employee).Include(pe => pe.Bill).Where(pe => pe.Employee == worker).ToListAsync());
+            return Ok(photoEquipments);
         }
 
         [HttpPost]
         public async Task<ActionResult> BossGetEquipmentsRepairs(thisRequest userName)
         {//boss:设备维修
-            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName.id).ToListAsync();
-            var unfinishedProjects = new List<EquipmentRepair>();
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName).ToListAsync();
+            var equipmentRepairs = new List<EquipmentRepair>();
             foreach (var worker in workers)
-                unfinishedProjects.AddRange(await _context.EquipmentRepairs.Include(er => er.Employee).Include(er => er.Bill).Include(er => er.PhotoEquipment).Where(pe => pe.Employee == worker).ToListAsync());
-            return Ok(unfinishedProjects);
+                equipmentRepairs.AddRange(await _context.EquipmentRepairs.Include(er => er.Employee).Include(er => er.Bill).Include(er => er.PhotoEquipment).Where(pe => pe.Employee == worker).ToListAsync());
+            return Ok(equipmentRepairs);
         }
 
         [HttpPost]
