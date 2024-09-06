@@ -34,7 +34,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("StudentsId");
 
-                    b.ToTable("DrillEmployee");
+                    b.ToTable("DrillEmployee", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeProject", b =>
@@ -49,7 +49,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("ProjectsId");
 
-                    b.ToTable("EmployeeProject");
+                    b.ToTable("EmployeeProject", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.AdvicerIntern", b =>
@@ -75,7 +75,7 @@ namespace FilmCompanyManagement.Server.Migrations
                     b.HasIndex("InternId")
                         .IsUnique();
 
-                    b.ToTable("AdviceIntern");
+                    b.ToTable("AdviceIntern", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Attendance", b =>
@@ -115,7 +115,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Attendance");
+                    b.ToTable("Attendance", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Bill", b =>
@@ -144,7 +144,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Bills");
+                    b.ToTable("Bills", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Customer", b =>
@@ -177,7 +177,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Department", b =>
@@ -199,7 +199,7 @@ namespace FilmCompanyManagement.Server.Migrations
                         .IsUnique()
                         .HasFilter("\"LeaderId\" IS NOT NULL");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Drill", b =>
@@ -223,7 +223,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Drills");
+                    b.ToTable("Drills", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Employee", b =>
@@ -287,7 +287,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("SalaryBillId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.EquipmentLease", b =>
@@ -319,7 +319,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EquipmentLeases");
+                    b.ToTable("EquipmentLeases", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.EquipmentRepair", b =>
@@ -358,7 +358,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("PhotoEquipmentId");
 
-                    b.ToTable("EquipmentRepairs");
+                    b.ToTable("EquipmentRepairs", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.File", b =>
@@ -403,7 +403,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("ReceiverId");
 
-                    b.ToTable("Files");
+                    b.ToTable("Files", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.FinishedProduct", b =>
@@ -439,7 +439,7 @@ namespace FilmCompanyManagement.Server.Migrations
                     b.HasIndex("FileId")
                         .IsUnique();
 
-                    b.ToTable("FinishedProducts");
+                    b.ToTable("FinishedProducts", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.FundingApplication", b =>
@@ -470,7 +470,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("FundingApplications");
+                    b.ToTable("FundingApplications", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Investment", b =>
@@ -493,7 +493,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Investments");
+                    b.ToTable("Investments", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.KPI", b =>
@@ -522,7 +522,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("KPI");
+                    b.ToTable("KPI", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.PhotoEquipment", b =>
@@ -566,7 +566,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("PhotoEquipments");
+                    b.ToTable("PhotoEquipments", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Project", b =>
@@ -603,7 +603,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("FilmCompanyManagement.Server.EntityFrame.Models.Recruiter", b =>
@@ -652,7 +652,7 @@ namespace FilmCompanyManagement.Server.Migrations
 
                     b.HasIndex("InterviewerId");
 
-                    b.ToTable("Recruiters");
+                    b.ToTable("Recruiters", (string)null);
                 });
 
             modelBuilder.Entity("DrillEmployee", b =>

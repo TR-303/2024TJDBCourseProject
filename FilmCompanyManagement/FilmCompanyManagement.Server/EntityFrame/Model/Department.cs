@@ -8,8 +8,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Key, StringLength(30)]
         public string Name { get; set; } // 部门名称
 
-        [Required]
-        public int LeaderId { get; set; }
+        public int? LeaderId { get; set; }
         [ForeignKey("LeaderId")]
         public Employee? Leader { get; set; }    //部门管理员
 
