@@ -1,18 +1,18 @@
 <template>
     <form @submit.prevent="submitExpense">
-        <div>
+        <div class="form-group">
             <label for="travelDate">差旅日期</label>
             <input type="date" v-model="form.travelDate" id="travelDate" />
         </div>
-        <div>
+        <div class="form-group">
             <label for="description">支出说明</label>
             <textarea v-model="form.description" id="description" rows="3" cols="60"></textarea>
         </div>
-        <div>
+        <div class="form-group">
             <label for="amount">支出金额</label>
             <input type="text" v-model="inputAmount" @blur="formatAmount" @input="validateAmount" id="amount" />
         </div>
-        <button type="submit">提交</button>
+        <button type="submit" class="submit_button">提交</button>
     </form>
 </template>
 
@@ -86,8 +86,54 @@
 </script>
 
 <style scoped>
-    textarea {
-        resize: vertical;
-        overflow: auto;
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        font-size: 18px;
+        margin-right: 10%;
     }
+
+    .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 18px;
+        margin-right: 20px;
+        width: 150px;
+    }
+
+    input[type="date"],
+    textarea,
+    input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: calc(100% - 180px);
+    }
+
+    .submit_button {
+        background-color: white;
+        color: #409EFF;
+        border: 2px solid #409EFF;
+        border-radius: 5px;
+        padding: 7px 15px;
+        font-size: 18px;
+        cursor: pointer;
+        text-align: center;
+        width: 90px;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+        .submit_button:hover {
+            background-color: #409EFF;
+            color: white;
+            border: none;
+        }
 </style>

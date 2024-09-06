@@ -34,9 +34,9 @@
         </div>
         <div class="container">
             <nav class="sub-nav">
-                <router-link :to="{ path: '/application/expense', query: { id: '3' } }">差务经费</router-link>
-                <router-link :to="{ path: '/application/purchase', query: { id: '3' } }">设备购买</router-link>
-                <router-link :to="{ path: '/application/repair', query: { id: '3' } }">设备维修</router-link>
+                <router-link class="nav_button" :to="{ path: '/application/expense', query: { id: '3' } }">差务经费</router-link>
+                <router-link class="nav_button" :to="{ path: '/application/purchase', query: { id: '3' } }">设备购买</router-link>
+                <router-link class="nav_button" :to="{ path: '/application/repair', query: { id: '3' } }">设备维修</router-link>
             </nav>
             <div class="sub-content">
                 <router-view />
@@ -171,15 +171,39 @@
         box-sizing: border-box;
     }
 
-    .container {
+    .sub-nav {
         display: flex;
-        flex-direction: column;
-        padding: 10px;
+        gap: 10px;
     }
 
-    .sub-nav {
-        margin-bottom: 20px;
+    .nav_button {
+        background-color: white;
+        color: #409EFF;
+        border: 2px solid #409EFF;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        width: 150px;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
     }
+
+        .nav_button:hover {
+            background-color: #1976d2;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .nav_button.active {
+            background-color: #409EFF;
+            color: white;
+            border: none;
+        }
+
+
 
         .sub-nav a {
             margin-right: 10px;

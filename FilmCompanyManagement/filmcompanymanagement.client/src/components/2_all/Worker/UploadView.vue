@@ -45,7 +45,6 @@
                             <th>文件说明</th>
                             <th>文件大小</th>
                             <th>上传日期</th>
-                            <th>状态</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,7 +55,6 @@
                             <td>{{ file.description }}</td>
                             <td>{{ file.size }}</td>
                             <td>{{ file.uploadDate }}</td>
-                            <td>{{ file.status }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -66,24 +64,25 @@
             <!-- 文件上传区域 -->
             <div class="upload-form">
                 <h2>上传文件</h2>
-                <input type="file" @change="handleFileUpload" />
+                <button @click="triggerFileInput" class="custom-file-button">选择文件</button>
+                <input type="file" ref="fileInput" @change="handleFileUpload" />
                 <div>
-                    <label for="fileName">文件名称</label>
-                    <input type="text" v-model="form.fileName" id="fileName" />
+                    <label for="fileName" class="form-label">文件名称</label>
+                    <input type="text" v-model="form.fileName" id="fileName" class="form-input" />
                 </div>
                 <div>
-                    <label for="fileType">文件类型</label>
-                    <input type="text" v-model="form.fileType" id="fileType" />
+                    <label for="fileType" class="form-label">文件类型</label>
+                    <input type="text" v-model="form.fileType" id="fileType" class="form-input" />
                 </div>
                 <div>
-                    <label for="fileSize">文件大小</label>
-                    <input type="text" v-model="form.fileSize" id="fileSize" />
+                    <label for="fileSize" class="form-label">文件大小</label>
+                    <input type="text" v-model="form.fileSize" id="fileSize" class="form-input" />
                 </div>
                 <div>
-                    <label for="fileDescription">文件说明</label>
-                    <textarea v-model="form.fileDescription" id="fileDescription" rows="3" cols="60"></textarea>
+                    <label for="fileDescription" class="form-label">文件说明</label>
+                    <textarea v-model="form.fileDescription" id="fileDescription" class="form-textarea" rows="3" cols="60"></textarea>
                 </div>
-                <button @click="uploadFile">确定上传</button>
+                <button @click="uploadFile" class="submit-button">确定上传</button>
             </div>
         </div>
     </div>
@@ -347,21 +346,58 @@
             background-color: #f2f2f2;
         }
 
-        .upload-form input, .upload-form textarea {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
+        .upload-form input[type="file"] {
+            display: none;
         }
 
-        .upload-form button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
+    .custom-file-button {
+        background-color: deepskyblue;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        width: 100px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+        .custom-file-button:hover {
+            background-color: #1976d2;
         }
 
-            .upload-form button:hover {
-                background-color: #45a049;
-            }
+    .form-label {
+        font-size: 18px;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .form-input, .form-textarea {
+        display: block;
+        margin-bottom: 10px;
+        width: calc(100% - 20px);
+        margin-right: 10%;
+        font-size: 18px;
+    }
+
+    .form-textarea {
+        resize: vertical;
+    }
+
+    .submit-button {
+        background-color: deepskyblue;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        width: 100px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+        .submit-button:hover {
+            background-color: #1976d2;
+        }
+
 </style>

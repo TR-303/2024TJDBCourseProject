@@ -1,18 +1,18 @@
 <template>
     <form @submit.prevent="submitPurchase">
-        <div>
+        <div class="form-group">
             <label for="equipmentName">设备名称</label>
             <input type="text" v-model="form.equipmentName" id="equipmentName" />
         </div>
-        <div>
+        <div class="form-group">
             <label for="model">设备型号</label>
             <input type="text" v-model="form.model" id="model" />
         </div>
-        <div>
+        <div class="form-group">
             <label for="amount">费用金额</label>
             <input type="text" v-model="inputAmount" @blur="formatAmount" @input="validateAmount" id="amount" />
         </div>
-        <button type="submit">提交</button>
+        <button type="submit" class="submit_button">提交</button>
     </form>
 </template>
 
@@ -84,3 +84,54 @@
         }
     }
 </script>
+
+<style scoped>
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        font-size: 18px;
+        margin-right: 10%; /* 设置右边距为页面宽度的 10% */
+    }
+
+    .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 18px;
+        margin-right: 20px; /* 增大文本框与前方文字的间距 */
+        width: 150px; /* 控制 label 的固定宽度，确保和输入框对齐 */
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: calc(100% - 180px); /* 调整文本框宽度，配合右边距 */
+    }
+
+    .submit_button {
+        background-color: white;
+        color: #409EFF;
+        border: 2px solid #409EFF;
+        border-radius: 5px;
+        padding: 7px 15px;
+        font-size: 18px;
+        cursor: pointer;
+        text-align: center;
+        width: 90px;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+        .submit_button:hover {
+            background-color: #409EFF;
+            color: white;
+            border: none;
+        }
+</style>
