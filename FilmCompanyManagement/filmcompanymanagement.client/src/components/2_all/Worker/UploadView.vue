@@ -64,22 +64,22 @@
             <!-- 文件上传区域 -->
             <div class="upload-form">
                 <h2>上传文件</h2>
-                <label for="fileInput" class="custom-file-button">选择文件</label>
-                <input type="file" id="fileInput" class="file-input" @change="handleFileUpload" />
-                <div class="form-section">
+                <button @click="triggerFileInput" class="custom-file-button">选择文件</button>
+                <input type="file" ref="fileInput" @change="handleFileUpload" />
+                <div>
                     <label for="fileName" class="form-label">文件名称</label>
                     <input type="text" v-model="form.fileName" id="fileName" class="form-input" />
                 </div>
-                <div class="form-section">
+                <div>
                     <label for="fileType" class="form-label">文件类型</label>
                     <input type="text" v-model="form.fileType" id="fileType" class="form-input" />
                 </div>
-                <div class="form-section">
-                    <label for="fileSize">文件大小</label>
+                <div>
+                    <label for="fileSize" class="form-label">文件大小</label>
                     <input type="text" v-model="form.fileSize" id="fileSize" class="form-input" />
                 </div>
-                <div class="form-section">
-                    <label for="fileDescription">文件说明</label>
+                <div>
+                    <label for="fileDescription" class="form-label">文件说明</label>
                     <textarea v-model="form.fileDescription" id="fileDescription" class="form-textarea" rows="3" cols="60"></textarea>
                 </div>
                 <button @click="uploadFile" class="submit-button">确定上传</button>
@@ -149,23 +149,12 @@
                 }
             });
 
-            const triggerFileInput = () => {
-                if (fileInput.value) {
-                    fileInput.value.click();
-                } else {
-                    console.error("File input not found");
-                }
-            };
-
-
             const handleFileUpload = (event) => {
                 const file = event.target.files[0];
                 if (file) {
                     form.value.fileName = file.name;
                     form.value.fileType = file.type;
                     form.value.fileSize = (file.size / 1024).toFixed(2) + ' KB';
-                } else {
-                    alert("未选择文件");
                 }
             };
 
@@ -361,10 +350,6 @@
             display: none;
         }
 
-    .file-input {
-        display: none;
-    }
-
     .custom-file-button {
         background-color: deepskyblue;
         color: white;
@@ -381,10 +366,6 @@
             background-color: #1976d2;
         }
 
-    .form-section {
-        margin-top: 10px; /* 下移10px */
-    }
-
     .form-label {
         font-size: 18px;
         margin-bottom: 5px;
@@ -395,6 +376,7 @@
         display: block;
         margin-bottom: 10px;
         width: calc(100% - 20px);
+        margin-right: 10%;
         font-size: 18px;
     }
 

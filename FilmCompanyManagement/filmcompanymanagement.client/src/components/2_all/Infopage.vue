@@ -49,10 +49,87 @@
     <div id="container" class="container">
         <div id="message_box" class="window1">
             <p style="font-size: 30px;text-align: center;">通知栏</p>
-            <ul class="ul_message">
-                <li class="li_message" style="font-size: 20px;" v-for="(message, index) in messages" :key="index">
-                    {{ message }}
-                </li>
+            <ul v-infinite-scroll class="infinite-list" style="overflow: auto">
+                <!--boss-->
+                <div v-if="showBossMenu">
+                    <p style="font-size: 15px;text-align: center;">报销账单申请</p>
+                    <el-table :data="FundingApplicationsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="报销Id" />
+                        <el-table-column prop='BillId' label='账单Id' />
+                        <el-table-column prop='EmployeeId' label='员工Id' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">设备购买申请</p>
+                    <el-table :data="PhotoEquipmentsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="设备购买Id" />
+                        <el-table-column prop="Name" label="设备名称" />
+                        <el-table-column prop='Model' label='型号' />
+                        <el-table-column prop='BillId' label='账单Id' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">设备维修申请</p>
+                    <el-table :data="RepairsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="申请Id" />
+                        <el-table-column prop='EmployeeId' label='员工Id' />
+                        <el-table-column prop='PhotoEquipmentId' label='设备Id' />
+                        <el-table-column prop='BillId' label='账单Id' />
+                        <el-table-column prop='Description' label='备注' />
+                    </el-table>
+                </div>
+                <!--worker-->
+                <div v-if="showWorkerMenu">
+                    <p style="font-size: 15px;text-align: center;">培训通知</p>
+                    <el-table :data="DrillsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="培训Id" />
+                        <el-table-column prop='TeacherId' label='教师Id' />
+                        <el-table-column prop='StartTime' label='开始时间' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">账单通知</p>
+                    <el-table :data="WorkerFundingApplicationsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="账单Id" />
+                        <el-table-column prop='Status' label='状态' />
+                        <el-table-column prop='Opinion' label='意见' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">设备购买通知</p>
+                    <el-table :data="WorkerPhotoEquipmentsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="设备购买Id" />
+                        <el-table-column prop="Description" label="设备描述" />
+                        <el-table-column prop='Status' label='状态' />
+                        <el-table-column prop='Opinion' label='意见' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">设备维修通知</p>
+                    <el-table :data="WorkerRepairsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="申请Id" />
+                        <el-table-column prop='PhotoEquipmentId' label='设备Id' />
+                        <el-table-column prop='Status' label='状态' />
+                        <el-table-column prop='Opinion' label='意见' />
+                    </el-table>
+                </div>
+                <!--finance-->
+                <div v-if="showFinanceMenu">
+                    <p style="font-size: 15px;text-align: center;">设备租赁通知</p>
+                    <el-table :data="EquipmentLeasesdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="租赁Id" />
+                        <el-table-column prop='EmployeeId' label='员工Id' />
+                        <el-table-column prop='BillId' label='账单Id' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">成片购买通知</p>
+                    <el-table :data="ProductsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="项目Id" />
+                        <el-table-column prop='BillId' label='账单id' />
+                        <el-table-column prop='Status' label='购买状态' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">工资发放通知</p>
+                    <el-table :data="EmployeesdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="员工ID" />
+                        <el-table-column prop='SalaryBillId' label='工资账单号' />
+                        <el-table-column prop='Salary' label='应发金额' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">投资注入通知</p>
+                    <el-table :data="InvestmentsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="员工ID" />
+                        <el-table-column prop='CustomerId' label='用户id' />
+                        <el-table-column prop='BillId' label='账单Id' />
+                    </el-table>
+                </div>
             </ul>
         </div>
         <div class="window2">
@@ -68,11 +145,9 @@
             <button :class="buttonClass(isClicked_1)" @click="handleClick_1" :disabled="isClicked_1">
                 {{ buttonText_1 }}
             </button>
-            <p v-if="isClicked_1" style="text-align: center;">{{ tips_1 }}</p>
             <button v-if="isClicked_1" :class="buttonClass(0)" @click="handleClick_2">
                 {{ buttonText_2 }}
             </button>
-            <p v-if="isClicked_2" style="text-align: center;">{{ tips_2 }}</p>
             <ul class="bottom-text">
                 <li>项目ID:{{ ProjectID }}</li>
                 <li>评定时间:{{ Date }}</li>
@@ -104,6 +179,27 @@
                 Date: '2024',
                 JudgerEmployeeID: 'ABC',
                 Result: '1',
+                InvestmentsdataList:[],
+
+                EmployeesdataList:[],
+
+                ProductsdataList:[],
+
+                EquipmentLeasesdataList:[],
+
+                PhotoEquipmentsdataList:[],
+
+                FundingApplicationsdataList:[],
+
+                RepairsdataList:[],
+
+                DrillsdataList:[],
+
+                WorkerFundingApplicationsdataList:[],
+
+                WorkerPhotoEquipmentsdataList:[],
+
+                WorkerRepairsdataList:[],
             }
         },
         computed: {
@@ -278,13 +374,110 @@
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
                 });
-            }
+            },
+            getmessage(){
+                //worker
+                //worker:报销申请
+                axios.post('/api/Info/GetFundingApplications',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.WorkerFundingApplicationsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching WorkerFundingApplicationsdataList', error);
+                });   
+                //worker:设备购买
+                axios.post('/api/Info/GetEquipments',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.WorkerPhotoEquipmentsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching WorkerPhotoEquipmentsdataList', error);
+                });
+                //worker:设备维修
+                axios.post('/api/Info/GetEquipmentsRepairs',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.WorkerRepairsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching WorkerRepairsdataList', error);
+                });
+                //worker:培训通知
+                axios.post('/api/Info/GetUnfinishedDrills',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.DrillsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching DrillsdataList', error);
+                });
+                
+                //boss     
+                //boss:报销申请
+                axios.post('/api/Info/BossGetFundingApplications',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.FundingApplicationsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching FundingApplicationsdataList', error);
+                });         
+                //boss:设备购买
+                axios.post('/api/Info/BossGetEquipments',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.PhotoEquipmentsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching PhotoEquipmentsdataList', error);
+                });
+                //boss:设备维修
+                axios.post('/api/Info/BossGetEquipmentsRepairs',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.RepairsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching RepairsdataList', error);
+                });
+
+                //finance
+                //finance:设备租赁
+                axios.post('/api/Info/GetEquipmentLeases',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.EquipmentLeasesdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching EquipmentLeasesdataList', error);
+                });
+                //finance:成片购买
+                axios.post('/api/Info/GetFinishedProducts',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.ProductsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching ProductsdataList', error);
+                });
+                //finance:工资数据
+                axios.post('/api/Info/GetSalaryBills',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.EmployeesdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching EmployeesdataList', error);
+                });
+                //finance:投资数据
+                axios.post('/api/Info/GetInvestments',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.InvestmentsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching InvestmentsdataList', error);
+                });
+
+            },
         },
         mounted() {
             this.updateDateTime();
             this.getid();
             this.getdata();
             this.getissign();
+            this.getmessage();
             setInterval(this.updateDateTime, 1000);  // 每秒更新一次
         }
     }
