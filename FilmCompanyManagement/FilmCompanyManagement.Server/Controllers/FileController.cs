@@ -31,17 +31,18 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> InsertFile(string filename, string fileType, string contentType, string filePath, int fileSize)
+        public async Task<ActionResult> InsertFile(string filename, int fileSize, int receiverId, int senderId)
         {
+            var receiver = await _context.Employees.FindAsync(receiverId);
+            var sender = await _context.Employees.FindAsync(senderId);
+
             await _context.AddAsync(new Server.EntityFrame.Models.File
             {
                 Name = filename,
-                FileType = fileType,
-                ContentType = contentType,
-                Path = filePath,
                 Size = fileSize,
+                Receiver = receiver,
+                Sender = sender,
                 UploadDate = DateTime.Now,
-                Status = "待审批",
             });
             await _context.SaveChangesAsync();
             return Ok();

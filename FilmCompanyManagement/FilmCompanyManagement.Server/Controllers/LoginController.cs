@@ -19,7 +19,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> IsUserUni(string userName)
         {
-            return Ok(await _context.Employees.Where(e => e.UserName == userName).FirstOrDefaultAsync() != null);
+            return Ok(await _context.Employees.FirstOrDefaultAsync(e => e.UserName == userName) != null);
         }
 
         [HttpPost]
@@ -29,12 +29,21 @@ namespace FilmCompanyManagement.Controllers
             string password = request.Password;
             string department = request.Department;
 
-            var loginUser = await _context.Employees.Where(e => e.UserName == userName && e.Department.Name == department).FirstOrDefaultAsync();
+            var loginUser = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == userName && e.Department.Name == department);
             if (loginUser == null)
                 return Ok(-1);//账户不存在
             else if (loginUser.Password == password)
                 return Ok(1);//登入成功
             return Ok(0);//密码错误
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GetUserId(string userName)
+        {
+            var user = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == userName);
+            if (user == null)
+                return BadRequest(0);
+            return Ok(user.Id);
         }
     }
 

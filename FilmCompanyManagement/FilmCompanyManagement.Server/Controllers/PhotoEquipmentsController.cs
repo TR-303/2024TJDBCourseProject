@@ -19,7 +19,7 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> InsertPhotoEquipment(string userName, string equipmentName, string equipmentModel, int price)
+        public async Task<ActionResult> InsertPhotoEquipment(string userName, string equipmentName, string equipmentModel, int price, string opinion)
         {
             var user = await _context.Employees.Where(e => e.UserName == userName).SingleAsync();
             var bill = new Bill
@@ -34,6 +34,7 @@ namespace FilmCompanyManagement.Controllers
                 Name = equipmentName,
                 Model = equipmentModel,
                 Status = 0,
+                Opinion = opinion,
                 Employee = user,
                 Bill = bill
             });

@@ -71,7 +71,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> GetInvestments(string userName)
         {//finance:投资数据
-            return Ok(await _context.Investments.Where(i => i.Bill.Status == 0).ToListAsync());
+            return Ok(await _context.Investments.Where(i => i.Bill.Status == false).ToListAsync());
         }
 
         //考勤板块
@@ -92,8 +92,8 @@ namespace FilmCompanyManagement.Controllers
                 {
                     Date = DateTime.Now,
                     Employee = user,
-                    CheckInTime = state == 1? DateTime.Now : null,
-                    CheckOutTime = state == 0? DateTime.Now : null
+                    CheckInTime = state == 1 ? DateTime.Now : null,
+                    CheckOutTime = state == 0 ? DateTime.Now : null
                 });
             }
             await _context.SaveChangesAsync();
