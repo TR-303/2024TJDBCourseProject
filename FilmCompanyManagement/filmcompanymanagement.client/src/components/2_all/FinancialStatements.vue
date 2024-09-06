@@ -408,22 +408,67 @@
             toggleInvesSubMenu() {
                 // 切换显示外部投资的三级菜单
                 this.showInvesSubMenu = !this.showInvesSubMenu;
+                // 关闭其他三级菜单
+                if (this.showLeasingSubMenu === true)
+                    this.showLeasingSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
+                if (this.showProjectIncomeSubMenu === true)
+                    this.showProjectIncomeSubMenu = false;
             },
             toggleLeasingSubMenu() {
                 // 切换显示设备租赁的三级菜单
                 this.showLeasingSubMenu = !this.showLeasingSubMenu;
+                // 关闭其他三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
+                if (this.showProjectIncomeSubMenu === true)
+                    this.showProjectIncomeSubMenu = false;
             },
             toggleBlockPurchaseOrderSubMenu() {
                 // 切换显示成片购买订单的三级菜单
                 this.showBlockPurchaseOrderSubMenu = !this.showBlockPurchaseOrderSubMenu;
+                // 关闭其他三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
+                if (this.showLeasingSubMenu === true)
+                    this.showLeasingSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
+                if (this.showProjectIncomeSubMenu === true)
+                    this.showProjectIncomeSubMenu = false;
             },
             toggleSalarySubMenu() {
                 // 切换显示工资的三级菜单
                 this.showSalarySubMenu = !this.showSalarySubMenu;
+                // 关闭其他三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
+                if (this.showLeasingSubMenu === true)
+                    this.showLeasingSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showProjectIncomeSubMenu === true)
+                    this.showProjectIncomeSubMenu = false;
             },
             toggleProjectIncomeSubMenu() {
                 // 切换显示项目收入的三级菜单
                 this.showProjectIncomeSubMenu = !this.showProjectIncomeSubMenu;
+                // 关闭其他三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
+                if (this.showLeasingSubMenu === true)
+                    this.showLeasingSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
             },
             // 显示未处理外部投资数据
             showUnprocessedInvestmentF() {
