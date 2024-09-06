@@ -93,16 +93,14 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> GetSalaryBills()
         {//finance:工资数据
-            var salaryBills = new List<Bill>();
-            foreach(var employee in await _context.Employees.Include(e => e.SalaryBill).Where(e => e.SalaryBill != null).ToListAsync())
-                salaryBills.Add(employee.SalaryBill);
-            return Ok(salaryBills);
+            return Ok(await _context.Employees.Include(e => e.SalaryBill).Where(e => e.SalaryBill != null).Select(e => e.SalaryBill).ToListAsync());
         }
 
         [HttpPost]
         public async Task<ActionResult> GetInvestments()//500
         {//finance:投资数据
-            return Ok(await _context.Investments.Include(i => i.Bill).Where(i => i.Bill.Status == false).ToListAsync());
+            var investments = await _context.Investments.Include(i => i.Bill).Where(i => i.Bill.Status == false).ToListAsync();
+            return Ok(investments);
         }
 
         //考勤板块
