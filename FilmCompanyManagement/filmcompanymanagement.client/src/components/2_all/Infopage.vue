@@ -98,8 +98,6 @@
                 currentDateTime: '',
                 isClicked_1: false,
                 isClicked_2: false,
-                tips_1: '',
-                tips_2: '',
                 buttonText_1: '签到',
                 buttonText_2: '签退',
                 ProjectID: '123',
@@ -191,48 +189,29 @@
             },
             handleClick_1() {
                 //这里先向服务器传递签到时间
-                axios.post('/api/data/signdata', {
+                axios.post('/api/Info/InsertAttendenceRecord', {
                     id: this.id,
-                    time: this.currentDateTime,
                     state: '1',
                 })
                     .then(result => {
-                        if (result.data.success) {
-                            alert("签到成功!");
-                            console.log(result.data);
-                            this.isClicked_1 = true;
-                            this.buttonText_1 = "已签到";
-                            this.tips_1 = `签到时间：${result.data.signtime}`;
-                        }
-                        else {
-                            this.isClicked_1 = true;
-                            this.buttonText_1 = "已签到";
-                            this.tips_1 = `签到时间：${result.data.signtime}`;
-                        }
+                        alert("签到成功!");
+                        console.log(result.data);
+                        this.isClicked_1 = true;
+                        this.buttonText_1 = "已签到";
                     }).catch(error => {
                         console.error('Error fetching mock data:', error);
                     });
             },
             handleClick_2() {
-                axios.post('/api/data/signdata', {
+                axios.post('/api/Info/InsertAttendenceRecord', {
                     id: this.id,
-                    time: this.currentDateTime,
                     state: '0',
                 })
                     .then(result => {
-                        if (result.data.success) {
-                            alert("签退成功!");
-                            console.log(result.data);
-                            this.isClicked_2 = true;
-                            this.buttonText_2 = "已签退";
-                            this.tips_2 = `签退时间：${result.data.signouttime}`;
-                        }
-                        else {
-                            alert("已更改签退时间！");
-                            this.isClicked_2 = true;
-                            this.buttonText_2 = "已签退";
-                            this.tips_2 = `签退时间：${result.data.signouttime}`;
-                        }
+                        alert("签退成功!");
+                        console.log(result.data);
+                        this.isClicked_2 = true;
+                        this.buttonText_2 = "已签退";
                     }).catch(error => {
                         console.error('Error fetching mock data:', error);
                     });
@@ -290,15 +269,12 @@
                 this.id = this.$route.query.id;
             },
             getissign() {
-                axios.post('/api/data/checksign', { id: this.id }).then(result => {
+                axios.post('/api/Info/IsAttended', { id: this.id }).then(result => {
                     console.log(result);
-                    if (result.data[0].issignout == '1') {
-                        console.log(result);
-                        this.isClicked_2 = true;
-                        this.buttonText_2 = "已签退";
-                        this.tips_2 = `签退时间：${result.data[0].signouttime}`;
+                    if (result.data == false) {
+                        this.isClicked_1 = true;
+                        this.buttonText_1 = "已签到";
                     }
-                    this.handleClick_1();
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
                 });
