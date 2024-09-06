@@ -49,10 +49,87 @@
     <div id="container" class="container">
         <div id="message_box" class="window1">
             <p style="font-size: 30px;text-align: center;">通知栏</p>
-            <ul class="ul_message">
-                <li class="li_message" style="font-size: 20px;" v-for="(message, index) in messages" :key="index">
-                    {{ message }}
-                </li>
+            <ul v-infinite-scroll class="infinite-list" style="overflow: auto">
+                <!--boss-->
+                <div v-if="showBossMenu">
+                    <p style="font-size: 15px;text-align: center;">报销账单申请</p>
+                    <el-table :data="FundingApplicationsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="报销Id" />
+                        <el-table-column prop='BillId' label='账单Id' />
+                        <el-table-column prop='EmployeeId' label='员工Id' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">设备购买申请</p>
+                    <el-table :data="PhotoEquipmentsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="设备购买Id" />
+                        <el-table-column prop="Name" label="设备名称" />
+                        <el-table-column prop='Model' label='型号' />
+                        <el-table-column prop='BillId' label='账单Id' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">设备维修申请</p>
+                    <el-table :data="RepairsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="申请Id" />
+                        <el-table-column prop='EmployeeId' label='员工Id' />
+                        <el-table-column prop='PhotoEquipmentId' label='设备Id' />
+                        <el-table-column prop='BillId' label='账单Id' />
+                        <el-table-column prop='Description' label='备注' />
+                    </el-table>
+                </div>
+                <!--worker-->
+                <div v-if="showWorkerMenu">
+                    <p style="font-size: 15px;text-align: center;">培训通知</p>
+                    <el-table :data="DrillsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="培训Id" />
+                        <el-table-column prop='TeacherId' label='教师Id' />
+                        <el-table-column prop='StartTime' label='开始时间' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">账单通知</p>
+                    <el-table :data="WorkerFundingApplicationsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="账单Id" />
+                        <el-table-column prop='Status' label='状态' />
+                        <el-table-column prop='Opinion' label='意见' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">设备购买通知</p>
+                    <el-table :data="WorkerPhotoEquipmentsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="设备购买Id" />
+                        <el-table-column prop="Description" label="设备描述" />
+                        <el-table-column prop='Status' label='状态' />
+                        <el-table-column prop='Opinion' label='意见' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">设备维修通知</p>
+                    <el-table :data="WorkerRepairsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="申请Id" />
+                        <el-table-column prop='PhotoEquipmentId' label='设备Id' />
+                        <el-table-column prop='Status' label='状态' />
+                        <el-table-column prop='Opinion' label='意见' />
+                    </el-table>
+                </div>
+                <!--finance-->
+                <div v-if="showFinanceMenu">
+                    <p style="font-size: 15px;text-align: center;">设备租赁通知</p>
+                    <el-table :data="EquipmentLeasesdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="租赁Id" />
+                        <el-table-column prop='EmployeeId' label='员工Id' />
+                        <el-table-column prop='BillId' label='账单Id' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">成片购买通知</p>
+                    <el-table :data="ProductsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="项目Id" />
+                        <el-table-column prop='BillId' label='账单id' />
+                        <el-table-column prop='Status' label='购买状态' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">工资发放通知</p>
+                    <el-table :data="EmployeesdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="员工ID" />
+                        <el-table-column prop='SalaryBillId' label='工资账单号' />
+                        <el-table-column prop='Salary' label='应发金额' />
+                    </el-table>
+                    <p style="font-size: 15px;text-align: center;">投资注入通知</p>
+                    <el-table :data="InvestmentsdataList" style="width: 100%" height="150px">
+                        <el-table-column prop="Id" label="员工ID" />
+                        <el-table-column prop='CustomerId' label='用户id' />
+                        <el-table-column prop='BillId' label='账单Id' />
+                    </el-table>
+                </div>
             </ul>
         </div>
         <div class="window2">
@@ -104,6 +181,27 @@
                 Date: '2024',
                 JudgerEmployeeID: 'ABC',
                 Result: '1',
+                InvestmentsdataList:[],
+
+                EmployeesdataList:[],
+
+                ProductsdataList:[],
+
+                EquipmentLeasesdataList:[],
+
+                PhotoEquipmentsdataList:[],
+
+                FundingApplicationsdataList:[],
+
+                RepairsdataList:[],
+
+                DrillsdataList:[],
+
+                WorkerFundingApplicationsdataList:[],
+
+                WorkerPhotoEquipmentsdataList:[],
+
+                WorkerRepairsdataList:[],
             }
         },
         computed: {
@@ -278,7 +376,7 @@
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
                 });
-            }
+            },
         },
         mounted() {
             this.updateDateTime();
