@@ -285,7 +285,7 @@
             },
             handleClick_1() {
                 //这里先向服务器传递签到时间
-                axios.post('/api/Info/InsertAttendenceRecord', {
+                axios.post('/api/InfoPage/InsertAttendenceRecord', {
                     id: this.id,
                     state: '1',
                 })
@@ -299,7 +299,7 @@
                     });
             },
             handleClick_2() {
-                axios.post('/api/Info/InsertAttendenceRecord', {
+                axios.post('/api/InfoPage/InsertAttendenceRecord', {
                     id: this.id,
                     state: '0',
                 })
@@ -365,7 +365,7 @@
                 this.id = this.$route.query.id;
             },
             getissign() {
-                axios.post('/api/Info/IsAttended', { id: this.id }).then(result => {
+                axios.post('/api/InfoPage/IsAttended', { id: this.id }).then(result => {
                     console.log(result);
                     if (result.data == false) {
                         this.isClicked_1 = true;
@@ -378,7 +378,7 @@
             getmessage(){
                 //worker
                 //worker:报销申请
-                axios.post('/api/Info/GetFundingApplications',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/GetFundingApplications',{id:this.id}).then(result=>{
                     console.log(result);
                     this.WorkerFundingApplicationsdataList=result.data;
                 }
@@ -386,7 +386,7 @@
                     console.error('Error fetching WorkerFundingApplicationsdataList', error);
                 });   
                 //worker:设备购买
-                axios.post('/api/Info/GetEquipments',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/GetEquipments',{id:this.id}).then(result=>{
                     console.log(result);
                     this.WorkerPhotoEquipmentsdataList=result.data;
                 }
@@ -394,7 +394,7 @@
                     console.error('Error fetching WorkerPhotoEquipmentsdataList', error);
                 });
                 //worker:设备维修
-                axios.post('/api/Info/GetEquipmentsRepairs',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/GetEquipmentsRepairs',{id:this.id}).then(result=>{
                     console.log(result);
                     this.WorkerRepairsdataList=result.data;
                 }
@@ -402,7 +402,7 @@
                     console.error('Error fetching WorkerRepairsdataList', error);
                 });
                 //worker:培训通知
-                axios.post('/api/Info/GetUnfinishedDrills',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/GetUnfinishedDrills',{id:this.id}).then(result=>{
                     console.log(result);
                     this.DrillsdataList=result.data;
                 }
@@ -412,7 +412,7 @@
                 
                 //boss     
                 //boss:报销申请
-                axios.post('/api/Info/BossGetFundingApplications',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/BossGetFundingApplications',{id:this.id}).then(result=>{
                     console.log(result);
                     this.FundingApplicationsdataList=result.data;
                 }
@@ -420,7 +420,7 @@
                     console.error('Error fetching FundingApplicationsdataList', error);
                 });         
                 //boss:设备购买
-                axios.post('/api/Info/BossGetEquipments',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/BossGetEquipments',{id:this.id}).then(result=>{
                     console.log(result);
                     this.PhotoEquipmentsdataList=result.data;
                 }
@@ -428,7 +428,7 @@
                     console.error('Error fetching PhotoEquipmentsdataList', error);
                 });
                 //boss:设备维修
-                axios.post('/api/Info/BossGetEquipmentsRepairs',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/BossGetEquipmentsRepairs',{id:this.id}).then(result=>{
                     console.log(result);
                     this.RepairsdataList=result.data;
                 }
@@ -438,7 +438,7 @@
 
                 //finance
                 //finance:设备租赁
-                axios.post('/api/Info/GetEquipmentLeases',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/GetEquipmentLeases',{id:this.id}).then(result=>{
                     console.log(result);
                     this.EquipmentLeasesdataList=result.data;
                 }
@@ -446,7 +446,7 @@
                     console.error('Error fetching EquipmentLeasesdataList', error);
                 });
                 //finance:成片购买
-                axios.post('/api/Info/GetFinishedProducts',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/GetFinishedProducts',{id:this.id}).then(result=>{
                     console.log(result);
                     this.ProductsdataList=result.data;
                 }
@@ -454,7 +454,7 @@
                     console.error('Error fetching ProductsdataList', error);
                 });
                 //finance:工资数据
-                axios.post('/api/Info/GetSalaryBills',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/GetSalaryBills',{id:this.id}).then(result=>{
                     console.log(result);
                     this.EmployeesdataList=result.data;
                 }
@@ -462,7 +462,7 @@
                     console.error('Error fetching EmployeesdataList', error);
                 });
                 //finance:投资数据
-                axios.post('/api/Info/GetInvestments',{id:this.id}).then(result=>{
+                axios.post('/api/InfoPage/GetInvestments',{id:this.id}).then(result=>{
                     console.log(result);
                     this.InvestmentsdataList=result.data;
                 }
