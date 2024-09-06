@@ -377,12 +377,109 @@
                     console.error('Error fetching mock data:', error);
                 });
             },
+            getmessage(){
+                //worker
+                //worker:报销申请
+                axios.post('/api/Info/GetFundingApplications',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.WorkerFundingApplicationsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching WorkerFundingApplicationsdataList', error);
+                });   
+                //worker:设备购买
+                axios.post('/api/Info/GetEquipments',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.WorkerPhotoEquipmentsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching WorkerPhotoEquipmentsdataList', error);
+                });
+                //worker:设备维修
+                axios.post('/api/Info/GetEquipmentsRepairs',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.WorkerRepairsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching WorkerRepairsdataList', error);
+                });
+                //worker:培训通知
+                axios.post('/api/Info/GetUnfinishedDrills',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.DrillsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching DrillsdataList', error);
+                });
+                
+                //boss     
+                //boss:报销申请
+                axios.post('/api/Info/BossGetFundingApplications',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.FundingApplicationsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching FundingApplicationsdataList', error);
+                });         
+                //boss:设备购买
+                axios.post('/api/Info/BossGetEquipments',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.PhotoEquipmentsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching PhotoEquipmentsdataList', error);
+                });
+                //boss:设备维修
+                axios.post('/api/Info/BossGetEquipmentsRepairs',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.RepairsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching RepairsdataList', error);
+                });
+
+                //finance
+                //finance:设备租赁
+                axios.post('/api/Info/GetEquipmentLeases',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.EquipmentLeasesdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching EquipmentLeasesdataList', error);
+                });
+                //finance:成片购买
+                axios.post('/api/Info/GetFinishedProducts',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.ProductsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching ProductsdataList', error);
+                });
+                //finance:工资数据
+                axios.post('/api/Info/GetSalaryBills',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.EmployeesdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching EmployeesdataList', error);
+                });
+                //finance:投资数据
+                axios.post('/api/Info/GetInvestments',{id:this.id}).then(result=>{
+                    console.log(result);
+                    this.InvestmentsdataList=result.data;
+                }
+                ).catch(error => {
+                    console.error('Error fetching InvestmentsdataList', error);
+                });
+
+            },
         },
         mounted() {
             this.updateDateTime();
             this.getid();
             this.getdata();
             this.getissign();
+            this.getmessage();
             setInterval(this.updateDateTime, 1000);  // 每秒更新一次
         }
     }
