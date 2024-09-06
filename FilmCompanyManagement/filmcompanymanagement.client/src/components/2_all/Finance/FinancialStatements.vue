@@ -101,11 +101,10 @@
             <div>
                 <el-table :data="unprocessedInvestmentList" style="width: 100%">
                     <el-table-column prop="investmentId" label="投资编号" />
-                    <el-table-column prop="customerId" label="投资客户ID" />
-                    <el-table-column prop="orderDate" label="订单日期" />
-                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="customerName" label="投资人" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
                     <el-table-column prop="amount" label="费用数额" />
-                    <el-table-column prop="expenseType" label="费用类型" />
                     <el-table-column label="操作">
                         <template #default="scope">
                             <el-button @click="markInvestmentAsProcessed(scope.row)">处理完成</el-button>
@@ -126,12 +125,11 @@
             <div>
                 <el-table :data="processedInvestmentList" style="width: 100%">
                     <el-table-column prop="investmentId" label="投资编号" />
-                    <el-table-column prop="customerId" label="投资客户ID" />
-                    <el-table-column prop="orderDate" label="订单日期" />
-                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="customerName" label="投资人" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
                     <el-table-column prop="amount" label="费用数额" />
-                    <el-table-column prop="expenseType" label="费用类型" />
-                    <el-table-column prop="processedDate" label="处理完成日期" />
+                    <el-table-column prop="processedDate" label="处理日期" />
                 </el-table>
             </div>
         </div>
@@ -147,10 +145,9 @@
             <div>
                 <el-table :data="unprocessedLeasingList" style="width: 100%">
                     <el-table-column prop="projectId" label="项目编号" />
-                    <el-table-column prop="orderDate" label="订单日期" />
-                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
                     <el-table-column prop="amount" label="费用数额" />
-                    <el-table-column prop="expenseType" label="费用类型" />
                     <el-table-column label="操作">
                         <template #default="scope">
                             <el-button @click="markLeasingAsProcessed(scope.row)">处理完成</el-button>
@@ -171,10 +168,9 @@
             <div>
                 <el-table :data="processedLeasingList" style="width: 100%">
                     <el-table-column prop="projectId" label="项目编号" />
-                    <el-table-column prop="orderDate" label="订单日期" />
-                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
                     <el-table-column prop="amount" label="费用数额" />
-                    <el-table-column prop="expenseType" label="费用类型" />
                     <el-table-column prop="processedDate" label="处理完成日期" />
                 </el-table>
             </div>
@@ -190,11 +186,10 @@
             </div>
             <div>
                 <el-table :data="unprocessedBlockPurchaseOrderList" style="width: 100%">
-                    <el-table-column prop="orderId" label="订单编号" />
-                    <el-table-column prop="orderDate" label="订单日期" />
-                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="projectId" label="项目编号" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
                     <el-table-column prop="amount" label="费用数额" />
-                    <el-table-column prop="expenseType" label="费用类型" />
                     <el-table-column label="操作">
                         <template #default="scope">
                             <el-button @click="markBlockPurchaseOrderAsProcessed(scope.row)">处理完成</el-button>
@@ -214,11 +209,10 @@
             </div>
             <div>
                 <el-table :data="processedBlockPurchaseOrderList" style="width: 100%">
-                    <el-table-column prop="orderId" label="订单编号" />
-                    <el-table-column prop="orderDate" label="订单日期" />
-                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="projectId" label="项目编号" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
                     <el-table-column prop="amount" label="费用数额" />
-                    <el-table-column prop="expenseType" label="费用类型" />
                     <el-table-column prop="processedDate" label="处理完成日期" />
                 </el-table>
             </div>
@@ -234,11 +228,11 @@
             </div>
             <div>
                 <el-table :data="unprocessedSalaryList" style="width: 100%">
-                    <el-table-column prop="payrollNumber" label="工资表编号" />
-                    <!--<el-table-column prop="ratingRecordId" label="评定记录ID" />-->
-                    <!--<el-table-column prop="ratingResult" label="评定结果" />-->
-                    <!--<el-table-column prop="rateeId" label="被评定者ID" />-->
-                    <el-table-column prop="basePay" label="基本工资" />
+                    <el-table-column prop="employeeID" label="员工ID" />
+                    <el-table-column prop="employeeName" label="员工" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
+                    <el-table-column prop="salary" label="基本工资" />
                     <el-table-column label="操作">
                         <template #default="scope">
                             <el-button @click="markSalaryAsProcessed(scope.row)">处理完成</el-button>
@@ -258,11 +252,12 @@
             </div>
             <div>
                 <el-table :data="processedSalaryList" style="width: 100%">
-                    <el-table-column prop="payrollNumber" label="工资表编号" />
-                    <!--<el-table-column prop="ratingRecordId" label="评定记录ID" />-->
-                    <!--<el-table-column prop="ratingResult" label="评定结果" />-->
-                    <!--<el-table-column prop="rateeId" label="被评定者ID" />-->
-                    <el-table-column prop="basePay" label="基本工资" />
+                    <el-table-column prop="employeeID" label="员工ID" />
+                    <el-table-column prop="employeeName" label="员工" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
+                    <el-table-column prop="salary" label="基本工资" />
+                    <el-table-column prop="processedDate" label="发放日期" />
                 </el-table>
             </div>
         </div>
@@ -278,10 +273,9 @@
             <div>
                 <el-table :data="unprocessedProjectIncomeList" style="width: 100%">
                     <el-table-column prop="projectId" label="项目编号" />
-                    <el-table-column prop="orderDate" label="订单日期" />
-                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
                     <el-table-column prop="amount" label="费用数额" />
-                    <el-table-column prop="expenseType" label="费用类型" />
                     <el-table-column label="操作">
                         <template #default="scope">
                             <el-button @click="markProjectIncomeAsProcessed(scope.row)">处理完成</el-button>
@@ -302,10 +296,9 @@
             <div>
                 <el-table :data="processedProjectIncomeList" style="width: 100%">
                     <el-table-column prop="projectId" label="项目编号" />
-                    <el-table-column prop="orderDate" label="订单日期" />
-                    <el-table-column prop="invoiceNumber" label="账单编号" />
+                    <el-table-column prop="orderId" label="账单编号" />
+                    <el-table-column prop="orderDate" label="帐单日期" />
                     <el-table-column prop="amount" label="费用数额" />
-                    <el-table-column prop="expenseType" label="费用类型" />
                     <el-table-column prop="processedDate" label="处理完成日期" />
                 </el-table>
             </div>
@@ -566,9 +559,8 @@
 
             /**************** 外部投资 ****************/
             // 获取未处理外部投资数据
-            // 带请求参数`orderStatus` (string): 订单状态，值为“approved”表示管理员已批准
             refreshUnprocessedInvestmentData() {
-                axios.get('/api/externalInvestments/unprocessed')
+                axios.get('/api/finance/investment/0')
                     .then(response => {
                     this.unprocessedInvestmentList = response.data;
                 }).catch(error => {
@@ -577,7 +569,7 @@
             },
             // 获取财务已处理的外部投资数据
             refreshProcessedInvestmentData() {
-                axios.get('/api/externalInvestments/processed')
+                axios.get('/api/finance/investment/1')
                     .then(response => {
                     this.processedInvestmentList = response.data;
                 }).catch(error => {
@@ -588,7 +580,7 @@
             markInvestmentAsProcessed(row) {
                 const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
                 // 发送 API 请求将该投资标记为处理完成
-                axios.post('/api/externalInvestments/markProcessed', {
+                axios.post('/api/finance/investment/process', {
                     investmentId: row.investmentId, // 根据当前行的数据传递 investmentId
                     processedDate: currentDate // 添加 processedDate
                 }).then(response => {
