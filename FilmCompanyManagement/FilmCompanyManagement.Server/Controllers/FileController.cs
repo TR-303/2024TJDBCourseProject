@@ -20,7 +20,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpGet]
         public async Task<ActionResult> GetReceiver(int fileID)
         {
-            var file = await _context.Files.Where(f => f.Id == fileID).SingleAsync();
+            var file = await _context.Files.Include(f => f.Projects).Include(f => f.FinishedProducts).Where(f => f.Id == fileID).SingleAsync();
             
             var receivers = new List<Customer>();
             if (file.Projects != null)

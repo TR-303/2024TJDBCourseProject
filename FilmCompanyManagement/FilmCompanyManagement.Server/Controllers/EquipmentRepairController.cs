@@ -28,7 +28,7 @@ namespace FilmCompanyManagement.Controllers
                 AssignDate = DateTime.Now
             };
             await _context.Bills.AddAsync(bill);
-            var photoEquipment = await _context.PhotoEquipments.Include(pe => pe.Bill).Where(pe => pe.Id == equipmentID).SingleAsync();
+            var photoEquipment = await _context.PhotoEquipments.Where(pe => pe.Id == equipmentID).SingleAsync();
             var equipmentRepair = new EquipmentRepair
             {
                 PhotoEquipment = photoEquipment,

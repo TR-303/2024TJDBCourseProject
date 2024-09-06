@@ -18,7 +18,7 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> EmployeesInDepartment(string department)//204
+        public async Task<ActionResult> EmployeesInDepartment(string department)
         {
             var dept = await _context.Departments.Include(d=>d.Employees).SingleAsync(d => d.Name == department);
             return Ok(dept.Employees);
