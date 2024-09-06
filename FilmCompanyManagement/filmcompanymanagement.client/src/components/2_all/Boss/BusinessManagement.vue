@@ -409,21 +409,20 @@
                         </el-select>
                     </el-form-item>
 
-
-                    <el-form-item label="参与人员">
-                        <el-table :data="form.employees">
-                          <el-table-column label="姓名">
-                            <template v-slot="scope">
-                              <el-input v-model="scope.row" @input="updateStudent(scope.row, scope.$index)"></el-input>
-                            </template>
-                          </el-table-column>
-                          <el-table-column label="操作">
-                            <template v-slot="scope">
-                              <el-button type="danger" @click="removeStudent(scope.$index)">删除</el-button>
-                            </template>
-                          </el-table-column>
-                        </el-table>
-                        <el-button type="primary" @click="addStudent">添加人员</el-button>
+                    <el-form-item label="项目员工">
+                      <el-table :data="form.employees">
+                        <el-table-column label="姓名">
+                          <template v-slot="scope">
+                            <el-input v-model="scope.row" @input="updateEmployee(scope.row, scope.$index)"></el-input>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="操作">
+                          <template v-slot="scope">
+                            <el-button type="danger" @click="removeEmployee(scope.$index)">删除</el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                      <el-button type="primary" @click="addEmployee">添加人员</el-button>
                     </el-form-item>
                                         
                     <el-form-item label="绩效评定时间">
@@ -496,7 +495,7 @@
                   { id: '3', name: '公司项目'},
                 ],
                 businesses_list:[],
-                template_form:  {id:'0'},
+                template_form:  {id:'0', billId:'0', fileId:'0', employees:['']},
                 form:           { id: '' },
             }
         },
@@ -551,15 +550,16 @@
             },
             
             //表单用
-            addStudent() {
-              this.form.drillEmployees.push(''); // 添加一个新的空行
+            addEmployee() {
+              this.form.employees.push(''); // 添加一个新的空行
             },
-            updateStudent(value, index) {
-              this.form.drillEmployees[index] = value; // 更新学生信息
+            updateEmployee(value, index) {
+              this.form.employees[index] = value; // 更新学生信息
             },
-            removeStudent(index) {
-              this.form.drillEmployees.splice(index, 1); // 删除指定索引的学生
+            removeEmployee(index) {
+              this.form.employees.splice(index, 1); // 删除指定索引的学生
             },
+
             //获取信息
             getIncome(){
                 let path;

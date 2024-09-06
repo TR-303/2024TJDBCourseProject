@@ -125,7 +125,7 @@
                 name: '', // 获取登入姓名
                 requisition: [], //默认申请数据
                 dialogVisible: false,
-                form:    { id: '', type: '', name: '', status: '', date: '', price: '', remark: '' },
+                form:    { id: ''},
             }
         },
         computed: {

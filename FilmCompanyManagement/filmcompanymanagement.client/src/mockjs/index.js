@@ -116,6 +116,7 @@ Mock.mock('/data/checksign', 'post', (params) => {
 
 //boss
 //人员管理部分
+//招聘员工
 let inviteList = [
     {
         id: '001', // 招聘人员的唯一标识符
@@ -131,6 +132,54 @@ let inviteList = [
         interviewerStage: '一面', // 面试阶段
         state:'未录用'             //
       },
+      {
+        id: '002',
+        name: '李四',
+        gender: '男',
+        positionTitle: '软件工程师',
+        salary: '8000.00',
+        phone: '13911111111',
+        email: 'lisi@example.com',
+        interviewer: '面试官2',
+        interviewerStage: '二面',
+        state: '未录用'
+    },
+    {
+        id: '003',
+        name: '王五',
+        gender: '女',
+        positionTitle: '产品经理',
+        salary: '10000.00',
+        phone: '13722222222',
+        email: 'wangwu@example.com',
+        interviewer: '面试官3',
+        interviewerStage: '初试',
+        state: '已录用'
+    },
+    {
+        id: '004',
+        name: '赵六',
+        gender: '男',
+        positionTitle: '设计师',
+        salary: '7000.00',
+        phone: '13633333333',
+        email: 'zhaoliu@example.com',
+        interviewer: '面试官4',
+        interviewerStage: '终面',
+        state: '待定'
+    },
+    {
+        id: '005',
+        name: '周七',
+        gender: '女',
+        positionTitle: '市场专员',
+        salary: '6000.00',
+        phone: '13544444444',
+        email: 'zhouqi@example.com',
+        interviewer: '面试官5',
+        interviewerStage: '一面',
+        state: '未录用'
+    }
 ]
 Mock.mock('/api/get-invite', 'get', {
     employee_list: inviteList,
@@ -153,6 +202,7 @@ Mock.mock('/api/delete-invite-form', 'post', {
     message: 'invite删除成功'
 })
 
+//实习员工
 let internList = [
     {
         //指导人员
@@ -166,8 +216,43 @@ let internList = [
         internshipEndDate: '2025-09-01', // 实习结束日期
         remarks: '无', // 备注信息
     },
+    {
+        advicerId: '123457',
+        advicer: '王五',
+        internId: '789013',
+        intern: '赵六',
+        internshipStartDate: '2024-10-01',
+        internshipEndDate: '2025-10-01',
+        remarks: '表现优秀'
+    },
+    {
+        advicerId: '123458',
+        advicer: '周七',
+        internId: '789014',
+        intern: '吴八',
+        internshipStartDate: '2024-11-01',
+        internshipEndDate: '2025-11-01',
+        remarks: '需加强培训'
+    },
+    {
+        advicerId: '123459',
+        advicer: '郑九',
+        internId: '789015',
+        intern: '王十',
+        internshipStartDate: '2024-12-01',
+        internshipEndDate: '2025-12-01',
+        remarks: '有潜力'
+    },
+    {
+        advicerId: '123460',
+        advicer: '冯十一',
+        internId: '789016',
+        intern: '陈十二',
+        internshipStartDate: '2025-01-01',
+        internshipEndDate: '2026-01-01',
+        remarks: '良好'
+    }
 ]
-
 
 Mock.mock('/api/get-intern', 'get', {
     employee_list: internList,
@@ -190,6 +275,7 @@ Mock.mock('/api/delete-intern-form', 'post', {
     message: 'intern删除成功'
 })
 
+//员工总览
 let overviewList = [
     {
         id: '123456', // 员工ID——PK
@@ -247,6 +333,7 @@ Mock.mock('/api/delete-overview-form', 'post', {
     message: 'overview删除成功'
 })
 
+//员工培训
 let trainList = [
       {
         id: '123456', // 编号
@@ -258,6 +345,34 @@ let trainList = [
 
         employees: ['老李', '老赵', '老钱', '老孙', '老周', '老吴', '老郑', '老王', '老冯', '老陈'], // 参与者集合
       },
+      {
+        id: '123457',
+        teacher: '李老师',
+        dateTime: '2024-09-11T09:30:00',
+        endTime: '2024-09-11T17:30:00',
+        employees: ['赵经理', '钱主管', '孙工', '李工']
+    },
+    {
+        id: '123458',
+        teacher: '张老师',
+        dateTime: '2024-09-12T10:00:00',
+        endTime: '2024-09-12T18:00:00',
+        employees: ['周小姐', '吴先生', '郑女士', '王小姐']
+    },
+    {
+        id: '123459',
+        teacher: '刘老师',
+        dateTime: '2024-09-13T09:00:00',
+        endTime: '2024-09-13T17:00:00',
+        employees: ['冯总', '陈总监', '褚专员', '卫助理']
+    },
+    {
+        id: '123460',
+        teacher: '陈老师',
+        dateTime: '2024-09-14T10:30:00',
+        endTime: '2024-09-14T18:30:00',
+        employees: ['蒋工', '沈主管', '韩专员', '杨助理']
+    }
 ] 
 
 Mock.mock('/api/get-train', 'get', {
@@ -493,6 +608,7 @@ Mock.mock('/api/delete-invest-form', 'post', {
     message: 'invest删除成功'
 })
 
+//成片购买
 let buyList = [
     {
 
@@ -610,6 +726,7 @@ Mock.mock('/api/delete-buy-form', 'post', {
     message: 'buy删除成功'
 })
 
+//设备租赁
 let leaseList = [
     {
         id: 'ORD789012', // 编号
@@ -725,6 +842,7 @@ Mock.mock('/api/delete-lease-form', 'post', {
     message: 'lease删除成功'
 })
 
+//公司项目
 let projectList = [
     {
         id: 'PRO123456', // 项目编号
