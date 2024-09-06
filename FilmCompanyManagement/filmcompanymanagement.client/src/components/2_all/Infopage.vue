@@ -36,12 +36,30 @@
     </div>
     <div id="container" class="container">
         <div id="message_box" class="window1">
-            <p style="font-size: 30px;text-align: center;">通知栏</p>
-            <ul class="ul_message">
-                <li class="li_message" style="font-size: 20px;" v-for="(message, index) in messages" :key="index">
-                    {{ message }}
-                </li>
+            <p style="font-size: 30px;text-align: center;">通知栏</p>  
+            <ul v-infinite-scroll class="infinite-list" style="overflow: auto">
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
+                <el-table :data="userdataList" style="width: 100%" height="150px">
+                    <el-table-column prop="department" label="部门" />
+                    <el-table-column prop='id' label='员工id' />
+                    <el-table-column prop='phone' label='员工电话' />
+                </el-table>
             </ul>
+
         </div>
         <div class="window2">
             <div>
@@ -58,11 +76,9 @@
             <button :class="buttonClass(isClicked_1)" @click="handleClick_1" :disabled="isClicked_1">
                 {{ buttonText_1 }}
             </button>
-            <p v-if="isClicked_1" style="text-align: center;">{{ tips_1 }}</p>
             <button v-if="isClicked_1" :class="buttonClass(0)" @click="handleClick_2" >
                 {{ buttonText_2 }}
             </button>
-            <p style="text-align: center;">{{ tips_2 }}</p>
             <ul class="bottom-text">
                 <li>项目ID:{{ ProjectID }}</li>
                 <li>评定时间:{{ Date }}</li>
@@ -88,8 +104,6 @@
                 currentDateTime: '',
                 isClicked_1: false,
                 isClicked_2: false,
-                tips_1: '',
-                tips_2: '',
                 buttonText_1: '签到',
                 buttonText_2: '签退',
                 ProjectID: '123',
@@ -173,56 +187,37 @@
             },
             handleClick_1() {
                 //这里先向服务器传递签到时间
-                axios.post('/data/signdata',{
+                axios.post('/api/Info/InsertAttendenceRecord', {
                     id: this.id,
-                    time: this.currentDateTime,
-                    state:'1',
+                    state: '1',
                 })
                     .then(result => {
-                    if (result.data.success) {
                         alert("签到成功!");
                         console.log(result.data);
                         this.isClicked_1 = true;
                         this.buttonText_1 = "已签到";
-                        this.tips_1 = `签到时间：${result.data.signtime}`;
-                    }
-                    else {
-                        this.isClicked_1 = true;
-                        this.buttonText_1 = "已签到";
-                        this.tips_1 = `签到时间：${result.data.signtime}`;
-                    }
-                }).catch(error => {
-                    console.error('Error fetching mock data:', error);
-                });
-            },
-            handleClick_2() {
-                axios.post('/data/signdata', {
-                    id: this.id,
-                    time: this.currentDateTime,
-                    state: '0',
-                })
-                    .then(result => {
-                        if (result.data.success) {
-                            alert("签退成功!");
-                            console.log(result.data);
-                            this.isClicked_2 = true;
-                            this.buttonText_2 = "已签退";
-                            this.tips_2 = `签退时间：${result.data.signouttime}`;
-                        }
-                        else {
-                            alert("已更改签退时间！");
-                            this.isClicked_2 = true;
-                            this.buttonText_2 = "已签退";
-                            this.tips_2 = `签退时间：${result.data.signouttime}`;
-                        }
                     }).catch(error => {
                         console.error('Error fetching mock data:', error);
                     });
-/*                alert("签退成功!");
-                this.isClicked_2 = true;
-                this.buttonText_2 = "已签退";
-                this.tips_2 = `签退时间：${this.currentDateTime}`;
-                // 此时签到签退均完成，向管理员传送考勤信息*/
+            },
+            handleClick_2() {
+                axios.post('/api/Info/InsertAttendenceRecord', {
+                    id: this.id,
+                    state: '0',
+                })
+                    .then(result => {
+                        alert("签退成功!");
+                        console.log(result.data);
+                        this.isClicked_2 = true;
+                        this.buttonText_2 = "已签退";
+                    }).catch(error => {
+                        console.error('Error fetching mock data:', error);
+                    });
+                /*                alert("签退成功!");
+                                this.isClicked_2 = true;
+                                this.buttonText_2 = "已签退";
+                                this.tips_2 = `签退时间：${this.currentDateTime}`;
+                                // 此时签到签退均完成，向管理员传送考勤信息*/
             },
             buttonClass(isClicked) {
                 return isClicked ? 'clicked-button' : 'initial-button';
@@ -476,5 +471,11 @@
     .head_button:hover {
         background-color: #1976d2;
         /* 按钮悬浮效果 */
+    }
+    .infinite-list {
+        height: 350px;
+        padding: 0 10px 0 20px;
+        margin: 0;
+        list-style: none;
     }
 </style>

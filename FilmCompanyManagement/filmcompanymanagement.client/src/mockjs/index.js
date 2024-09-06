@@ -36,18 +36,13 @@ Mock.mock('/data/userdata', 'post', (params) => {
 )
 
 //登录使用：传了username，password，department
-Mock.mock('api/Login/IsUserUni', 'post', (params) => {
+Mock.mock('/api/Info/InsertAttendenceRecord', 'post', (params) => {
     let login = JSON.parse(params.body);
     const logindata = loginList.find(item => item.username === login.username && item.password === login.password && item.department === login.department);
     if (logindata)
-        return {
-            department: logindata.department,
-            success: 1,
-        };
+        return true;
     else
-        return {
-            success:0,
-        }
+        return true;
 }
 )
 

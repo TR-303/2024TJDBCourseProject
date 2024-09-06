@@ -19,7 +19,7 @@ const router = createRouter(
             component: () => import("@/components/2_all/Department.vue")
         },
         {
-            path: "/Infopage",
+            path: "/Infopage/:id?",
             component: InfopageVue  
         },
 
