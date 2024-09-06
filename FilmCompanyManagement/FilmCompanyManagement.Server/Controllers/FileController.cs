@@ -21,12 +21,12 @@ namespace FilmCompanyManagement.Controllers
         public async Task<ActionResult> GetReceiver(string fileID)
         {
             var file = await _context.Files.Where(f => f.Id == fileID).SingleAsync();
-            var receiverID = new List<string>();
+            var receivers = new List<Customer>();
             foreach (var project in file.Projects)
-                receiverID.Add(project.Customer.Id);
+                receivers.Add(project.Customer);
             foreach (var finishedProduct in file.FinishedProducts)
-                receiverID.Add(finishedProduct.Customer.Id);
-            return Ok(receiverID);
+                receivers.Add(finishedProduct.Customer);
+            return Ok(receivers);
         }
 
         [HttpPost]
@@ -34,7 +34,6 @@ namespace FilmCompanyManagement.Controllers
         {
             await _context.AddAsync(new Server.EntityFrame.Models.File
             {
-                Id = "F" + DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Name = filename,
                 FileType = fileType,
                 ContentType = contentType,
