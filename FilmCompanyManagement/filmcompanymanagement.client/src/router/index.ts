@@ -10,7 +10,7 @@ import BusinessManagement from '../components/2_all/Boss/BusinessManagement.vue'
 import PersonnelManagement from '../components/2_all/Boss/PersonnelManagement.vue'
 
 
-import FinancialStatements from '@/components/2_all/FinancialStatements.vue';
+import FinancialStatements from '@/components/2_all/Finance/FinancialStatements.vue';
 
 
 const router = createRouter(
