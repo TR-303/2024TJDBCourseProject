@@ -33,6 +33,8 @@
             </ul>
         </div>
 
+        <h2>业务管理</h2>
+
         <div>
             <el-button class="main_button" 
                 :style="{ backgroundColor: businessID === '0' ? '#409EFF' : '', color: businessID === '0' ? 'white' : '' }" 
@@ -55,14 +57,13 @@
             </div>
 
             <div class="dataTable">
-                 <el-table :data="businesses_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
-                    <el-table-column prop="client" label="投资人" width="120"></el-table-column>
-                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
-                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                 <el-table :data="businesses_list" style="width: 1000">
+                    <el-table-column prop="id" label="投资编号" width="auto"></el-table-column>
+                    <el-table-column prop="billDate" label="投资日期" width="auto"></el-table-column>
+                    <el-table-column prop="customerName" label="投资方" width="auto"></el-table-column>
+                    <el-table-column prop="billAmount" label="投资金额" width="auto"></el-table-column>
+                    <el-table-column prop="billStatus" label="账单状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -73,32 +74,52 @@
             <!--表单显示-->
             <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                 <!--根据表单数据结构动态生成表单-->
-                <el-form :model="investment_form" label-width="120px">
+                <el-form :model="form" label-width="120px">
                     <el-form-item label="投资编号">
-                        <el-input v-model="investment_form.id" disabled></el-input>
+                        <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="投资日期">
-                        <el-date-picker v-model="investment_form.date"
-                                        type="date"
-                                        placeholder="选择日期">
-                        </el-date-picker>
+                    <el-form-item label="客户类型">
+                        <el-select v-model="form.customerType" placeholder="请选择客户类型">
+                            <el-option label="企业" value="企业"></el-option>
+                            <el-option label="政府" value="政府"></el-option>
+                            <el-option label="个人" value="个人"></el-option>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="投资人">
-                        <el-input v-model="investment_form.client"></el-input>
+                    <el-form-item label="客户名称">
+                        <el-input v-model="form.customerName"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资金额">
-                        <el-input-number v-model="investment_form.price"></el-input-number>
+                    <el-form-item label="业务类型">
+                        <el-input v-model="form.customerBusinessType"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资负责人">
-                        <el-input v-model="investment_form.functionary"></el-input>
+                    <el-form-item label="联系电话">
+                        <el-input v-model="form.customerPhone"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资状态">
-                        <el-input v-model="investment_form.status"></el-input>
+                    <el-form-item label="电子邮箱">
+                        <el-input v-model="form.customerEmail"></el-input>
                     </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input type="textarea" v-model="investment_form.remark"></el-input>
+                    <el-form-item label="客户地址">
+                        <el-input v-model="form.customerAddress"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账单编号">
+                        <el-input v-model="form.billId" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="金额">
+                        <el-input v-model="form.billAmount"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账单类型">
+                        <el-input v-model="form.billType"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账单日期">
+                        <el-date-picker v-model="form.billDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="账单状态">
+                        <el-select v-model="form.billStatus" placeholder="请选账单状态">
+                            <el-option label="发起" value="发起"></el-option>
+                            <el-option label="完成" value="政府"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
+
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -110,14 +131,13 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                 <el-table :data="businesses_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
-                    <el-table-column prop="client" label="购买人" width="120"></el-table-column>
-                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
-                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                 <el-table :data="businesses_list" style="width: 1000">
+                    <el-table-column prop="id" label="购买编号" width="auto"></el-table-column>
+                    <el-table-column prop="billDate" label="购买日期" width="auto"></el-table-column>
+                    <el-table-column prop="customerName" label="购买人" width="auto"></el-table-column>
+                    <el-table-column prop="billAmount" label="购买金额" width="auto"></el-table-column>
+                    <el-table-column prop="status" label="订单状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -127,32 +147,98 @@
                 <!--表单显示-->
                 <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                     <!--根据表单数据结构动态生成表单-->
-                    <el-form :model="buy_form" label-width="120px">
-                        <el-form-item label="投资编号">
-                            <el-input v-model="buy_form.id" disabled></el-input>
+                    <el-form :model="form" label-width="120px">
+                        <el-form-item label="订单编号">
+                            <el-input v-model="form.id" disabled></el-input>
                         </el-form-item>
-                        <el-form-item label="投资日期">
-                            <el-date-picker v-model="buy_form.date"
-                                            type="date"
-                                            placeholder="选择日期">
-                            </el-date-picker>
+                        <el-form-item label="订单类型">
+                            <el-select v-model="form.type" placeholder="请选择订单类型">
+                                <el-option label="标准" value="标准"></el-option>
+                                <el-option label="加急" value="加急"></el-option>
+                                <el-option label="特殊" value="特殊"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item label="投资人">
-                            <el-input v-model="buy_form.client"></el-input>
+                        <el-form-item label="文件ID">
+                            <el-input v-model="form.fileId" disabled></el-input>
                         </el-form-item>
-                        <el-form-item label="投资金额">
-                            <el-input-number v-model="buy_form.price"></el-input-number>
+                        <el-form-item label="文件名">
+                            <el-input v-model="form.fileName"></el-input>
                         </el-form-item>
-                        <el-form-item label="投资负责人">
-                            <el-input v-model="buy_form.functionary"></el-input>
+                        <el-form-item label="文件类型">
+                            <el-input v-model="form.fileType"></el-input>
                         </el-form-item>
-                        <el-form-item label="投资状态">
-                            <el-input v-model="buy_form.status"></el-input>
+                        <el-form-item label="内容类型">
+                            <el-input v-model="form.fileContentType"></el-input>
                         </el-form-item>
-                        <el-form-item label="备注">
-                            <el-input type="textarea" v-model="buy_form.remark"></el-input>
+                        <el-form-item label="文件大小">
+                            <el-input-number v-model="form.fileSize"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="文件路径">
+                            <el-input v-model="form.filePath"></el-input>
+                        </el-form-item>
+                        <el-form-item label="上传日期">
+                            <el-date-picker v-model="form.fileUploadDate" type="date" placeholder="选择日期"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="文件状态">
+                            <el-select v-model="form.filestatus" placeholder="请选择文件状态">
+                                <el-option label="已上传" value="已上传"></el-option>
+                                <el-option label="未上传" value="未上传"></el-option>
+                                <el-option label="上传失败" value="上传失败"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="客户类型">
+                            <el-select v-model="form.customerType" placeholder="请选择客户类型">
+                                <el-option label="企业" value="企业"></el-option>
+                                <el-option label="政府" value="政府"></el-option>
+                                <el-option label="个人" value="个人"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="客户名称">
+                            <el-input v-model="form.customerName"></el-input>
+                        </el-form-item>
+                        <el-form-item label="业务类型">
+                            <el-input v-model="form.customerBusinessType"></el-input>
+                        </el-form-item>
+                        <el-form-item label="联系电话">
+                            <el-input v-model="form.customerPhone"></el-input>
+                        </el-form-item>
+                        <el-form-item label="电子邮箱">
+                            <el-input v-model="form.customerEmail"></el-input>
+                        </el-form-item>
+                        <el-form-item label="客户地址">
+                            <el-input v-model="form.customerAddress"></el-input>
+                        </el-form-item>
+                        <el-form-item label="账单编号">
+                            <el-input v-model="form.billId" disabled></el-input>
+                        </el-form-item>
+                        <el-form-item label="金额">
+                            <el-input v-model="form.billAmount"></el-input>
+                        </el-form-item>
+                        <el-form-item label="账单类型">
+                            <el-select v-model="form.billType" placeholder="请选择账单类型">
+                                <el-option label="存款" value="存款"></el-option>
+                                <el-option label="支出" value="支出"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="账单日期">
+                            <el-date-picker v-model="form.billDate" type="date" placeholder="选择日期"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="账单状态">
+                            <el-select v-model="form.billStatus" placeholder="请选择账单状态">
+                                <el-option label="已完成" value="已完成"></el-option>
+                                <el-option label="进行中" value="进行中"></el-option>
+                                <el-option label="未开始" value="未开始"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="申请的处理状态">
+                            <el-select v-model="form.status" placeholder="请选择处理状态">
+                                <el-option label="待发货" value="待发货"></el-option>
+                                <el-option label="已发货" value="已发货"></el-option>
+                                <el-option label="发货中" value="发货中"></el-option>
+                            </el-select>
                         </el-form-item>
                     </el-form>
+
                     <span slot="footer" class="dialog-footer">
                         <el-button type="primary" @click="submitForm">保存</el-button>
                         <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -165,14 +251,13 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                 <el-table :data="businesses_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
-                    <el-table-column prop="client" label="租赁人" width="120"></el-table-column>
-                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
-                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                 <el-table :data="businesses_list" style="width: 1000">
+                    <el-table-column prop="id" label="租赁编号" width="auto"></el-table-column>
+                    <el-table-column prop="billDate" label="租赁日期" width="auto"></el-table-column>
+                    <el-table-column prop="customerName" label="租赁人" width="auto"></el-table-column>
+                    <el-table-column prop="billAmount" label="租赁金额" width="auto"></el-table-column>
+                    <el-table-column prop="status" label="租赁状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -183,32 +268,65 @@
             <!--表单显示-->
             <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                 <!--根据表单数据结构动态生成表单-->
-                <el-form :model="lease_form" label-width="120px">
-                    <el-form-item label="投资编号">
-                        <el-input v-model="lease_form.id" disabled></el-input>
+                <el-form :model="form" label-width="120px">
+                    <el-form-item label="编号">
+                        <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="投资日期">
-                        <el-date-picker v-model="lease_form.date"
-                                        type="date"
-                                        placeholder="选择日期">
-                        </el-date-picker>
+                    <el-form-item label="对接员工">
+                        <el-input v-model="form.employee"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资人">
-                        <el-input v-model="lease_form.client"></el-input>
+                    <el-form-item label="客户类型">
+                        <el-select v-model="form.customerType" placeholder="请选择客户类型">
+                            <el-option label="企业" value="企业"></el-option>
+                            <el-option label="政府" value="政府"></el-option>
+                            <el-option label="个人" value="个人"></el-option>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="投资金额">
-                        <el-input-number v-model="lease_form.price"></el-input-number>
+                    <el-form-item label="客户名称">
+                        <el-input v-model="form.customerName"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资负责人">
-                        <el-input v-model="lease_form.functionary"></el-input>
+                    <el-form-item label="业务类型">
+                        <el-input v-model="form.customerBusinessType"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资状态">
-                        <el-input v-model="lease_form.status"></el-input>
+                    <el-form-item label="联系电话">
+                        <el-input v-model="form.customerPhone"></el-input>
                     </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input type="textarea" v-model="lease_form.remark"></el-input>
+                    <el-form-item label="电子邮箱">
+                        <el-input v-model="form.customerEmail"></el-input>
+                    </el-form-item>
+                    <el-form-item label="客户地址">
+                        <el-input v-model="form.customerAddress"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账单编号">
+                        <el-input v-model="form.billId" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="金额">
+                        <el-input v-model="form.billAmount"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账单类型">
+                        <el-select v-model="form.billType" placeholder="请选择账单类型">
+                            <el-option label="存款" value="存款"></el-option>
+                            <el-option label="支出" value="支出"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="账单日期">
+                        <el-date-picker v-model="form.billDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="账单状态">
+                        <el-select v-model="form.billStatus" placeholder="请选择账单状态">
+                            <el-option label="已完成" value="已完成"></el-option>
+                            <el-option label="进行中" value="进行中"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="订单状态">
+                        <el-select v-model="form.status" placeholder="请选择订单状态">
+                            <el-option label="待确认" value="待确认"></el-option>
+                            <el-option label="已确认" value="已确认"></el-option>
+                            <el-option label="已发货" value="已发货"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
+
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -220,14 +338,14 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                <el-table :data="businesses_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="date" label="日期" width="120"></el-table-column>
-                    <el-table-column prop="client" label="客户" width="120"></el-table-column>
-                    <el-table-column prop="price" label="金额" width="120"></el-table-column>
-                    <el-table-column prop="functionary" label="负责人" width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                <el-table :data="businesses_list" style="width: 1000">
+                    <el-table-column prop="id" label="项目编号" width="auto"></el-table-column>
+                    <el-table-column prop="billDate" label="项目日期" width="auto"></el-table-column>
+                    <el-table-column prop="customerName" label="项目客户" width="auto"></el-table-column>
+                    <el-table-column prop="billAmount" label="项目金额" width="auto"></el-table-column>
+                    <el-table-column prop="manager" label="项目负责人" width="auto"></el-table-column>
+                    <el-table-column prop="status" label="项目状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -238,32 +356,119 @@
             <!--表单显示-->
             <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                 <!--根据表单数据结构动态生成表单-->
-                <el-form :model="project_form" label-width="120px">
-                    <el-form-item label="投资编号">
-                        <el-input v-model="project_form.id" disabled></el-input>
+                <el-form :model="form" label-width="120px">
+                    <el-form-item label="项目编号">
+                        <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="投资日期">
-                        <el-date-picker v-model="project_form.date"
-                                        type="date"
-                                        placeholder="选择日期">
-                        </el-date-picker>
+                    <el-form-item label="对接管理ID">
+                        <el-input v-model="form.manager"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资人">
-                        <el-input v-model="project_form.client"></el-input>
+
+                    <el-form-item label="客户类型">
+                        <el-select v-model="form.customerType" placeholder="请选择客户类型">
+                            <el-option label="企业" value="企业"></el-option>
+                            <el-option label="政府" value="政府"></el-option>
+                            <el-option label="个人" value="个人"></el-option>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="投资金额">
-                        <el-input-number v-model="project_form.price"></el-input-number>
+                    <el-form-item label="客户名称">
+                        <el-input v-model="form.customerName"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资负责人">
-                        <el-input v-model="project_form.functionary"></el-input>
+                    <el-form-item label="业务类型">
+                        <el-input v-model="form.customerBusinessType"></el-input>
                     </el-form-item>
-                    <el-form-item label="投资状态">
-                        <el-input v-model="project_form.status"></el-input>
+                    <el-form-item label="联系电话">
+                        <el-input v-model="form.customerPhone"></el-input>
                     </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input type="textarea" v-model="project_form.remark"></el-input>
+                    <el-form-item label="电子邮箱">
+                        <el-input v-model="form.customerEmail"></el-input>
+                    </el-form-item>
+                    <el-form-item label="客户地址">
+                        <el-input v-model="form.customerAddress"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="账单编号">
+                        <el-input v-model="form.billId" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="金额">
+                        <el-input v-model="form.billAmount"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账单类型">
+                        <el-select v-model="form.billType" placeholder="请选择账单类型">
+                            <el-option label="存款" value="存款"></el-option>
+                            <el-option label="支出" value="支出"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="账单日期">
+                        <el-date-picker v-model="form.billDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="账单状态">
+                        <el-select v-model="form.billStatus" placeholder="请选择账单状态">
+                            <el-option label="已完成" value="已完成"></el-option>
+                            <el-option label="进行中" value="进行中"></el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="项目员工">
+                      <el-table :data="form.employees">
+                        <el-table-column label="姓名">
+                          <template v-slot="scope">
+                            <el-input v-model="scope.row" @input="updateEmployee(scope.row, scope.$index)"></el-input>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="操作">
+                          <template v-slot="scope">
+                            <el-button type="danger" @click="removeEmployee(scope.$index)">删除</el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                      <el-button type="primary" @click="addEmployee">添加人员</el-button>
+                    </el-form-item>
+                                        
+                    <el-form-item label="绩效评定时间">
+                        <el-date-picker v-model="form.kpiDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="评定结果打分">
+                        <el-input-number v-model="form.result"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="评定者">
+                        <el-input v-model="form.judger"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="文件名">
+                        <el-input v-model="form.fileName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="文件类型">
+                        <el-input v-model="form.fileType"></el-input>
+                    </el-form-item>
+                    <el-form-item label="内容类型">
+                        <el-input v-model="form.fileContentType"></el-input>
+                    </el-form-item>
+                    <el-form-item label="文件大小">
+                        <el-input-number v-model="form.fileSize"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="文件路径">
+                        <el-input v-model="form.filePath"></el-input>
+                    </el-form-item>
+                    <el-form-item label="上传日期">
+                        <el-date-picker v-model="form.fileUploadDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="文件状态">
+                        <el-select v-model="form.fileStatus" placeholder="请选择文件状态">
+                            <el-option label="已上传" value="已上传"></el-option>
+                            <el-option label="未上传" value="未上传"></el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="订单状态">
+                        <el-select v-model="form.status" placeholder="请选择订单状态">
+                            <el-option label="进行中" value="进行中"></el-option>
+                            <el-option label="已完成" value="已完成"></el-option>
+                            <el-option label="已取消" value="已取消"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
+                
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -290,11 +495,8 @@
                   { id: '3', name: '公司项目'},
                 ],
                 businesses_list:[],
-                template_form:{id:'0'},
-                investment_form:    { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
-                buy_form:           { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
-                lease_form:         { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
-                project_form:       { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
+                template_form:  {id:'0', billId:'0', fileId:'0', employees:['']},
+                form:           { id: '' },
             }
         },
         computed: {
@@ -346,22 +548,26 @@
                 this.businessID = id;
                 this.getIncome();
             },
+            
+            //表单用
+            addEmployee() {
+              this.form.employees.push(''); // 添加一个新的空行
+            },
+            updateEmployee(value, index) {
+              this.form.employees[index] = value; // 更新学生信息
+            },
+            removeEmployee(index) {
+              this.form.employees.splice(index, 1); // 删除指定索引的学生
+            },
+
             //获取信息
             getIncome(){
                 let path;
                 switch(this.businessID){
-                    case '0':
-                        path='/api/get-invest';
-                        break;
-                    case '1':
-                        path='/api/get-buy';
-                        break;
-                    case '2':
-                        path='/api/get-lease';
-                        break;
-                    case '3':
-                        path='/api/get-project';
-                        break;
+                    case '0':path='/api/get-invest';break;
+                    case '1':path='/api/get-buy';break;
+                    case '2':path='/api/get-lease';break;
+                    case '3':path='/api/get-project';break;
                 }
                 axios.get(path)
                     .then(response => {
@@ -374,26 +580,13 @@
             //提交表单
             submitForm() {
                 let path;
-                let form;
                 switch(this.businessID){
-                    case '0':
-                        path='/api/submit-invest-form';
-                        form=this.investment_form;
-                        break;
-                    case '1':
-                        path='/api/submit-buy-form';
-                        form=this.buy_form;
-                        break;
-                    case '2':
-                        path='/api/submit-lease-form';
-                        form=this.lease_form;
-                        break;
-                    case '3':
-                        path='/api/submit-project-form';
-                        form=this.project_form;
-                        break;
+                    case '0':path='/api/submit-invest-form';break;
+                    case '1':path='/api/submit-buy-form';break;
+                    case '2':path='/api/submit-lease-form';break;
+                    case '3':path='/api/submit-project-form';break;
                 }
-                axios.post(path, form)
+                axios.post(path, this.form)
                     .then(response => {
                         console.log('提交成功:', response.data.message); // 打印消息
                         this.$message({
@@ -414,12 +607,7 @@
             },
                         //新建
             createNew(){
-                switch(this.businessID){
-                    case '0':this.investment_form = this.template_form;break;
-                    case '1':this.buy_form = this.template_form;break;
-                    case '2':this.lease_form = this.template_form;break;
-                    case '3':this.project_form = this.template_form;break;
-                }
+                this.form = this.template_form;
                 this.dialogVisible = true;
             },
             //删除
@@ -449,45 +637,20 @@
             },
             // 查看详情
             viewDetails(row) {      
-                // 根据申请类型发送请求
+                let path;
                 switch(this.businessID){
-                    case '0':
-                        axios.post('/api/details-invest', { id: row.id}).then(response => {
-                            this.investment_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取外部投资表单数据失败', error);
-                        });
-                        break;
-                    case '1':
-                        axios.post('/api/details-buy', { id: row.id}).then(response => {
-                            this.buy_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取成片购买表单数据失败', error);
-                        });
-                        break;
-                    case '2':
-                        axios.post('/api/details-lease', { id: row.id}).then(response => {
-                            this.lease_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取设备租赁表单数据失败', error);
-                        });
-                        break;
-                    case '3':
-                        axios.post('/api/details-project', { id: row.id}).then(response => {
-                            this.project_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取公司项目表单数据失败', error);
-                        });
-                        break;
+                    case '0':path='/api/details-invest';break;
+                    case '1':path='/api/details-buy';break;
+                    case '2':path='/api/details-lease';break;
+                    case '3':path='/api/details-project';break;
                 }
+                axios.post(path, { id: row.id}).then(response => {
+                    this.form = response.data[0];
+                    // 显示表单
+                    this.dialogVisible = true;
+                    }).catch(error => {
+                        console.error('获取表单数据失败', error);
+                    });
             },
         },
         mounted() {

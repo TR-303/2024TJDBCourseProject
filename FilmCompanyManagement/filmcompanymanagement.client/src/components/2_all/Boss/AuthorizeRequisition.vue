@@ -33,16 +33,20 @@
             </ul>
         </div>
 
+        <h2>申请批准</h2>
+
         <div class="header-container">
             <p> </p>
         </div>
         <div class="dataTable">
-            <el-table :data="requisition" style="width: 100%">
-                <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                <el-table-column prop="name" label="申请人姓名" width="120"></el-table-column>
-                <el-table-column prop="type" label="申请类型" width="120"></el-table-column>
-                <el-table-column prop="status" label="申请状态" width="120"></el-table-column>
-                <el-table-column fixed="right" label="操作" width="200">
+            <el-table :data="requisition" style="width: 1000">
+                <el-table-column prop="id" label="申请编号" width="120"></el-table-column>
+                <el-table-column prop="employee" label="申请人姓名" width="auto"></el-table-column>
+                <el-table-column prop="type" label="申请类型" width="auto"></el-table-column>
+                <el-table-column prop="billAmount" label="申请金额" width="auto"></el-table-column>
+                <el-table-column prop="billDate" label="申请日期" width="auto"></el-table-column>
+                <el-table-column prop="status" label="申请状态" width="auto"></el-table-column>
+                <el-table-column fixed="right" label="操作" width="auto">
                     <template v-slot="scope">
                         <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                         <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -52,39 +56,57 @@
         </div>
         
         <!--表单显示-->
-        <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
-            <!--根据表单数据结构动态生成表单-->
+         <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
             <el-form :model="form" label-width="120px">
                 <el-form-item label="申请编号">
                     <el-input v-model="form.id" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="申请类型">
-                    <el-select v-model="form.type" placeholder="请选择申请类型">
-                        <el-option label="维修申请" value="0"></el-option>
-                        <el-option label="购买申请" value="1"></el-option>
-                        <el-option label="报销申请" value="2"></el-option>
+                    <el-select v-model="form.type" placeholder="请选择申请类型" disabled>
+                        <el-option label="维修申请" value="维修申请"></el-option>
+                        <el-option label="购买申请" value="购买申请"></el-option>
+                        <el-option label="报销申请" value="报销申请"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="申请人">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.employee" disabled></el-input>
+                </el-form-item>
+                <el-form-item v-if="form.type === '维修申请'" label="设备编号">
+                    <el-input v-model="form.equipmentId" disabled></el-input>
+                </el-form-item>
+                <el-form-item v-if="form.type !== '报销申请'" label="设备名称">
+                    <el-input v-model="form.equipmentName" disabled></el-input>
+                </el-form-item>
+                <el-form-item v-if="form.type !== '报销申请'" label="设备型号">
+                    <el-input v-model="form.equipmentModel" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="账单ID">
+                    <el-input v-model="form.billId" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="金额">
+                    <el-input v-model="form.billAmount" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="账单类型">
+                    <el-input v-model="form.billType" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="账单日期">
+                    <el-date-picker v-model="form.billDate" type="date" placeholder="选择日期" disabled></el-date-picker>
+                </el-form-item>
+                <el-form-item label="账单状态">
+                    <el-input v-model="form.billStatus" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="申请状态">
-                    <el-input v-model="form.status"></el-input>
-                </el-form-item>
-                <el-form-item label="日期">
-                    <el-date-picker v-model="form.date"
-                                    type="date"
-                                    placeholder="选择日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="申请价格">
-                    <el-input-number v-model="form.price"></el-input-number>
+                    <el-select v-model="form.status" placeholder="请选择状态" >
+                        <el-option label="待定" value="待定"></el-option>
+                        <el-option label="通过" value="通过"></el-option>
+                        <el-option label="拒绝" value="拒绝"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="备注">
                     <el-input type="textarea" v-model="form.remark"></el-input>
                 </el-form-item>
             </el-form>
-        
+
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submitForm">保存</el-button>
                 <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -103,7 +125,7 @@
                 name: '', // 获取登入姓名
                 requisition: [], //默认申请数据
                 dialogVisible: false,
-                form:    { id: '', type: '', name: '', status: '', date: '', price: '', remark: '' },
+                form:    { id: ''},
             }
         },
         computed: {

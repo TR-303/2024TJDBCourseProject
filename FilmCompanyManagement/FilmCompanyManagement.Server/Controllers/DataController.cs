@@ -19,7 +19,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost("userdata")]
         public async Task<IActionResult> UserData(UserDataRequest request)
         {
-            string id = request.id;
+            int id = request.id;
 
             var ret = await _context.Employees.SingleAsync(e => e.Id == id);
             if (ret == null) return BadRequest("not exist");
@@ -46,40 +46,6 @@ namespace FilmCompanyManagement.Controllers
             }).ToList();
             return Ok(ret);
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> SignData(Sign sign)
-        //{
-        //    string id = sign.id;
-        //    DateTime time = DateTime.Parse(sign.time);
-        //    string state = sign.state;
-
-        //    if (state == "1")
-        //    {
-        //        _context.Attendances.Add(new Attendance
-        //        {
-        //            Id = sign.time + id,
-        //            Date =time,
-        //        });
-        //        return Ok(new
-        //        {
-        //            success = 1,
-        //            signtime = sign.time
-        //        });
-        //    }
-        //    else
-        //    {
-        //        var att = await _context.Attendances.SingleAsync(e => e.Id == sign.time + id);
-        //        if (att == null) return BadRequest("has not sign in");
-
-        //        return Ok(new
-        //        {
-        //            success = 1,
-        //            signtime=sign.time
-        //        });
-        //    }
-
-        //}
     }
 
     public class DepartmentRequest
@@ -89,6 +55,6 @@ namespace FilmCompanyManagement.Controllers
 
     public class UserDataRequest
     {
-        public string id { get; set; }
+        public int id { get; set; }
     }
 }
