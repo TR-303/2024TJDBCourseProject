@@ -5,7 +5,7 @@
             <input type="date" v-model="form.repairDate" id="repairDate" />
         </div>
         <div>
-            <label for="equipment">维修设备</label>
+            <label for="equipment">设备编号</label>
             <input type="text" v-model="form.equipment" id="equipment" />
         </div>
         <div>

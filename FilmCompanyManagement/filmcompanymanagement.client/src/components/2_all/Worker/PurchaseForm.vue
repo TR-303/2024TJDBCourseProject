@@ -5,8 +5,8 @@
             <input type="text" v-model="form.equipmentName" id="equipmentName" />
         </div>
         <div>
-            <label for="item">购买项目</label>
-            <input type="text" v-model="form.item" id="item" />
+            <label for="model">设备型号</label>
+            <input type="text" v-model="form.model" id="model" />
         </div>
         <div>
             <label for="amount">费用金额</label>
@@ -25,7 +25,7 @@
         setup() {
             const form = ref({
                 equipmentName: '',
-                item: '',
+                model: '',
                 amount: 0
             })
 
@@ -54,7 +54,7 @@
 
             const submitPurchase = async () => {
 				// 检查所有字段是否已填写
-				if (!form.value.equipmentName || !form.value.item || form.value.amount === 0) {
+				if (!form.value.equipmentName || !form.value.model || form.value.amount === 0) {
 					alert("请完成所有内容的填写再提交！")
 					return
 				}
@@ -64,7 +64,7 @@
                     axios.post('/api/worker/purchase', {
                         id: userID,
                         equipment: form.value.equipmentName,
-                        item: form.value.item,
+                        model: form.value.model,
                         amount: form.value.amount
                     }).then(function (res) {
 
