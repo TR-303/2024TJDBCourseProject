@@ -1,10 +1,11 @@
-using FilmCompanyManagement.Server.EntityFrame;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using FilmCompanyManagement.Server.EntityFrame.Models;
 using System.Threading.Tasks;
+using System.Linq;
+using FilmCompanyManagement.Server.EntityFrame;
 
-namespace FilmCompanyManagement.Controllers
+namespace FilmCompanyManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,77 +18,129 @@ namespace FilmCompanyManagement.Controllers
             _context = context;
         }
 
-        // 获取业务列表（投资和设备租赁）
-        [HttpGet("BusinessList")]
-        public async Task<ActionResult> BusinessList(string type)
+        // 获取所有设备租赁信息
+        [HttpGet("get-equipment-leases")]
+        public async Task<IActionResult> GetEquipmentLeases()
         {
-            switch (type)
-            {
-                case "Investment":
-                    var investments = await _context.Investments.ToListAsync();
-                    return Ok(investments);
-                case "EquipmentLease":
-                    var equipmentLeases = await _context.EquipmentLeases.ToListAsync();
-                    return Ok(equipmentLeases);
-                default:
-                    return BadRequest("Invalid business type.");
-            }
+            var leases = await _context.EquipmentLeases
+                                       .Include(e => e.Employee)
+                                       .Include(e => e.Customer)
+                                       .Include(e => e.Bill)
+                                       .ToListAsync();
+            return Ok(new { leases });
         }
 
-        // 更新业务信息（投资或设备租赁）
-        [HttpPost("BusinessInformation/{type}/{id}")]
-        public async Task<IActionResult> BusinessInformation(string type, int id, [FromBody] object businessData)
+        // 提交或更新设备租赁
+        [HttpPost("submit-equipment-lease")]
+        public async Task<IActionResult> SubmitEquipmentLease([FromBody] EquipmentLease lease)
         {
-            switch (type)
+            if (lease.Id == 0)
             {
-                case "Investment":
-                    var investment = await _context.Investments.FindAsync(id);
-                    if (investment == null) return NotFound("Investment not found.");
-                    // 假设 businessData 是传入的修改数据，进行处理
-                    // 更新投资相关字段
-                    _context.Entry(investment).CurrentValues.SetValues(businessData);
-                    break;
-
-                case "EquipmentLease":
-                    var lease = await _context.EquipmentLeases.FindAsync(id);
-                    if (lease == null) return NotFound("Equipment Lease not found.");
-                    // 假设 businessData 是传入的修改数据，进行处理
-                    // 更新租赁相关字段
-                    _context.Entry(lease).CurrentValues.SetValues(businessData);
-                    break;
-
-                default:
-                    return BadRequest("Invalid business type.");
+                _context.EquipmentLeases.Add(lease);
             }
-
+            else
+            {
+                _context.EquipmentLeases.Update(lease);
+            }
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new { message = "设备租赁记录已保存" });
         }
 
-        // 删除业务信息（投资或设备租赁）
-        [HttpPost("BusinessDelete/{type}/{id}")]
-        public async Task<IActionResult> BusinessDelete(string type, int id)
+        // 删除设备租赁
+        [HttpPost("delete-equipment-lease")]
+        public async Task<IActionResult> DeleteEquipmentLease([FromBody] EquipmentLease lease)
         {
-            switch (type)
+            var leaseToDelete = await _context.EquipmentLeases.FindAsync(lease.Id);
+            if (leaseToDelete == null)
             {
-                case "Investment":
-                    var investment = await _context.Investments.FindAsync(id);
-                    if (investment == null) return NotFound("Investment not found.");
-                    _context.Investments.Remove(investment);
-                    break;
-
-                case "EquipmentLease":
-                    var lease = await _context.EquipmentLeases.FindAsync(id);
-                    if (lease == null) return NotFound("Equipment Lease not found.");
-                    _context.EquipmentLeases.Remove(lease);
-                    break;
-
-                default:
-                    return BadRequest("Invalid business type.");
+                return NotFound("租赁记录未找到");
             }
-
+            _context.EquipmentLeases.Remove(leaseToDelete);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new { message = "租赁记录已删除" });
+        }
+
+        // 获取所有设备维修信息
+        [HttpGet("get-equipment-repairs")]
+        public async Task<IActionResult> GetEquipmentRepairs()
+        {
+            var repairs = await _context.EquipmentRepairs
+                                        .Include(e => e.Employee)
+                                        .Include(e => e.PhotoEquipment)
+                                        .Include(e => e.Bill)
+                                        .ToListAsync();
+            return Ok(new { repairs });
+        }
+
+        // 提交或更新设备维修
+        [HttpPost("submit-equipment-repair")]
+        public async Task<IActionResult> SubmitEquipmentRepair([FromBody] EquipmentRepair repair)
+        {
+            if (repair.Id == 0)
+            {
+                _context.EquipmentRepairs.Add(repair);
+            }
+            else
+            {
+                _context.EquipmentRepairs.Update(repair);
+            }
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "设备维修记录已保存" });
+        }
+
+        // 删除设备维修
+        [HttpPost("delete-equipment-repair")]
+        public async Task<IActionResult> DeleteEquipmentRepair([FromBody] EquipmentRepair repair)
+        {
+            var repairToDelete = await _context.EquipmentRepairs.FindAsync(repair.Id);
+            if (repairToDelete == null)
+            {
+                return NotFound("维修记录未找到");
+            }
+            _context.EquipmentRepairs.Remove(repairToDelete);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "维修记录已删除" });
+        }
+
+        // 获取所有投资信息
+        [HttpGet("get-investments")]
+        public async Task<IActionResult> GetInvestments()
+        {
+            var investments = await _context.Investments
+                                            .Include(i => i.Customer)
+                                            .Include(i => i.Bill)
+                                            .ToListAsync();
+            return Ok(new { investments });
+        }
+
+        // 提交或更新投资
+        [HttpPost("submit-investment")]
+        public async Task<IActionResult> SubmitInvestment([FromBody] Investment investment)
+        {
+            if (investment.Id == 0)
+            {
+                _context.Investments.Add(investment);
+            }
+            else
+            {
+                _context.Investments.Update(investment);
+            }
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "投资记录已保存" });
+        }
+
+        // 删除投资记录
+        [HttpPost("delete-investment")]
+        public async Task<IActionResult> DeleteInvestment([FromBody] Investment investment)
+        {
+            var investmentToDelete = await _context.Investments.FindAsync(investment.Id);
+            if (investmentToDelete == null)
+            {
+                return NotFound("投资记录未找到");
+            }
+            _context.Investments.Remove(investmentToDelete);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "投资记录已删除" });
         }
     }
 }

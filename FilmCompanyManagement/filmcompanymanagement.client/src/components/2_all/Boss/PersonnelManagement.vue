@@ -33,33 +33,34 @@
             </ul>
         </div>
 
+        <h2>人员管理</h2>
 
         <div>
-            <el-button class="main_button" 
-                :style="{ backgroundColor: employeeID === '0' ? '#409EFF' : '', color: employeeID === '0' ? 'white' : '' }" 
-                type="primary" size="large" plain @click="setEmployeeID('0')">招聘实习</el-button>
-            <el-button class="main_button" 
-                :style="{ backgroundColor: employeeID === '1' ? '#409EFF' : '', color: employeeID === '1' ? 'white' : '' }"
-                type="primary" size="large" plain @click="setEmployeeID('1')">人员总览</el-button>
-            <el-button class="main_button" 
-                :style="{ backgroundColor: employeeID === '2' ? '#409EFF' : '', color: employeeID === '2' ? 'white' : '' }"
-                type="primary" size="large" plain @click="setEmployeeID('2')">员工培训</el-button>
+            <el-button class="main_button"
+                       :style="{ backgroundColor: employeeID === '0' ? '#409EFF' : '', color: employeeID === '0' ? 'white' : '' }"
+                       type="primary" size="large" plain @click="setEmployeeID('0')">招聘实习</el-button>
+            <el-button class="main_button"
+                       :style="{ backgroundColor: employeeID === '1' ? '#409EFF' : '', color: employeeID === '1' ? 'white' : '' }"
+                       type="primary" size="large" plain @click="setEmployeeID('1')">人员总览</el-button>
+            <el-button class="main_button"
+                       :style="{ backgroundColor: employeeID === '2' ? '#409EFF' : '', color: employeeID === '2' ? 'white' : '' }"
+                       type="primary" size="large" plain @click="setEmployeeID('2')">员工培训</el-button>
         </div>
 
-
+        <!-- 招聘与实习 -->
         <div v-if="employeeID == '0'">
             <div class="header-container">
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
 
             <div class="dataTable">
-                 <el-table :data="employee_list" style="width: 100%">
-                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
-                    <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-                    <el-table-column prop="type" label="招聘类型" width="120"></el-table-column>
-                    <el-table-column prop="salary" label="实习工资" width="120"></el-table-column>
-                    <el-table-column prop="status" label="招聘状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                <el-table :data="employee_list" style="width: 1000">
+                    <el-table-column prop="id" label="编号" width="auto"></el-table-column>
+                    <el-table-column prop="name" label="姓名" width="auto"></el-table-column>
+                    <el-table-column prop="gender" label="性别" width="auto"></el-table-column>
+                    <el-table-column prop="positionTitle" label="职位名称" width="auto"></el-table-column>
+                    <el-table-column prop="state" label="招聘状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -70,43 +71,74 @@
             <!--表单显示-->
             <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                 <!--根据表单数据结构动态生成表单-->
-                <el-form :model="invite_form" label-width="120px">
+                <el-form :model="form" label-width="120px">
                     <el-form-item label="编号">
-                        <el-input v-model="invite_form.id" disabled></el-input>
+                        <el-input v-model="form.id" readonly></el-input>
                     </el-form-item>
                     <el-form-item label="姓名">
-                        <el-input v-model="invite_form.name"></el-input>
+                        <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="招聘类型">
-                        <el-input v-model="invite_form.type"></el-input>
+                    <el-form-item label="性别">
+                        <el-input v-model="form.gender"></el-input>
                     </el-form-item>
-                    <el-form-item label="实习工资">
-                        <el-input-number v-model="invite_form.salary"></el-input-number>
+                    <el-form-item label="出生日期">
+                        <el-date-picker v-model="form.dateOfBirth" type="date"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="简历">
+                        <el-input v-model="form.resume" type="textarea"></el-input>
+                    </el-form-item>
+                    <el-form-item label="职位名称">
+                        <el-input v-model="form.positionTitle"></el-input>
+                    </el-form-item>
+                    <el-form-item label="联系电话">
+                        <el-input v-model="form.phone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电子邮件">
+                        <el-input v-model="form.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="面试官">
+                        <el-input v-model="form.interviewer"></el-input>
+                    </el-form-item>
+                    <el-form-item label="面试阶段">
+                        <el-input v-model="form.interviewerStage"></el-input>
                     </el-form-item>
                     <el-form-item label="招聘状态">
-                        <el-input v-model="invite_form.status"></el-input>
+                        <el-input v-model="form.state"></el-input>
                     </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input type="textarea" v-model="invite_form.remark"></el-input>
+
+                    <!-- 只有当 state 为 '进入实习' 时才显示以下字段 -->
+                    <el-form-item v-if="form.state === '进入实习'" label="实习导师">
+                        <el-input v-model="form.adviser"></el-input>
+                    </el-form-item>
+                    <el-form-item v-if="form.state === '进入实习'" label="实习开始日期">
+                        <el-date-picker v-model="form.internshipStartDate" type="date"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item v-if="form.state === '进入实习'" label="实习结束日期">
+                        <el-date-picker v-model="form.internshipEndDate" type="date"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item v-if="form.state === '进入实习'" label="备注">
+                        <el-input v-model="form.remarks" type="textarea"></el-input>
                     </el-form-item>
                 </el-form>
+
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
                 </span>
             </el-dialog>
         </div>
+        <!-- 员工总览 -->
         <div v-if="employeeID == '1'">
             <div class="header-container">
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                 <el-table :data="employee_list" style="width: 100%">
-                    <el-table-column prop="id" label="员工编号" width="120"></el-table-column>
-                    <el-table-column prop="name" label="员工姓名" width="120"></el-table-column>
-                    <el-table-column prop="salary" label="员工薪水" width="120"></el-table-column>
-                    <el-table-column prop="status" label="员工状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                <el-table :data="employee_list" style="width: 1000">
+                    <el-table-column prop="id" label="员工编号" width="auto"></el-table-column>
+                    <el-table-column prop="name" label="员工姓名" width="auto"></el-table-column>
+                    <el-table-column prop="salary" label="员工薪水" width="auto"></el-table-column>
+                    <el-table-column prop="status" label="员工状态" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -116,21 +148,21 @@
                 <!--表单显示-->
                 <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                     <!--根据表单数据结构动态生成表单-->
-                    <el-form :model="overview_form" label-width="120px">
+                    <el-form :model="form" label-width="120px">
                         <el-form-item label="员工编号">
-                            <el-input v-model="overview_form.id" disabled></el-input>
+                            <el-input v-model="form.id" disabled></el-input>
                         </el-form-item>
                         <el-form-item label="员工姓名">
-                            <el-input v-model="overview_form.name"></el-input>
+                            <el-input v-model="form.name"></el-input>
                         </el-form-item>
                         <el-form-item label="员工薪水">
-                            <el-input-number v-model="overview_form.salary"></el-input-number>
+                            <el-input-number v-model="form.salary"></el-input-number>
                         </el-form-item>
                         <el-form-item label="员工状态">
-                            <el-input v-model="overview_form.status"></el-input>
+                            <el-input v-model="form.status"></el-input>
                         </el-form-item>
                         <el-form-item label="备注">
-                            <el-input type="textarea" v-model="overview_form.remark"></el-input>
+                            <el-input type="textarea" v-model="form.remark"></el-input>
                         </el-form-item>
                     </el-form>
                     <span slot="footer" class="dialog-footer">
@@ -140,18 +172,18 @@
                 </el-dialog>
             </div>
         </div>
+        <!-- 员工培训 -->
         <div v-if="employeeID == '2'">
             <div class="header-container">
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                 <el-table :data="employee_list" style="width: 100%">
-                    <el-table-column prop="id" label="培训编号" width="120"></el-table-column>
-                    <el-table-column prop="teacher" label="授课老师" width="120"></el-table-column>
-                    <el-table-column prop="date" label="授课日期" width="120"></el-table-column>
-                    <el-table-column prop="student" label="学生" width="120"></el-table-column>
-                    <el-table-column prop="status" label="培训状态" width="120"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="200">
+                <el-table :data="employee_list" style="width: 1000">
+                    <el-table-column prop="id" label="培训编号" width="auto"></el-table-column>
+                    <el-table-column prop="teacher" label="授课老师" width="auto"></el-table-column>
+                    <el-table-column prop="dateTime" label="授课日期" width="auto"></el-table-column>
+                    <el-table-column prop="timeSpan" label="持续时间" width="auto"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="auto">
                         <template v-slot="scope">
                             <el-button type="text" size="small" @click="viewDetails(scope.row)">详情</el-button>
                             <el-button type="text" size="small" @click="Delete(scope.row)">删除</el-button>
@@ -162,29 +194,33 @@
             <!--表单显示-->
             <el-dialog title="详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
                 <!--根据表单数据结构动态生成表单-->
-                <el-form :model="train_form" label-width="120px">
+                <el-form :model="form" label-width="auto">
                     <el-form-item label="培训编号">
-                        <el-input v-model="train_form.id" disabled></el-input>
+                        <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="授课老师">
-                        <el-input v-model="train_form.teacher"></el-input>
+                        <el-input v-model="form.teacher"></el-input>
                     </el-form-item>
-                    <el-form-item label="授课日期">
-                        <el-date-picker v-model="train_form.date"
-                                        type="date"
-                                        placeholder="选择日期">
-                        </el-date-picker>
+                    <el-form-item label="授课时间">
+                        <el-date-picker v-model="form.dateTime" type="datetime" placeholder="选择日期"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="学生">
-                        <el-input v-model="train_form.student"></el-input>
-                    </el-form-item>
-                    <el-form-item label="培训状态">
-                        <el-input v-model="train_form.status"></el-input>
-                    </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input type="textarea" v-model="train_form.remark"></el-input>
+                    <el-form-item label="参与人员">
+                        <el-table :data="form.drillEmployees">
+                            <el-table-column label="姓名">
+                                <template v-slot="scope">
+                                    <el-input v-model="scope.row" @input="updateStudent(scope.row, scope.$index)"></el-input>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作">
+                                <template v-slot="scope">
+                                    <el-button type="danger" @click="removeStudent(scope.$index)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-button type="primary" @click="addStudent">添加人员</el-button>
                     </el-form-item>
                 </el-form>
+
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -209,11 +245,9 @@
                     { id: '1', name: '人员总览' },
                     { id: '2', name: '员工培训' },
                 ],
-                employee_list:[],
-                template_form:{id:'0'},
-                invite_form:    { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
-                overview_form:  { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
-                train_form:     { id: '', date: '', client:'', price: '', functionary: '', status: '', remark: '' },
+                employee_list: [],
+                template_form: { id: '0', drillEmployees: [''] },
+                form: { id: '' },
             }
         },
         computed: {
@@ -265,18 +299,29 @@
                 this.employeeID = id;
                 this.getIncome();
             },
+
+            //表单用
+            addStudent() {
+                this.form.drillEmployees.push(''); // 添加一个新的空行
+            },
+            updateStudent(value, index) {
+                this.form.drillEmployees[index] = value; // 更新学生信息
+            },
+            removeStudent(index) {
+                this.form.drillEmployees.splice(index, 1); // 删除指定索引的学生
+            },
             //获取信息
-            getIncome(){
+            getIncome() {
                 let path;
-                switch(this.employeeID){
+                switch (this.employeeID) {
                     case '0':
-                        path='/api/get-invite';
+                        path = '/api/PersonnelManagement/et-invite';
                         break;
                     case '1':
-                        path='/api/get-overview';
+                        path = '/api/PersonnelManagement/get-overview';
                         break;
                     case '2':
-                        path='/api/get-train';
+                        path = '/api/PersonnelManagement/get-train';
                         break;
                 }
                 axios.get(path)
@@ -290,22 +335,18 @@
             //提交表单
             submitForm() {
                 let path;
-                let form;
-                switch(this.employeeID){
+                switch (this.employeeID) {
                     case '0':
-                        path='/api/submit-invite-form';
-                        form=this.invite_form;
+                        path = '/api/PersonnelManagement/submit-invite-form';
                         break;
                     case '1':
-                        path='/api/submit-overview-form';
-                        form=this.overview_form;
+                        path = '/api/PersonnelManagement/submit-overview-form';
                         break;
                     case '2':
-                        path='/api/submit-train-form';
-                        form=this.train_form;
+                        path = '/api/PersonnelManagement/submit-train-form';
                         break;
                 }
-                axios.post(path, form)
+                axios.post(path, this.form)
                     .then(response => {
                         console.log('提交成功:', response.data.message); // 打印消息
                         this.$message({
@@ -325,21 +366,17 @@
                 getIncome();
             },
             //新建
-            createNew(){
-                switch(this.employeeID){
-                    case '0':this.invite_form = this.template_form;break;
-                    case '1':this.overview_form = this.template_form;break;
-                    case '2':this.train_form = this.template_form;break;
-                }
+            createNew() {
+                this.form = this.template_form;
                 this.dialogVisible = true;
             },
             //删除
             Delete(row) {
                 let path;
-                switch(this.employeeID){
-                    case '0':path='/api/delete-invite-form';break;
-                    case '1':path='/api/delete-overview-form';break;
-                    case '2':path='/api/delete-train-form';break;
+                switch (this.employeeID) {
+                    case '0': path = '/api/PersonnelManagement/delete-invite-form'; break;
+                    case '1': path = '/api/PersonnelManagement/delete-overview-form'; break;
+                    case '2': path = '/api/PersonnelManagement/delete-train-form'; break;
                 }
                 axios.post(path, this.row)
                     .then(response => {
@@ -358,37 +395,20 @@
                     });
             },
             // 查看详情
-            viewDetails(row) {      
-                // 根据申请类型发送请求
-                switch(this.employeeID){
-                    case '0':
-                        axios.post('/api/details-invite', { id: row.id}).then(response => {
-                            this.invite_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取招聘实习表单数据失败', error);
-                        });
-                        break;
-                    case '1':
-                        axios.post('/api/details-overview', { id: row.id}).then(response => {
-                            this.overview_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取人员总览表单数据失败', error);
-                        });
-                        break;
-                    case '2':
-                        axios.post('/api/details-train', { id: row.id}).then(response => {
-                            this.train_form = response.data[0];
-                        // 显示表单
-                        this.dialogVisible = true;
-                        }).catch(error => {
-                            console.error('获取员工培训表单数据失败', error);
-                        });
-                        break;
+            viewDetails(row) {
+                let path;
+                switch (this.employeeID) {
+                    case '0': path = '/api/PersonnelManagement/details-invite'; break;
+                    case '1': path = '/api/PersonnelManagement/details-overview'; break;
+                    case '2': path = '/api/PersonnelManagement/details-train'; break;
                 }
+                axios.post(path, { id: row.id }).then(response => {
+                    this.form = response.data[0];
+                    // 显示表单
+                    this.dialogVisible = true;
+                }).catch(error => {
+                    console.error('获取表单数据失败', error);
+                });
             },
         },
         mounted() {
@@ -472,7 +492,7 @@
     }
 
     .dataTable {
-        max-width:1000px;
+        max-width: 1000px;
         display: flex;
         justify-content: center; /* 或 flex-start, flex-end, space-between, space-around */
         align-items: center; /* 或 flex-start, flex-end, stretch */
@@ -511,5 +531,4 @@
         flex-direction: column;
         padding: 10px;
     }
-
 </style>

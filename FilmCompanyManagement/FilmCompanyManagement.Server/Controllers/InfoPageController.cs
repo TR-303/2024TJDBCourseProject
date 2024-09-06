@@ -65,7 +65,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> GetSalaryBills(string userName)
         {//finance:工资数据
-            return Ok(await _context.Employees.Where(e => e.SalaryStatus == false).ToListAsync());
+            return Ok(await _context.Employees.Where(e => e.SalaryBill != null).ToListAsync());
         }
 
         [HttpPost]

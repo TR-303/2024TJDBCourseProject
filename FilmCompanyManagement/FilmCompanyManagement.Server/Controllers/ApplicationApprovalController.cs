@@ -1,11 +1,11 @@
-using FilmCompanyManagement.Server.EntityFrame;
-using FilmCompanyManagement.Server.EntityFrame.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using FilmCompanyManagement.Server.EntityFrame.Models;
+using System.Linq;
 using System.Threading.Tasks;
+using FilmCompanyManagement.Server.EntityFrame;
 
-namespace FilmCompanyManagement.Controllers
+namespace FilmCompanyManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,44 +18,64 @@ namespace FilmCompanyManagement.Controllers
             _context = context;
         }
 
-        // 获取经费申请列表
-        [HttpGet("ApplicationList")]
-        public async Task<ActionResult<List<FundingApplication>>> ApplicationList()
+        // 获取所有申请
+        [HttpGet("get-requisitions")]
+        public async Task<IActionResult> GetRequisitions()
         {
-            var applications = await _context.FundingApplications.ToListAsync();
-            return Ok(applications);
+            var requisitions = await _context.FundingApplications
+                                             .Include(f => f.Employee) // 包含申请人信息
+                                             .Include(f => f.Bill) // 包含账单信息
+                                             .ToListAsync();
+            return Ok(new { requisition = requisitions });
         }
 
-        // 更新申请状态
-        [HttpPost("ApplicationReply/{id}")]
-        public async Task<IActionResult> ApplicationReply(int id, string status, [FromBody] string remark)
+        // 提交或更新申请
+        [HttpPost("submit-req-form")]
+        public async Task<IActionResult> SubmitRequisition([FromBody] FundingApplication application)
         {
-            var application = await _context.FundingApplications.FindAsync(id);
-            if (application == null)
+            if (application.Id == 0)
             {
-                return NotFound("Application not found.");
+                _context.FundingApplications.Add(application);
+            }
+            else
+            {
+                _context.FundingApplications.Update(application);
             }
 
-            // 更新申请状态和备注
-            application.BillStatus = status;
-
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new { message = "申请已成功提交" });
         }
 
         // 删除申请
-        [HttpPost("ApplicationDelete/{id}")]
-        public async Task<IActionResult> ApplicationDelete(int id)
+        [HttpPost("delete-form")]
+        public async Task<IActionResult> DeleteRequisition([FromBody] FundingApplication application)
         {
-            var application = await _context.FundingApplications.FindAsync(id);
-            if (application == null)
+            var applicationToDelete = await _context.FundingApplications.FindAsync(application.Id);
+            if (applicationToDelete == null)
             {
-                return NotFound("Application not found.");
+                return NotFound("申请未找到");
             }
 
-            _context.FundingApplications.Remove(application);
+            _context.FundingApplications.Remove(applicationToDelete);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new { message = "申请已删除" });
+        }
+
+        // 获取申请详情
+        [HttpPost("details-req-form")]
+        public async Task<IActionResult> GetRequisitionDetails([FromBody] int id)
+        {
+            var application = await _context.FundingApplications
+                                            .Include(f => f.Employee) // 包含申请人信息
+                                            .Include(f => f.Bill) // 包含账单信息
+                                            .FirstOrDefaultAsync(f => f.Id == id);
+
+            if (application == null)
+            {
+                return NotFound("申请未找到");
+            }
+
+            return Ok(new[] { application });
         }
     }
 }

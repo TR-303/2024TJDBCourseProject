@@ -1,11 +1,11 @@
-using FilmCompanyManagement.Server.EntityFrame;
-using FilmCompanyManagement.Server.EntityFrame.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using FilmCompanyManagement.Server.EntityFrame.Models;
 using System.Threading.Tasks;
+using System.Linq;
+using FilmCompanyManagement.Server.EntityFrame;
 
-namespace FilmCompanyManagement.Controllers
+namespace FilmCompanyManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,128 +18,178 @@ namespace FilmCompanyManagement.Controllers
             _context = context;
         }
 
-        // 获取招聘人员列表
-        [HttpGet("RecruitmentList")]
-        public async Task<ActionResult<List<Employee>>> RecruitmentList()
+        // 1. 获取员工总览
+        [HttpGet("get-overview")]
+        public async Task<IActionResult> GetOverview()
         {
-            return await _context.Employees.Where(e => e.Position == "Recruitment").ToListAsync();
+            var employees = await _context.Employees.Include(e => e.Department).ToListAsync();
+            return Ok(new { employee_list = employees });
         }
 
-        // 更新招聘人员信息
-        [HttpPost("RecruitmentInformation/{id}")]
-        public async Task<IActionResult> RecruitmentInformation(string id, [FromBody] Employee employee)
+        // 2. 提交员工总览表单（创建或更新员工信息）
+        [HttpPost("submit-overview-form")]
+        public async Task<IActionResult> SubmitOverviewForm([FromBody] Employee employee)
         {
-            if (id == "000")
+            if (!ModelState.IsValid)
             {
-                _context.Employees.Add(employee);
+                return BadRequest("Invalid data.");
+            }
+
+            if (_context.Employees.Any(e => e.Id == employee.Id))
+            {
+                _context.Employees.Update(employee);
             }
             else
             {
-                var existingEmployee = await _context.Employees.FindAsync(id);
-                if (existingEmployee == null) return NotFound();
-                existingEmployee.Name = employee.Name;
-                existingEmployee.Position = employee.Position;
-                // 更新其他字段...
+                _context.Employees.Add(employee);
             }
             await _context.SaveChangesAsync();
-            return Ok();
+
+            return Ok(new { message = "员工数据提交成功" });
         }
 
-        // 删除招聘人员
-        [HttpPost("RecruitmentDelete/{id}")]
-        public async Task<IActionResult> RecruitmentDelete(string id)
+        // 3. 删除员工
+        [HttpPost("delete-overview-form")]
+        public async Task<IActionResult> DeleteEmployee([FromBody] Employee employee)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null) return NotFound();
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-        // 获取实习人员列表
-        [HttpGet("TraineeList")]
-        public async Task<ActionResult<List<Employee>>> TraineeList()
-        {
-            return await _context.Employees.Where(e => e.Position == "Trainee").ToListAsync();
-        }
-
-        // 更新实习人员信息
-        [HttpPost("UppdateTrainee/{id}")]
-        public async Task<IActionResult> UppdateTrainee(string id, [FromBody] Employee employee)
-        {
-            if (id == "000")
+            var employeeToDelete = await _context.Employees.FindAsync(employee.Id);
+            if (employeeToDelete == null)
             {
-                _context.Employees.Add(employee);
+                return NotFound();
+            }
+
+            _context.Employees.Remove(employeeToDelete);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "员工删除成功" });
+        }
+
+        // 4. 获取员工详情
+        [HttpPost("details-overview")]
+        public async Task<IActionResult> GetEmployeeDetails([FromBody] int id)
+        {
+            var employee = await _context.Employees.Include(e => e.Department)
+                                                   .Include(e => e.Drills) // 员工参与的课程
+                                                   .Include(e => e.Teachs) // 员工教授的课程
+                                                   .FirstOrDefaultAsync(e => e.Id == id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return Ok(new[] { employee });
+        }
+
+        // 5. 获取培训课程列表
+        [HttpGet("get-train")]
+        public async Task<IActionResult> GetTrainingSessions()
+        {
+            var drills = await _context.Drills.Include(d => d.Students) // 包含学生信息
+                                              .Include(d => d.Teacher)  // 包含教师信息
+                                              .ToListAsync();
+            return Ok(new { drills });
+        }
+
+        // 6. 创建或更新培训课程
+        [HttpPost("submit-train-form")]
+        public async Task<IActionResult> SubmitTrainingForm([FromBody] Drill drill)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            if (_context.Drills.Any(d => d.Id == drill.Id))
+            {
+                _context.Drills.Update(drill);
             }
             else
             {
-                var existingEmployee = await _context.Employees.FindAsync(id);
-                if (existingEmployee == null) return NotFound();
-                existingEmployee.Name = employee.Name;
-                existingEmployee.Position = employee.Position;
-                // 更新其他字段...
+                _context.Drills.Add(drill);
             }
             await _context.SaveChangesAsync();
-            return Ok();
+
+            return Ok(new { message = "培训数据提交成功" });
         }
 
-        // 删除实习人员
-        [HttpPost("TraineeDelete/{id}")]
-        public async Task<IActionResult> TraineeDelete(string id)
+        // 7. 删除培训课程
+        [HttpPost("delete-train-form")]
+        public async Task<IActionResult> DeleteTraining([FromBody] Drill drill)
         {
-            var trainee = await _context.Employees.FindAsync(id);
-            if (trainee == null) return NotFound();
-            _context.Employees.Remove(trainee);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-        // 获取员工列表
-        [HttpGet("EmployeeList")]
-        public async Task<ActionResult<List<Employee>>> EmployeeList()
-        {
-            return await _context.Employees.ToListAsync();
-        }
-
-        // 获取员工详细信息
-        [HttpGet("EmployeeDetail/{id}")]
-        public async Task<ActionResult<Employee>> EmployeeDetail(string id, int type)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null) return NotFound();
-            // 根据type返回不同信息，比如0为基础信息，1为考勤信息
-            return employee; // 假设只返回基础信息
-        }
-
-        // 更新员工信息
-        [HttpPost("UppdateEmployee/{id}")]
-        public async Task<IActionResult> UppdateEmployee(string id, int type, [FromBody] Employee employee)
-        {
-            if (id == "000")
+            var drillToDelete = await _context.Drills.FindAsync(drill.Id);
+            if (drillToDelete == null)
             {
-                _context.Employees.Add(employee);
+                return NotFound();
             }
-            else
-            {
-                var existingEmployee = await _context.Employees.FindAsync(id);
-                if (existingEmployee == null) return NotFound();
-                // 更新不同类型的信息，比如type = 0更新基础信息，1更新考勤信息
-                existingEmployee.Name = employee.Name;
-                // 更新其他字段...
-            }
+
+            _context.Drills.Remove(drillToDelete);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new { message = "培训记录删除成功" });
         }
 
-        // 删除员工信息
-        [HttpPost("EmployeeDelete/{id}")]
-        public async Task<IActionResult> EmployeeDelete(string id)
+        // 8. 获取培训课程详情
+        [HttpPost("details-train")]
+        public async Task<IActionResult> GetTrainingDetails([FromBody] int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null) return NotFound();
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-            return Ok();
+            var drill = await _context.Drills.Include(d => d.Students) // 包含学生信息
+                                             .Include(d => d.Teacher)  // 包含教师信息
+                                             .FirstOrDefaultAsync(d => d.Id == id);
+            if (drill == null)
+            {
+                return NotFound();
+            }
+            return Ok(new[] { drill });
         }
+
+        // 9. 添加学生到培训课程
+        [HttpPost("add-student-to-drill")]
+        public async Task<IActionResult> AddStudentToDrill([FromBody] AddStudentToDrillRequest request)
+        {
+            var drill = await _context.Drills.Include(d => d.Students)
+                                             .FirstOrDefaultAsync(d => d.Id == request.DrillId);
+            if (drill == null)
+            {
+                return NotFound("课程未找到");
+            }
+
+            var student = await _context.Employees.FindAsync(request.StudentId);
+            if (student == null)
+            {
+                return NotFound("员工未找到");
+            }
+
+            drill.Students.Add(student);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "学生添加成功" });
+        }
+
+        // 10. 从培训课程中移除学生
+        [HttpPost("remove-student-from-drill")]
+        public async Task<IActionResult> RemoveStudentFromDrill([FromBody] AddStudentToDrillRequest request)
+        {
+            var drill = await _context.Drills.Include(d => d.Students)
+                                             .FirstOrDefaultAsync(d => d.Id == request.DrillId);
+            if (drill == null)
+            {
+                return NotFound("课程未找到");
+            }
+
+            var student = await _context.Employees.FindAsync(request.StudentId);
+            if (student == null)
+            {
+                return NotFound("员工未找到");
+            }
+
+            drill.Students.Remove(student);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "学生移除成功" });
+        }
+    }
+
+    // 请求模型
+    public class AddStudentToDrillRequest
+    {
+        public int DrillId { get; set; } // 培训课程ID
+        public int StudentId { get; set; } // 学生ID
     }
 }
