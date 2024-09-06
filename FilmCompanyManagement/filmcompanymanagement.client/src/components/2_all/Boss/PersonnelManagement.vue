@@ -237,27 +237,30 @@
                         <el-form-item label="薪水">
                             <el-input-number v-model="form.salary" :controls="false"></el-input-number>
                         </el-form-item>
-                        <el-form-item label="账单编号">
-                            <el-input v-model="form.billId" disabled></el-input>
-                        </el-form-item>
-                        <el-form-item label="账单金额">
-                            <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="账单类型">
-                            <el-select v-model="form.billType" placeholder="请选择部门">
-                                <el-option label="存款" value="存款"></el-option>
-                                <el-option label="拨款" value="拨款"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="账单日期">
-                            <el-date-picker v-model="form.billDate" type="date" disabled></el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="账单状态">
-                            <el-select v-model="form.billStatus" placeholder="请选择部门">
-                                <el-option label="发起" value="发起"></el-option>
-                                <el-option label="完成" value="完成"></el-option>
-                            </el-select>
-                        </el-form-item>
+                        <el-collapse v-model="activeNames" @change="handleChange">
+                            <el-collapse-item title="账单" name="1">
+                                <el-form-item label="账单编号">
+                                    <el-input v-model="form.billId" disabled></el-input>
+                                </el-form-item>
+                                <el-form-item label="账单金额">
+                                    <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
+                                </el-form-item>
+                                <el-form-item label="账单类型">
+                                    <el-select v-model="form.billType" placeholder="请选择部门">
+                                        <el-option label="存款" value="存款"></el-option>
+                                        <el-option label="拨款" value="拨款"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="账单日期">
+                                    <el-date-picker v-model="form.billDate" type="date" disabled></el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="账单状态">
+                                    <el-select v-model="form.billStatus" placeholder="请选择部门">
+                                        <el-option label="发起" value="发起"></el-option>
+                                        <el-option label="完成" value="完成"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-collapse-item>
                         <el-form-item label="KPI">
                             <el-input v-model="form.kpi" disabled></el-input>
                         </el-form-item>
@@ -269,47 +272,49 @@
                             </el-select>
                         </el-form-item>
 
-                        <!-- Interns -->
-                        <el-form-item label="实习生">
-                            <el-table :data="form.interns" style="width: 50%">
-                                <el-table-column prop="internId" label="编号" width="auto"></el-table-column>
-                                <el-table-column prop="intern" label="姓名" width="auto"></el-table-column>
-                            </el-table>
-                        </el-form-item>
+                            <el-collapse-item title="其它" name="2">
+                                <el-form-item label="实习生">
+                                    <el-table :data="form.interns" style="width: 50%">
+                                        <el-table-column prop="internId" label="编号" width="auto"></el-table-column>
+                                        <el-table-column prop="intern" label="姓名" width="auto"></el-table-column>
+                                    </el-table>
+                                </el-form-item>
 
-                        <!-- Projects -->
-                        <el-form-item label="项目">
-                            <el-table :data="form.projects" style="width: 75%">
-                                <el-table-column prop="id" label="编号" width="auto"></el-table-column>
-                                <el-table-column prop="manager" label="经理" width="auto"></el-table-column>
-                                <el-table-column prop="status" label="项目状态" width="auto"></el-table-column>
-                            </el-table>
-                        </el-form-item>
+                                <!-- Projects -->
+                                <el-form-item label="项目">
+                                    <el-table :data="form.projects" style="width: 75%">
+                                        <el-table-column prop="id" label="编号" width="auto"></el-table-column>
+                                        <el-table-column prop="manager" label="经理" width="auto"></el-table-column>
+                                        <el-table-column prop="status" label="项目状态" width="auto"></el-table-column>
+                                    </el-table>
+                                </el-form-item>
 
-                        <!-- Manage Projects -->
-                        <el-form-item label="管理项目">
-                            <el-table :data="form.manageProjects" style="width: 50%">
-                                <el-table-column prop="id" label="编号" width="auto"></el-table-column>
-                                <el-table-column prop="status" label="项目状态" width="auto"></el-table-column>
-                            </el-table>
-                        </el-form-item>
+                                <!-- Manage Projects -->
+                                <el-form-item label="管理项目">
+                                    <el-table :data="form.manageProjects" style="width: 50%">
+                                        <el-table-column prop="id" label="编号" width="auto"></el-table-column>
+                                        <el-table-column prop="status" label="项目状态" width="auto"></el-table-column>
+                                    </el-table>
+                                </el-form-item>
 
-                        <!-- Attendances -->
-                        <el-form-item label="考勤记录">
-                            <el-table :data="form.attendances" style="width: 50%">
-                                <el-table-column prop="date" label="日期" width="auto"></el-table-column>
-                                <el-table-column prop="status" label="考勤状态" width="auto"></el-table-column>
-                            </el-table>
-                        </el-form-item>
+                                <!-- Attendances -->
+                                <el-form-item label="考勤记录">
+                                    <el-table :data="form.attendances" style="width: 50%">
+                                        <el-table-column prop="date" label="日期" width="auto"></el-table-column>
+                                        <el-table-column prop="status" label="考勤状态" width="auto"></el-table-column>
+                                    </el-table>
+                                </el-form-item>
 
-                        <!-- Drills -->
-                        <el-form-item label="培训记录">
-                            <el-table :data="form.drills" style="width: 75%">
-                                <el-table-column prop="id" label="名称" width="auto"></el-table-column>
-                                <el-table-column prop="teacher" label="日期" width="auto"></el-table-column>
-                                <el-table-column prop="dateTime" label="日期" width="auto"></el-table-column>
-                            </el-table>
-                        </el-form-item>
+                                <!-- Drills -->
+                                <el-form-item label="培训记录">
+                                    <el-table :data="form.drills" style="width: 75%">
+                                        <el-table-column prop="id" label="名称" width="auto"></el-table-column>
+                                        <el-table-column prop="teacher" label="日期" width="auto"></el-table-column>
+                                        <el-table-column prop="dateTime" label="日期" width="auto"></el-table-column>
+                                    </el-table>
+                                </el-form-item>
+                            </el-collapse-item>
+                        </el-collapse>    
                     </el-form>
                     <span slot="footer" class="dialog-footer">
                         <el-button type="primary" @click="submitForm">保存</el-button>
@@ -360,29 +365,33 @@
                     <el-form-item label="培训结束时间">
                         <el-date-picker v-model="form.endTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="参与人员">
-                        <el-table :data="form.employees" style="width: 100%">
-                            <el-table-column label="编号" width="180">
-                              <template v-slot="scope">
-                                <el-select v-model="scope.row.id" placeholder="请选择职位" filterable clearable @change="updateEmployee(scope.row, scope.$index)">
-                                    <el-option v-for="employee in overview_employee_list" :key="employee.id" :label="employee.id" :value="employee.id">
-                                        <span style="display: flex; justify-content: space-between; width: 100%;">
-                                            <span>{{ employee.id }}</span>
-                                            <span>{{ employee.name }}</span>
-                                        </span>
-                                    </el-option>
-                                </el-select>
-                              </template>
-                            </el-table-column>
-                            <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-                            <el-table-column prop="right" label="操作" >
-                                <template v-slot="scope">
-                                    <el-button type="danger" @click="removeEmployee(scope.$index)">删除</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                      <el-button type="primary" @click="addEmployee">添加人员</el-button>
-                    </el-form-item>     
+                    <el-collapse v-model="activeNames" @change="handleChange">
+                        <el-collapse-item title="参与人员" name="1">
+                            <el-form-item label="">
+                                <el-table :data="form.employees" style="width: 100%">
+                                    <el-table-column label="编号" width="180">
+                                      <template v-slot="scope">
+                                        <el-select v-model="scope.row.id" placeholder="请选择职位" filterable clearable @change="updateEmployee(scope.row, scope.$index)">
+                                            <el-option v-for="employee in overview_employee_list" :key="employee.id" :label="employee.id" :value="employee.id">
+                                                <span style="display: flex; justify-content: space-between; width: 100%;">
+                                                    <span>{{ employee.id }}</span>
+                                                    <span>{{ employee.name }}</span>
+                                                </span>
+                                            </el-option>
+                                        </el-select>
+                                      </template>
+                                    </el-table-column>
+                                    <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+                                    <el-table-column prop="right" label="操作" >
+                                        <template v-slot="scope">
+                                            <el-button type="danger" @click="removeEmployee(scope.$index)">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                              <el-button type="primary" @click="addEmployee">添加人员</el-button>
+                            </el-form-item>   
+                        </el-collapse-item>
+                    </el-collapse>   
                 </el-form>
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
