@@ -522,8 +522,6 @@
 
 <script>
     import axios from 'axios';
-    import global from '../Boss/global_variable_boss.vue'
-
 
     export default {
         name: 'AuthorizeRequisition',
