@@ -145,11 +145,9 @@
             <button :class="buttonClass(isClicked_1)" @click="handleClick_1" :disabled="isClicked_1">
                 {{ buttonText_1 }}
             </button>
-            <p v-if="isClicked_1" style="text-align: center;">{{ tips_1 }}</p>
             <button v-if="isClicked_1" :class="buttonClass(0)" @click="handleClick_2">
                 {{ buttonText_2 }}
             </button>
-            <p v-if="isClicked_2" style="text-align: center;">{{ tips_2 }}</p>
             <ul class="bottom-text">
                 <li>项目ID:{{ ProjectID }}</li>
                 <li>评定时间:{{ Date }}</li>
