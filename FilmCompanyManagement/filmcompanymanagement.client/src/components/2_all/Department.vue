@@ -150,7 +150,7 @@
             },
             //获取数据
             getdata() {
-                axios.post('/data/userdata', { id: this.id }).then(result => {
+                axios.post('/api/data/userdata', { id: this.id }).then(result => {
                     this.name = result.data.name;// 将服务器返回的 name 更新到组件的 name 属性
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
@@ -161,7 +161,7 @@
                 this.id = this.$route.query.id;
             },
             getdatalist() {
-                axios.post('/data/departmentuserdata', { department: this.choose_department }).then(result => {
+                axios.post('/api/data/departmentuserdata', { department: this.choose_department }).then(result => {
                     console.log(result.data);
                     this.userdataList = result.data;
                     console.log(this.userdataList);

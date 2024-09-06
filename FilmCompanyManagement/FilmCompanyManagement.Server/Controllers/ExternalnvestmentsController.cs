@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 namespace FilmCompanyManagement.Controllers
 {
     [ApiController, Route("api/[controller]")]
-    public class ExternalInvestmentController : ControllerBase
+    public class ExternalInvestmentsController : ControllerBase
     {
         private readonly FCMDbContext _context;
 
-        public ExternalInvestmentController(FCMDbContext context)
+        public ExternalInvestmentsController(FCMDbContext context)
         {
             _context = context;
         }

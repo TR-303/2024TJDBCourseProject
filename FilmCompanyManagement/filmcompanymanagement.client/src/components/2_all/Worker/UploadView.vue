@@ -145,7 +145,7 @@
                     }
 
                     // 获取用户姓名
-                    const userResponse = await axios.post('/data/userdata', { id: route.query.id });
+                    const userResponse = await axios.post('/api/data/userdata', { id: route.query.id });
                     if (userResponse.data.name) {
                         name.value = userResponse.data.name;
                     } else {

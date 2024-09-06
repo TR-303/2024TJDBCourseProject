@@ -567,9 +567,8 @@
             // 获取未处理外部投资数据
             // 带请求参数`orderStatus` (string): 订单状态，值为“approved”表示管理员已批准
             refreshUnprocessedInvestmentData() {
-                axios.get('/api/externalInvestments/unprocessed', {
-                    params: { orderStatus: 'approved' }
-                }).then(response => {
+                axios.get('/api/externalInvestments/unprocessed')
+                    .then(response => {
                     this.unprocessedInvestmentList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching investment data:', error);
@@ -577,9 +576,8 @@
             },
             // 获取财务已处理的外部投资数据
             refreshProcessedInvestmentData() {
-                axios.get('/api/externalInvestments/processed', {
-                    params: { financialStatus: 'processed' } // 添加请求参数
-                }).then(response => {
+                axios.get('/api/externalInvestments/processed')
+                    .then(response => {
                     this.processedInvestmentList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching processed investment data:', error);
@@ -610,9 +608,8 @@
             /**************** 设备租赁 ****************/
             // 获取未处理设备租赁数据
             refreshUnprocessedLeasingData() {
-                axios.get('/api/equipmentLeasing/unprocessed', {
-                    params: { orderStatus: 'approved' } // 添加请求参数
-                }).then(response => {
+                axios.get('/api/equipmentLeasing/unprocessed')
+                    .then(response => {
                     this.unprocessedLeasingList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching unprocessed leasing data:', error);
@@ -620,9 +617,8 @@
             },
             // 获取财务已处理的设备租赁数据
             refreshProcessedLeasingData() {
-                axios.get('/api/equipmentLeasing/processed', {
-                    params: { financialStatus: 'processed' } // 添加请求参数
-                }).then(response => {
+                axios.get('/api/equipmentLeasing/processed')
+                    .then(response => {
                     this.processedLeasingList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching processed leasing data:', error);
@@ -650,9 +646,8 @@
             /**************** 成片购买订单 ****************/
             // 获取未处理成片购买订单数据
             refreshUnprocessedBlockPurchaseOrderData() {
-                axios.get('/api/FinishedProduct/unprocessed', {
-                    params: { orderStatus: 'approved' } // 添加请求参数
-                }).then(response => {
+                axios.get('/api/FinishedProduct/unprocessed')
+                    .then(response => {
                     this.unprocessedBlockPurchaseOrderList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching unprocessed block purchase order data:', error);
@@ -660,9 +655,8 @@
             },
             // 获取已处理成片购买订单数据
             refreshProcessedBlockPurchaseOrderData() {
-                axios.get('/api/FinishedProduct/processed', {
-                    params: { financialStatus: 'processed' } // 添加请求参数
-                }).then(response => {
+                axios.get('/api/FinishedProduct/processed')
+                    .then(response => {
                     this.processedBlockPurchaseOrderList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching processed block purchase order data:', error);
@@ -690,9 +684,8 @@
             /**************** 工资 ****************/
             // 获取未处理工资数据
             refreshUnprocessedSalaryData() {
-                axios.get('/api/salary/unprocessed', {
-                    params: { evaluationStatus: 'complete' }
-                }).then(response => {
+                axios.get('/api/salary/unprocessed')
+                    .then(response => {
                     this.unprocessedSalaryList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching unprocessed salary data:', error);
@@ -700,9 +693,8 @@
             },
             // 获取已处理工资数据
             refreshProcessedSalaryData() {
-                axios.get('/api/salary/processed', {
-                    params: { financialStatus: 'processed' }
-                }).then(response => {
+                axios.get('/api/salary/processed')
+                    .then(response => {
                     this.processedSalaryList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching processed salary data:', error);
@@ -730,9 +722,8 @@
             /**************** 项目收入 ****************/
             // 获取未处理项目收入数据
             refreshUnprocessedProjectIncomeData() {
-                axios.get('/api/projectIncome/unprocessed', {
-                    params: { orderStatus: 'approved' } // 添加请求参数
-                }).then(response => {
+                axios.get('/api/projectIncome/unprocessed')
+                    .then(response => {
                     this.unprocessedProjectIncomeList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching unprocessed project income data:', error);
@@ -740,9 +731,7 @@
             },
             // 获取已处理项目收入数据
             refreshProcessedProjectIncomeData() {
-                axios.get('/api/projectIncome/processed', {
-                    params: { financialStatus: 'processed' } // 添加请求参数
-                }).then(response => {
+                axios.get('/api/projectIncome/processed').then(response => {
                     this.processedProjectIncomeList = response.data.data;
                 }).catch(error => {
                     console.error('Error fetching processed project income data:', error);

@@ -187,7 +187,7 @@
             },
             handleClick_1() {
                 //这里先向服务器传递签到时间
-                axios.post('/data/signdata', {
+                axios.post('/api/data/signdata', {
                     id: this.id,
                     time: this.currentDateTime,
                     state: '1',
@@ -210,7 +210,7 @@
                     });
             },
             handleClick_2() {
-                axios.post('/data/signdata', {
+                axios.post('/api/data/signdata', {
                     id: this.id,
                     time: this.currentDateTime,
                     state: '0',
@@ -275,7 +275,7 @@
             },
             //获取数据
             getdata() {
-                axios.post('/data/userdata', { id: this.id }).then(result => {
+                axios.post('/api/data/userdata', { id: this.id }).then(result => {
                     this.name = result.data.name;// 将服务器返回的 name 更新到组件的 name 属性
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
@@ -286,7 +286,7 @@
                 this.id = this.$route.query.id;
             },
             getissign() {
-                axios.post('/data/checksign', { id: this.id }).then(result => {
+                axios.post('/api/data/checksign', { id: this.id }).then(result => {
                     console.log(result);
                     if (result.data[0].issignout == '1') {
                         console.log(result);

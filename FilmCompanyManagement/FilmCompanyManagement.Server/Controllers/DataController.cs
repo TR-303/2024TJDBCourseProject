@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FilmCompanyManagement.Controllers
 {
-    [ApiController, Route("/data")]
+    [ApiController, Route("/api/data")]
     public class DataController : ControllerBase
     {
         private readonly FCMDbContext _context;
@@ -17,8 +17,10 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost("userdata")]
-        public async Task<IActionResult> UserData([FromBody] string id)
+        public async Task<IActionResult> UserData(UserDataRequest request)
         {
+            string id = request.id;
+
             var ret = await _context.Employees.SingleAsync(e => e.Id == id);
             if (ret == null) return BadRequest("not exist");
 
@@ -28,10 +30,12 @@ namespace FilmCompanyManagement.Controllers
             });
         }
 
-        [HttpPost("departmentuserdate")]
-        public async Task<IActionResult> DepartmentUserData([FromBody] string department)
+        [HttpPost("departmentuserdata")]
+        public async Task<IActionResult> DepartmentUserData(DepartmentRequest request)
         {
-            var dept = await _context.Departments.SingleAsync(d => d.Name == department);
+            string department = request.department;
+
+            var dept = await _context.Departments.Include(d => d.Employees).SingleAsync(d => d.Name == department);
             if (dept == null) return BadRequest("no department");
 
             var ret = dept.Employees.Select(e => new
@@ -78,10 +82,13 @@ namespace FilmCompanyManagement.Controllers
         //}
     }
 
-    public class Sign
+    public class DepartmentRequest
     {
-        public string id;
-        public string time;
-        public string state;
+        public string department { get; set; }
+    }
+
+    public class UserDataRequest
+    {
+        public string id { get; set; }
     }
 }
