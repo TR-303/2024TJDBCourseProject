@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.Pkcs;
@@ -28,7 +29,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [Required, Column(TypeName = "decimal(12, 2)")]
         public decimal Salary { get; set; }//¹¤×Ê
 
-        [Required, Column(TypeName ="NUMBER(1)")]
+        [Required, Column(TypeName = "NUMBER(1)")]
         public bool SalaryStatus { get; set; }
 
         public Bill? SalaryBill { get; set; }

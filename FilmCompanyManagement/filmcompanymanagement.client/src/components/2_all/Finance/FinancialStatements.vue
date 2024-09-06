@@ -316,10 +316,10 @@
         data() {
             return {
                 name: '',
-                id:'2',
+                id: '2',
                 unprocessedInvestmentList: [], // 未处理投资数据列表
                 processedInvestmentList: [], // 已处理投资数据列表
-                
+
                 unprocessedLeasingList: [], // 未处理设备租赁数据列表
                 processedLeasingList: [], // 已处理设备租赁数据列表
 
@@ -331,7 +331,7 @@
 
                 unprocessedProjectIncomeList: [], // 未处理项目收入数据列表
                 processedProjectIncomeList: [], // 已处理项目收入数据列表
-                
+
 
                 showSubMenu: false, // 控制二级导航显示
 
@@ -560,41 +560,37 @@
             /**************** 外部投资 ****************/
             // 获取未处理外部投资数据
             refreshUnprocessedInvestmentData() {
-                axios.get('/api/finance/investment/0')
+                axios.get('/api/finance/investment/false')
                     .then(response => {
-                    this.unprocessedInvestmentList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching investment data:', error);
-                });
+                        this.unprocessedInvestmentList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching investment data:', error);
+                    });
             },
             // 获取财务已处理的外部投资数据
             refreshProcessedInvestmentData() {
-                axios.get('/api/finance/investment/1')
+                axios.get('/api/finance/investment/true')
                     .then(response => {
-                    this.processedInvestmentList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching processed investment data:', error);
-                });
+                        this.processedInvestmentList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching processed investment data:', error);
+                    });
             },
             // 将未处理投资标记为已处理
             markInvestmentAsProcessed(row) {
                 const currentDate = new Date().toISOString().split('T')[0]; // 获取当前日期
                 // 发送 API 请求将该投资标记为处理完成
                 axios.post('/api/finance/investment/process', {
-                    investmentId: row.investmentId, // 根据当前行的数据传递 investmentId
-                    processedDate: currentDate // 添加 processedDate
+                    Id: row.investmentId, // 根据当前行的数据传递 investmentId
+                    ProcessedDate: currentDate // 添加 processedDate
                 }).then(response => {
-                    if (response.data.success) {
-                        // 请求成功后移除该项
-                        this.unprocessedInvestmentList = this.unprocessedInvestmentList.filter(item => item.investmentId !== row.investmentId);
-                        // 也可以在这里调用刷新数据的方法来重新获取列表
-                        this.refreshUnprocessedInvestmentData();
-                        this.refreshProcessedInvestmentData();
-                    } else {
-                        console.error('标记处理失败:', response.data.message);
-                    }
+                    // 请求成功后移除该项
+                    this.unprocessedInvestmentList = this.unprocessedInvestmentList.filter(item => item.investmentId !== row.investmentId);
+                    // 也可以在这里调用刷新数据的方法来重新获取列表
+                    this.refreshUnprocessedInvestmentData();
+                    this.refreshProcessedInvestmentData();
                 }).catch(error => {
-                    console.error('请求失败:', error);
+                    console.error('处理失败:', error);
                 });
             },
 
@@ -603,19 +599,19 @@
             refreshUnprocessedLeasingData() {
                 axios.get('/api/equipmentLeasing/unprocessed')
                     .then(response => {
-                    this.unprocessedLeasingList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching unprocessed leasing data:', error);
-                });
+                        this.unprocessedLeasingList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching unprocessed leasing data:', error);
+                    });
             },
             // 获取财务已处理的设备租赁数据
             refreshProcessedLeasingData() {
                 axios.get('/api/equipmentLeasing/processed')
                     .then(response => {
-                    this.processedLeasingList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching processed leasing data:', error);
-                });
+                        this.processedLeasingList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching processed leasing data:', error);
+                    });
             },
             // 将未处理设备租赁标记为已处理
             markLeasingAsProcessed(row) {
@@ -641,19 +637,19 @@
             refreshUnprocessedBlockPurchaseOrderData() {
                 axios.get('/api/FinishedProduct/unprocessed')
                     .then(response => {
-                    this.unprocessedBlockPurchaseOrderList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching unprocessed block purchase order data:', error);
-                });
+                        this.unprocessedBlockPurchaseOrderList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching unprocessed block purchase order data:', error);
+                    });
             },
             // 获取已处理成片购买订单数据
             refreshProcessedBlockPurchaseOrderData() {
                 axios.get('/api/FinishedProduct/processed')
                     .then(response => {
-                    this.processedBlockPurchaseOrderList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching processed block purchase order data:', error);
-                });
+                        this.processedBlockPurchaseOrderList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching processed block purchase order data:', error);
+                    });
             },
             // 将未处理成片购买订单标记为已处理
             markBlockPurchaseOrderAsProcessed(row) {
@@ -679,19 +675,19 @@
             refreshUnprocessedSalaryData() {
                 axios.get('/api/salary/unprocessed')
                     .then(response => {
-                    this.unprocessedSalaryList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching unprocessed salary data:', error);
-                });
+                        this.unprocessedSalaryList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching unprocessed salary data:', error);
+                    });
             },
             // 获取已处理工资数据
             refreshProcessedSalaryData() {
                 axios.get('/api/salary/processed')
                     .then(response => {
-                    this.processedSalaryList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching processed salary data:', error);
-                });
+                        this.processedSalaryList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching processed salary data:', error);
+                    });
             },
             // 将未处理工资标记为已处理
             markSalaryAsProcessed(row) {
@@ -717,10 +713,10 @@
             refreshUnprocessedProjectIncomeData() {
                 axios.get('/api/projectIncome/unprocessed')
                     .then(response => {
-                    this.unprocessedProjectIncomeList = response.data;
-                }).catch(error => {
-                    console.error('Error fetching unprocessed project income data:', error);
-                });
+                        this.unprocessedProjectIncomeList = response.data;
+                    }).catch(error => {
+                        console.error('Error fetching unprocessed project income data:', error);
+                    });
             },
             // 获取已处理项目收入数据
             refreshProcessedProjectIncomeData() {
@@ -916,7 +912,7 @@
         text-align: center;
         background-color: rgba(229, 242, 252, 0.801);
         margin: 4px 0;
-/*        box-shadow: 0px 0px 10px 1.5px rgba(199, 198, 198, 0.893);*/
+        /*        box-shadow: 0px 0px 10px 1.5px rgba(199, 198, 198, 0.893);*/
         height: 20px;
         cursor: pointer;
         font-size: 14px;
@@ -930,12 +926,12 @@
         margin-top: -2px;
     }
 
-    .sub_sub_menu{
+    .sub_sub_menu {
         width: 100px;
         margin: 0 auto 3px auto;
     }
 
-    #submenu_investment_processed{
+    #submenu_investment_processed {
         margin-bottom: 8px;
     }
 </style>

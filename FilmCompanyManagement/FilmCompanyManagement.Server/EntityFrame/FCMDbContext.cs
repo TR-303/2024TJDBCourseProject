@@ -55,11 +55,15 @@ namespace FilmCompanyManagement.Server.EntityFrame
 
             modelBuilder.Entity<Drill>()
                 .HasOne(d => d.Teacher)
-                .WithMany(e=>e.Teachs);
+                .WithMany(e => e.Teachs);
 
             modelBuilder.Entity<Drill>()
                 .HasMany(d => d.Students)
                 .WithMany(e => e.Drills);
+
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => e.UserName)
+                .IsUnique();
 
             base.OnModelCreating(modelBuilder);
         }
