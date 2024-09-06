@@ -3,6 +3,7 @@ using System;
 using FilmCompanyManagement.Server.EntityFrame;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace FilmCompanyManagement.Server.Migrations
 {
     [DbContext(typeof(FCMDbContext))]
-    partial class FCMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240906145600_update6")]
+    partial class update6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
