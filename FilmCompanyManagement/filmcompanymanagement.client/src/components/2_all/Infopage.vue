@@ -49,7 +49,7 @@
     <div id="container" class="container">
         <div id="message_box" class="window1">
             <p style="font-size: 30px;text-align: center;">通知栏</p>
-            <ul v-infinite-scroll class="infinite-list" style="overflow: auto">
+            <ul class="infinite-list" style="overflow: auto">
                 <!--boss-->
                 <div v-if="showBossMenu">
                     <p style="font-size: 15px;text-align: center;">报销账单申请</p>
