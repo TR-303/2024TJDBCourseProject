@@ -19,6 +19,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         [StringLength(500)]
         public string? Description { get; set; }
 
+        [Required]
         public int Status { get; set; } = 0;//¹ºÂòÉêÇëÊÇ·ñÍ¨¹ı
 
         [StringLength(100)]

@@ -1,11 +1,11 @@
-using FilmCompanyManagement.Server.EntityFrame;
-using FilmCompanyManagement.Server.EntityFrame.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using FilmCompanyManagement.Server.EntityFrame.Models;
 using System.Threading.Tasks;
+using System.Linq;
+using FilmCompanyManagement.Server.EntityFrame;
 
-namespace FilmCompanyManagement.Controllers
+namespace FilmCompanyManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,128 +18,105 @@ namespace FilmCompanyManagement.Controllers
             _context = context;
         }
 
-        // 获取招聘人员列表
-        [HttpGet("RecruitmentList")]
-        public async Task<ActionResult<List<Employee>>> RecruitmentList()
+        [HttpGet("get-invite")]
+        public async Task<IActionResult> GetInvite()
         {
-            return await _context.Employees.Where(e => e.Position == "Recruitment").ToListAsync();
+            var rec = await _context.Recruiters
+                .Select(e => new
+                {
+                    id = e.Id,
+                    name = e.Name,
+                    gender = e.Gender,
+                    state = e.State ? "已录用" : "未录用"
+                })
+                .ToListAsync();
+
+            return Ok(rec);
         }
 
-        // 更新招聘人员信息
-        [HttpPost("RecruitmentInformation/{id}")]
-        public async Task<IActionResult> RecruitmentInformation(string id, [FromBody] Employee employee)
+        // 获取实习人员信息
+        [HttpGet("get-intern")]
+        public async Task<IActionResult> GetIntern()
         {
-            if (id == "000")
+            var interns = await _context.AdvicerIntern.Include(ai => ai.Intern).Include(ai => ai.Advicer)
+                .Select(e => new
+                {
+                    internId = e.InternId,
+                    intern = e.Intern.Name,
+                    advicer = e.Advicer.Name
+                })
+                .ToListAsync();
+
+            return Ok(interns);
+        }
+
+        // 获取人员总览信息
+        [HttpGet("get-overview")]
+        public async Task<IActionResult> GetOverview()
+        {
+            var overview = await _context.Employees
+                .Select(e => new
+                {
+                    id = e.Id,
+                    name = e.Name,
+                    salary = e.Salary,
+                })
+                .ToListAsync();
+
+            return Ok(overview);
+        }
+
+        // 获取培训员工信息
+        [HttpGet("get-train")]
+        public async Task<IActionResult> GetTrain()
+        {
+            var trainedEmployees = await _context.Drills.Include(d => d.Teacher)
+                .Select(e => new
+                {
+                    id = e.Id,
+                    teacher = e.Teacher == null ? null : e.Teacher.Name,
+                    dateTime = e.StartTime
+                })
+                .ToListAsync();
+
+            return Ok(trainedEmployees);
+        }
+
+        [HttpPost("submit-invite-form")]
+        public async Task<IActionResult> SubmitInvite([FromBody] RecruitForm form)
+        {
+
+            await _context.Recruiters.AddAsync(new Recruiter
             {
-                _context.Employees.Add(employee);
-            }
-            else
+                Name = form.name,
+                Gender = form.gender,
+                Position = form.positionTitle,
+                Salary = form.salary,
+                Phone = form.phone,
+                Email = form.email,
+                Interviewer = null,
+                InterviewStage = 0,
+                State = false
+            });
+            await _context.SaveChangesAsync();
+            return Ok(new
             {
-                var existingEmployee = await _context.Employees.FindAsync(id);
-                if (existingEmployee == null) return NotFound();
-                existingEmployee.Name = employee.Name;
-                existingEmployee.Position = employee.Position;
-                // 更新其他字段...
-            }
-            await _context.SaveChangesAsync();
-            return Ok();
+                message = "提交成功"
+            });
         }
+    }
 
-        // 删除招聘人员
-        [HttpPost("RecruitmentDelete/{id}")]
-        public async Task<IActionResult> RecruitmentDelete(string id)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null) return NotFound();
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-        // 获取实习人员列表
-        [HttpGet("TraineeList")]
-        public async Task<ActionResult<List<Employee>>> TraineeList()
-        {
-            return await _context.Employees.Where(e => e.Position == "Trainee").ToListAsync();
-        }
-
-        // 更新实习人员信息
-        [HttpPost("UppdateTrainee/{id}")]
-        public async Task<IActionResult> UppdateTrainee(string id, [FromBody] Employee employee)
-        {
-            if (id == "000")
-            {
-                _context.Employees.Add(employee);
-            }
-            else
-            {
-                var existingEmployee = await _context.Employees.FindAsync(id);
-                if (existingEmployee == null) return NotFound();
-                existingEmployee.Name = employee.Name;
-                existingEmployee.Position = employee.Position;
-                // 更新其他字段...
-            }
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-        // 删除实习人员
-        [HttpPost("TraineeDelete/{id}")]
-        public async Task<IActionResult> TraineeDelete(string id)
-        {
-            var trainee = await _context.Employees.FindAsync(id);
-            if (trainee == null) return NotFound();
-            _context.Employees.Remove(trainee);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-        // 获取员工列表
-        [HttpGet("EmployeeList")]
-        public async Task<ActionResult<List<Employee>>> EmployeeList()
-        {
-            return await _context.Employees.ToListAsync();
-        }
-
-        // 获取员工详细信息
-        [HttpGet("EmployeeDetail/{id}")]
-        public async Task<ActionResult<Employee>> EmployeeDetail(string id, int type)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null) return NotFound();
-            // 根据type返回不同信息，比如0为基础信息，1为考勤信息
-            return employee; // 假设只返回基础信息
-        }
-
-        // 更新员工信息
-        [HttpPost("UppdateEmployee/{id}")]
-        public async Task<IActionResult> UppdateEmployee(string id, int type, [FromBody] Employee employee)
-        {
-            if (id == "000")
-            {
-                _context.Employees.Add(employee);
-            }
-            else
-            {
-                var existingEmployee = await _context.Employees.FindAsync(id);
-                if (existingEmployee == null) return NotFound();
-                // 更新不同类型的信息，比如type = 0更新基础信息，1更新考勤信息
-                existingEmployee.Name = employee.Name;
-                // 更新其他字段...
-            }
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-        // 删除员工信息
-        [HttpPost("EmployeeDelete/{id}")]
-        public async Task<IActionResult> EmployeeDelete(string id)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null) return NotFound();
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
+    public class RecruitForm
+    {
+        public int id { get; set; }  // 招聘编号
+        public string name { get; set; }  // 招聘人员姓名
+        public string gender { get; set; }  // 性别，'男' 或 '女'
+        public string positionTitle { get; set; }  // 职位名称
+        public int salary { get; set; }  // 工资
+        public string phone { get; set; }  // 联系电话
+        public string email { get; set; }  // 电子邮件
+        public string? interviewer { get; set; }  // 面试官姓名
+        public string interviewerStage { get; set; }  // 面试阶段
+        public string state { get; set; }  // 录用状态：未录用或已录用
     }
 }
