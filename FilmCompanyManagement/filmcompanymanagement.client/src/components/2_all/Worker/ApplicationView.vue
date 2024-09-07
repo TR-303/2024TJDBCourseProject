@@ -92,7 +92,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/api/data/userdata', { id: userId })
+                axios.post('/api/worker/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
                     })
