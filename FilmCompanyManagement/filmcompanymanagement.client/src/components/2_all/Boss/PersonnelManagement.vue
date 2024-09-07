@@ -135,7 +135,7 @@
 
             <div class="dataTable">
                 <el-table :data="employee_list" style="width: 1000">
-                    <el-table-column prop="internId" label="实习生编号" width="auto"></el-table-column>
+                    <el-table-column prop="id" label="实习生编号" width="auto"></el-table-column>
                     <el-table-column prop="intern" label="姓名" width="auto"></el-table-column>
                     <el-table-column prop="advicer" label="指导老师" width="auto"></el-table-column>
                     <el-table-column fixed="right" label="操作" width="auto">
@@ -648,7 +648,7 @@
                     case '2': path = '/api/PersonnelManagement/delete-overview-form'; break;
                     case '3': path = '/api/PersonnelManagement/delete-train-form'; break;
                 }
-                axios.post(path, this.row)
+                axios.post(path, row)
                     .then(response => {
                         console.log('删除成功:', response.data.message); // 打印消息
                         this.$message({
@@ -675,8 +675,9 @@
                     case '2': path = '/api/PersonnelManagement/details-overview'; break;
                     case '3': path = '/api/PersonnelManagement/details-train'; break;
                 }
-                axios.post(path, { id: row.id }).then(response => {
-                    this.form = response.data[0];
+                axios.get(`${path}/${row.id}`).then(response => {
+                    console.log(response.data);
+                    this.form = response.data;
                     // 显示表单
                     this.dialogVisible = true;
                 }).catch(error => {

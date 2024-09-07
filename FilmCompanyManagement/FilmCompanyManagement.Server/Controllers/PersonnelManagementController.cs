@@ -4,6 +4,9 @@ using FilmCompanyManagement.Server.EntityFrame.Models;
 using System.Threading.Tasks;
 using System.Linq;
 using FilmCompanyManagement.Server.EntityFrame;
+using System.Numerics;
+using System.Reflection;
+using System.Xml.Linq;
 
 namespace FilmCompanyManagement.Server.Controllers
 {
@@ -41,7 +44,7 @@ namespace FilmCompanyManagement.Server.Controllers
             var interns = await _context.AdvicerIntern.Include(ai => ai.Intern).Include(ai => ai.Advicer)
                 .Select(e => new
                 {
-                    internId = e.InternId,
+                    id = e.InternId,
                     intern = e.Intern.Name,
                     advicer = e.Advicer.Name
                 })
@@ -110,7 +113,7 @@ namespace FilmCompanyManagement.Server.Controllers
             await _context.AdvicerIntern.AddAsync(new AdvicerIntern
             {
                 InternId = form.internId,
-                Intern = _context.Employees.Single(e=>e.Name==form.intern),
+                Intern = _context.Employees.Single(e => e.Name == form.intern),
                 AdvicerId = form.advicerId,
                 Advicer = _context.Employees.Single(e => e.Name == form.advicer),
                 InternshipStartDate = form.internshipStartDate,
@@ -128,13 +131,13 @@ namespace FilmCompanyManagement.Server.Controllers
         {
             await _context.Employees.AddAsync(new Employee
             {
-                Name= form.name,
-                Gender= form.gender,
-                Position= form.position,
-                Phone= form.phone,
-                Email= form.email,
-                Salary  = form.salary,
-                Department=_context.Departments.Single(d=>d.Name==form.department),
+                Name = form.name,
+                Gender = form.gender,
+                Position = form.position,
+                Phone = form.phone,
+                Email = form.email,
+                Salary = form.salary,
+                Department = _context.Departments.Single(d => d.Name == form.department),
             });
             await _context.SaveChangesAsync();
             return Ok(new
@@ -147,9 +150,12 @@ namespace FilmCompanyManagement.Server.Controllers
         {
             await _context.Drills.AddAsync(new Drill
             {
-                Teacher=_context.Employees.Single(e=>e.Id==form.teacher),
-                StartTime= form.dateTime,
-                EndTime= form.endTime,
+                Teacher = _context.Employees.Single(e => e.Id == form.teacher),
+                StartTime = form.dateTime,
+                EndTime = form.endTime,
+                Students = await _context.Employees
+                    .Where(e => form.employees.Contains(e.Id))
+                    .ToListAsync()
             });
             await _context.SaveChangesAsync();
             return Ok(new
@@ -159,7 +165,7 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         [HttpPost("delete-invite-form")]
-        public async Task<IActionResult> DeleteInvite([FromBody]InviteRow row)
+        public async Task<IActionResult> DeleteInvite([FromBody] InviteRow row)
         {
             var invite = await _context.Recruiters.FindAsync(row.id);
             if (invite == null)
@@ -176,7 +182,7 @@ namespace FilmCompanyManagement.Server.Controllers
         public async Task<IActionResult> DeleteIntern([FromBody] InternRow row)
         {
             var interns = await _context.AdvicerIntern
-                .Where(i => i.InternId == row.internId)
+                .Where(i => i.InternId == row.id)
                 .ToListAsync();
 
             if (interns == null || interns.Count == 0)
@@ -191,7 +197,7 @@ namespace FilmCompanyManagement.Server.Controllers
 
 
         [HttpPost("delete-overview-form")]
-        public async Task<IActionResult> DeleteOverview([FromBody]EmployeeRow row)
+        public async Task<IActionResult> DeleteOverview([FromBody] EmployeeRow row)
         {
             var employee = await _context.Employees.FindAsync(row.id);
             if (employee == null)
@@ -205,7 +211,7 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         [HttpPost("delete-train-form")]
-        public async Task<IActionResult> DeleteTraining([FromBody]TrainingRow row)
+        public async Task<IActionResult> DeleteTraining([FromBody] TrainingRow row)
         {
             var training = await _context.Drills.FindAsync(row.id);
             if (training == null)
@@ -218,113 +224,88 @@ namespace FilmCompanyManagement.Server.Controllers
             return Ok(new { message = "培训记录已删除" });
         }
 
-        [HttpPost("details-invite")]
-        public async Task<IActionResult> CreateOrUpdateInvite([FromBody] RecruitForm form)
+        [HttpGet("details-invite/{id}")]
+        public async Task<IActionResult> CreateOrUpdateInvite(int id)
         {
             // 查找现有的记录
-            var invite = await _context.Recruiters.FindAsync(form.id);
-
-            // 如果没有记录，说明是新建操作
+            var invite = await _context.Recruiters.Include(r => r.Interviewer).FirstOrDefaultAsync(r => r.Id == id);
             if (invite == null)
+                return NotFound(new { message = "招聘信息未找到" });
+
+            return Ok(new
             {
-                // 新建招聘信息
-                await _context.Recruiters.AddAsync(new Recruiter
-                {
-                    Name = form.name,
-                    Gender = form.gender,
-                    Position = form.positionTitle,
-                    Salary = form.salary,
-                    Phone = form.phone,
-                    Email = form.email,
-                    Interviewer = _context.Employees.Single(e => e.Id == form.interviewer), // 根据面试官 ID 找到面试官
-                    InterviewStage = form.interviewerStage == "一面" ? 1 : 2,
-                    State = form.state == "已录用"
-                });
-
-                await _context.SaveChangesAsync();
-                return Ok(new
-                {
-                    message = "提交成功"
-                });
-            }
-            else // 如果找到了记录，执行更新操作
-            {
-                invite.Name = form.name;
-                invite.Gender = form.gender;
-                invite.Position = form.positionTitle;
-                invite.Salary = form.salary;
-                invite.Phone = form.phone;
-                invite.Email = form.email;
-                invite.Interviewer = await _context.Employees.FindAsync(form.interviewer); // 根据面试官 ID 找到面试官
-                invite.InterviewStage = form.interviewerStage == "一面" ? 1 : 2;
-                invite.State = form.state == "已录用";
-
-                await _context.SaveChangesAsync();
-
-                return Ok(new
-                {
-                    message = "更新成功"
-                });
-            }
+                id = id,
+                name = invite.Name,
+                gender = invite.Gender,
+                positionTitle = invite.Position,
+                salary = invite.Salary.ToString(),
+                phone = invite.Phone,
+                email = invite.Email,
+                interviewer = invite.Interviewer == null ? null : invite.Interviewer.Name,
+                interviewerStage = invite.InterviewStage == 1 ? "一面" : "二面",
+                state = invite.State ? "已录用" : "未录用"
+            });
         }
-        [HttpPost("details-intern")]
-        public async Task<IActionResult> GetInternDetails([FromBody] IdRequest request)
+        [HttpGet("details-intern/{id}")]
+        public async Task<IActionResult> GetInternDetails(int id)
         {
             var intern = await _context.AdvicerIntern
-                .Where(ai => ai.Intern.Id == request.Id)
+                .Where(ai => ai.Intern.Id == id)
                 .Select(ai => new
                 {
-                    InternId = ai.Intern.Id,
-                    Intern = ai.Intern.Name,
-                    AdvicerId = ai.Advicer.Id,
-                    Advicer = ai.Advicer.Name,
-                    InternshipStartDate = ai.InternshipStartDate,
-                    InternshipEndDate = ai.InternshipEndDate,
-                    Remarks = ai.Remarks
+                    internId = ai.Intern.Id,
+                    intern = ai.Intern.Name,
+                    advicerId = ai.Advicer.Id,
+                    advicer = ai.Advicer.Name,
+                    internshipStartDate = ai.InternshipStartDate,
+                    internshipEndDate = ai.InternshipEndDate,
+                    remarks = ai.Remarks
                 })
                 .FirstOrDefaultAsync();
 
             if (intern == null)
                 return NotFound(new { message = "实习信息未找到" });
 
-            return Ok(new[] { intern });
+            return Ok(intern);
         }
-        [HttpPost("details-overview")]
-        public async Task<IActionResult> GetOverviewDetails([FromBody] IdRequest request)
+        [HttpGet("details-overview/{id}")]
+        public async Task<IActionResult> GetOverviewDetails(int id)
         {
             var employee = await _context.Employees
-                .Where(e => e.Id == request.Id)
                 .Include(e => e.SalaryBill)  // 连表查询 Bill
+                .Include(e => e.Department)
+                .Where(e => e.Id == id)
                 .Select(e => new
                 {
-                    e.Id,
-                    e.Name,
-                    e.Gender,
-                    e.Position,
-                    e.Phone,
-                    e.Email,
-                    e.Salary,
+                    id = e.Id.ToString(),
+                    name = e.Name,
+                    gender = e.Gender,
+                    position = e.Position,
+                    phone = e.Phone,
+                    email = e.Email,
+                    salary = e.Salary,
                     BillId = e.SalaryBill == null ? null : (int?)e.SalaryBill.Id,
                     BillAmount = e.SalaryBill == null ? null : (decimal?)e.SalaryBill.Amount,
                     BillType = e.SalaryBill == null ? null : e.SalaryBill.Type,
                     BillDate = e.SalaryBill == null ? null : (DateTime?)e.SalaryBill.AssignDate,
                     BillStatus = e.SalaryBill == null ? null : (e.SalaryBill.Status ? "已处理" : "未处理"),
-                    e.KPI,
-                    e.Department
-                })
-                .FirstOrDefaultAsync();
+                    kpi = e.KPI,
+                    department = e.Department.Name
+                }).FirstOrDefaultAsync();
+
 
             if (employee == null)
                 return NotFound(new { message = "员工信息未找到" });
 
-            return Ok(new[] { employee });
+            return Ok(employee);
         }
 
-        [HttpPost("details-train")]
-        public async Task<IActionResult> GetTrainDetails([FromBody] IdRequest request)
+        [HttpGet("details-train/{id}")]
+        public async Task<IActionResult> GetTrainDetails(int id)
         {
             var training = await _context.Drills
-                .Where(d => d.Id == request.Id)
+                .Where(d => d.Id == id)
+                .Include(d => d.Students)
                 .Select(d => new
                 {
                     d.Id,
@@ -332,13 +313,18 @@ namespace FilmCompanyManagement.Server.Controllers
                     Teacher = d.Teacher == null ? "未指定" : d.Teacher.Name,   // 如果为 null，则返回 "未指定"
                     DateTime = d.StartTime,
                     EndTime = d.EndTime,
+                    employees = d.Students.Select(s => new
+                    {
+                        id = s.Id,
+                        name = s.Name,
+                    }).ToList()
                 })
                 .FirstOrDefaultAsync();
 
             if (training == null)
                 return NotFound(new { message = "培训信息未找到" });
 
-            return Ok(new[] { training });
+            return Ok(training);
         }
 
 
@@ -402,7 +388,7 @@ namespace FilmCompanyManagement.Server.Controllers
 
     public class InternRow
     {
-        public int internId { get; set; } // 实习生编号
+        public int id { get; set; } // 实习生编号
         public string intern { get; set; } // 姓名
         public string advicer { get; set; } // 指导老师
     }
