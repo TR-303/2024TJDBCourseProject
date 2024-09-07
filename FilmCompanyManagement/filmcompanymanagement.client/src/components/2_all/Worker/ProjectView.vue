@@ -118,7 +118,7 @@
             },
             getProjects() {
                 const userID = this.$route.query.id;
-                axios.post('/api/projects', { userID })
+                axios.post('/api/worker/projects', { userID })
                     .then(response => {
                         this.projects = response.data.projects;
                     })
