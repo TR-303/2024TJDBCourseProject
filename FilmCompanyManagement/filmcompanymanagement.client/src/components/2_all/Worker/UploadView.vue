@@ -92,18 +92,20 @@
     import { ref, onMounted, computed } from 'vue';
     import axios from 'axios';
     import { useRoute, useRouter } from 'vue-router';
+import DepartmentVue from '../Department.vue';
 
     export default {
         name: 'UploadView',
         data() {
             return {
                 name: '', // 获取登入姓名
+                department:'',
             }
         },
         computed: {
             showWorkerMenu() {
-                return this.$route.query.id === '3';
-            }
+                return this.department === "业务部";
+            },
         },
         setup() {
             const fileList = ref([]);
@@ -117,7 +119,7 @@
             const name = ref('');
             const route = useRoute();
             const router = useRouter();
-
+            const department = ref('');
             const userID = route.query.id;
 
             onMounted(async () => {
@@ -141,6 +143,7 @@
                     const userResponse = await axios.post('/api/data/userdata', { id: route.query.id });
                     if (userResponse.data.name) {
                         name.value = userResponse.data.name;
+                        department.value = userResponse.data.department.name;
                     } else {
                         name.value = '未定义';
                     }

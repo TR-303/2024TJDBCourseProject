@@ -131,12 +131,13 @@
                 name: '', // 获取登入姓名
                 requisition: [], //默认申请数据
                 dialogVisible: false,
-                form:    { id: ''},
+                form: { id: '' },
+                department:'',
             }
         },
         computed: {
             showBossMenu() {
-                return this.$route.query.id === '1';
+                return this.department === '管理部';
             }
         },
         methods: {
@@ -171,9 +172,10 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/data/userdata', { id: userId })
+                axios.post('api/data/userdata', { id: userId })
                     .then(result => {
-                        this.name = result.data.name || '未定义'; // 确保 name 有默认值
+                        this.name = result.data.name;
+                        this.department = result.data.department.name;
                     })
                     .catch(error => {
                         console.error('Error fetching mock data:', error);
