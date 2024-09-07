@@ -541,10 +541,8 @@
                         path='/api/PersonnelManagement/submit-intern-form';
                         break;
                     case '2':
-                        if ( !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
-                            !this.form.phone || !this.form.email ||  !this.form.billAmount || 
-                            !this.form.billType ||  !this.form.billStatus || 
-                            !this.form.department) {
+                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
+                            !this.form.phone || !this.form.email || !this.form.department || !this.form.kpi) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
@@ -579,7 +577,7 @@
             },
             //新建
             createNew(){
-                this.form = {id:'0', customerid: '0', billId:'0', billDate: '2024-09-08', fileId:'0', employees:[{id: '',name: ''}] };
+                this.form = {id:'0', customerid: '0', fileId:'0', kpi:'0', employees:[{id: '',name: ''}] };
                 this.dialogVisible = true;
             },
             //删除
