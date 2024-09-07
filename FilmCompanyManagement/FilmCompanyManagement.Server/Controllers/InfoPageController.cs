@@ -20,34 +20,34 @@ namespace FilmCompanyManagement.Controllers
 
         //通知板块
         [HttpPost]
-        public async Task<ActionResult> GetFundingApplications(thisRequest requestBody)
+        public async Task<ActionResult> GetFundingApplications(thisRequest2 requestBody)
         {//worker:报销申请
             return Ok(await _context.FundingApplications.Include(fa => fa.Employee).Include(fa => fa.Bill).Where(fa => fa.Employee.UserName == requestBody.userName).ToListAsync());
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetEquipments(thisRequest requestBody)
+        public async Task<ActionResult> GetEquipments(thisRequest2 requestBody)
         {//worker:设备购买
             var unfinishedProjects = await _context.PhotoEquipments.Include(p => p.Employee).Include(p => p.Bill).Where(p => p.Employee.UserName == requestBody.userName).ToListAsync();
             return Ok(unfinishedProjects);
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetEquipmentsRepairs(thisRequest requestBody)
+        public async Task<ActionResult> GetEquipmentsRepairs(thisRequest2 requestBody)
         {//worker:设备维修
             var unfinishedProjects = await _context.EquipmentRepairs.Include(p => p.Employee).Include(p => p.PhotoEquipment).Include(p => p.Bill).Where(p => p.Employee.UserName == requestBody.userName).ToListAsync();
             return Ok(unfinishedProjects);
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetUnfinishedDrills(thisRequest requestBody)
+        public async Task<ActionResult> GetUnfinishedDrills(thisRequest2 requestBody)
         {//worker:培训通知
             var user = await _context.Employees.Where(d => d.UserName == requestBody.userName).SingleAsync();
             return Ok(await _context.Drills.Include(d => d.Students).Include(d => d.Teacher).Include(d => d.Students).Where(d => DateTime.Now < d.EndTime && d.Students.Contains(user)).ToListAsync());
         }
 
         [HttpPost]
-        public async Task<ActionResult> BossGetFundingApplications(thisRequest requestBody)
+        public async Task<ActionResult> BossGetFundingApplications(thisRequest2 requestBody)
         {//boss:报销申请
             var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == requestBody.userName).ToListAsync();
             var fundingApplications = new List<FundingApplication>();
@@ -57,7 +57,7 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> BossGetEquipments(thisRequest requestBody)
+        public async Task<ActionResult> BossGetEquipments(thisRequest2 requestBody)
         {//boss:设备购买
             var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == requestBody.userName).ToListAsync();
             var photoEquipments = new List<PhotoEquipment>();
@@ -67,7 +67,7 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> BossGetEquipmentsRepairs(thisRequest requestBody)
+        public async Task<ActionResult> BossGetEquipmentsRepairs(thisRequest2 requestBody)
         {//boss:设备维修
             var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == requestBody.userName).ToListAsync();
             var equipmentRepairs = new List<EquipmentRepair>();
@@ -104,7 +104,7 @@ namespace FilmCompanyManagement.Controllers
 
         //考勤板块
         [HttpPost]
-        public async Task<ActionResult> IsAttended(thisRequest requestBody)
+        public async Task<ActionResult> IsAttended(thisRequest2 requestBody)
         {
             return Ok(await _context.Attendances.Include(a => a.Employee).Where(a => a.Employee.UserName == requestBody.userName ).FirstOrDefaultAsync() == null);
         }
@@ -129,7 +129,7 @@ namespace FilmCompanyManagement.Controllers
 
         //绩效板块
         [HttpPost]
-        public async Task<ActionResult> GetKPIs(thisRequest requestBody)
+        public async Task<ActionResult> GetKPIs(thisRequest2 requestBody)
         {
             var KPIs = await _context.KPI.Include(k => k.Project).Include(k => k.Project.Manager).
                 Where(k => k.Project.Manager.UserName == requestBody.userName).ToListAsync();
@@ -140,7 +140,7 @@ namespace FilmCompanyManagement.Controllers
                 Where(k => k.Project.Manager.UserName == requestBody.userName && (long)k.Date.Subtract(new DateTime(1970, 1, 1)).TotalDays == latestDate).SingleAsync();
             return Ok(latestKPI.Project);
         }
-        public class thisRequest
+        public class thisRequest2
         {
             public string userName { get; set; }
         }

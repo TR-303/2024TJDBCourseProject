@@ -176,7 +176,7 @@
             getRequisition() {
                 axios.get('/api/ApplicationApproval/requisition')
                     .then(response => {
-                        this.requisition = response.data || [];
+                        this.requisition = response.data.requisition || [];
                     })
                     .catch(error => {
                         console.error('Error fetching requisition:', error);

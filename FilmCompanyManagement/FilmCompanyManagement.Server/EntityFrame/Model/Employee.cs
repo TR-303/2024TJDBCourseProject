@@ -37,7 +37,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
 
         [Required, StringLength(30)]
         public string Password { get; set; }//’Àªß√‹¬Î
-
+  
 
         public AdvicerIntern? Advicer { get; set; }
         public ICollection<AdvicerIntern> Interns { get; set; }

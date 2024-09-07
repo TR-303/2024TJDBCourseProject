@@ -415,7 +415,6 @@
                 employeeID: '2',
                 employee_list: [],
                 overview_employee_list: [],
-                template_form: { id: '0', billId: '0', fileId: '0', employees: [{ id: '', name: '' }] },
                 form: { id: '' },
             }
         },
@@ -546,6 +545,7 @@
                         this.dialogVisible = false; // 关闭对话框
                     })
                     .catch(error => {
+                        console.log(this.form);
                         console.error('提交表单失败', error);
                         this.$message({
                             type: 'error',
@@ -553,11 +553,10 @@
                         });
                     });
                 //重新请求数据
-                getIncome();
+                this.getIncome();
             },
             //新建
             createNew() {
-                this.form = this.template_form;
                 this.dialogVisible = true;
             },
             //删除
@@ -569,7 +568,8 @@
                     case '2': path = '/api/PersonnelManagement/delete-overview-form'; break;
                     case '3': path = '/api/PersonnelManagement/delete-train-form'; break;
                 }
-                axios.post(path, this.row)
+                console.log(row);
+                axios.post(path, row)
                     .then(response => {
                         console.log('删除成功:', response.data.message); // 打印消息
                         this.$message({
