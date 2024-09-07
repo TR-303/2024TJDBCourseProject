@@ -13,7 +13,20 @@ namespace FilmCompanyManagement.Server
             // Add services to the container.
 
             builder.Services.AddControllers()
-                .AddJsonOptions(options => {options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;});
+                .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles; });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.SetIsOriginAllowed(origin => true)
+                               .AllowAnyHeader()
+                               .AllowCredentials()
+                               .AllowAnyMethod();
+                    });
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -26,11 +39,6 @@ namespace FilmCompanyManagement.Server
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -39,6 +47,10 @@ namespace FilmCompanyManagement.Server
             }
 
             app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseCors("AllowSpecificOrigin"); // ∆Ù”√CORS≤ﬂ¬‘  
 
             app.UseAuthorization();
 
