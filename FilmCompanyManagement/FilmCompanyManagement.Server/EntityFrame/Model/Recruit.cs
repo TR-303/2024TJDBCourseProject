@@ -21,7 +21,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string Position { get; set; }
 
         [Required, Column(TypeName = "decimal(12, 2)")]
-        public int Salary;
+        public decimal Salary;
 
         [StringLength(14)]
         public string? Phone { get; set; } // 电话
@@ -35,6 +35,6 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public int InterviewStage { get; set; } = 0;//面试阶段：如一面二面，一笔试等
 
         [Required, Column(TypeName = "NUMBER(1)")]
-        public bool State { get; set; }//0表示未录用，1表示录用，当1时触发自动信息录入员工表
+        public bool State { get; set; } = false;//0表示未录用，1表示录用，当1时触发自动信息录入员工表
     }
 }
