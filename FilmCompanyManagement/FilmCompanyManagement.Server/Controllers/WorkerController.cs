@@ -96,6 +96,34 @@ namespace FilmCompanyManagement.Server.Controllers
 
             return Ok(new { message = "Repair created successfully" });
         }
+
+        [HttpPost("purchase")]
+        public async Task<IActionResult> Purchase([FromBody] PurchaseForm form)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == form.id);
+            if (employee == null)
+            {
+                return BadRequest("Employee not found.");
+            }
+
+            await _context.PhotoEquipments.AddAsync(new PhotoEquipment
+            {
+                Employee = employee,
+                Name = form.equipment,
+                Model = form.model,
+                Bill = new Bill
+                {
+                    Amount = form.amount,
+                    Type = "purchase",
+                    AssignDate = DateTime.Now
+                }
+            });
+            await _context.SaveChangesAsync();
+            return Ok(new
+            {
+                message = "Purchase created successfully"
+            });
+        }
     }
 
     public class UploadForm
@@ -120,6 +148,14 @@ namespace FilmCompanyManagement.Server.Controllers
         public string id { get; set; }
         public string equipmentID { get; set; }
         public string date { get; set; }
+        public decimal amount { get; set; }
+    }
+
+    public class PurchaseForm
+    {
+        public string id { get; set; }
+        public string equipment { get; set; }
+        public string model { get; set; }
         public decimal amount { get; set; }
     }
 }

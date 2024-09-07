@@ -23,7 +23,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public int Status { get; set; } = 0;//¹ºÂòÉêÇëÊÇ·ñÍ¨¹ı
 
         [StringLength(100)]
-        public string Opinion { get; set; }
+        public string? Opinion { get; set; }
 
         [Required]
         public Bill Bill { get; set; }
