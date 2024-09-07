@@ -25,7 +25,7 @@ let userdataList = [
     { id: '4', department: '业务部', phone: '22222' },
 ] 
 //身份：传了id
-Mock.mock('/data/userdata', 'post', (params) => {
+Mock.mock('/api/data/userdata', 'post', (params) => {
     let user = JSON.parse(params.body);
     const userdata = dataList.find(item => item.id === user.id);
     return {
