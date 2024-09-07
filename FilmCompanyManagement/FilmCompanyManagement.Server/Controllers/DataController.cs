@@ -19,9 +19,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost("userdata")]
         public async Task<IActionResult> UserData(UserDataRequest request)
         {
-            int id = request.id;
-
-            var ret = await _context.Employees.SingleAsync(e => e.Id == id);
+            var ret = await _context.Employees.SingleAsync(e => e.UserName == request.id);
             if (ret == null) return BadRequest("not exist");
 
             return Ok(new
@@ -55,6 +53,6 @@ namespace FilmCompanyManagement.Controllers
 
     public class UserDataRequest
     {
-        public int id { get; set; }
+        public string id { get; set; }
     }
 }
