@@ -84,17 +84,17 @@
       <nav class="sub-nav">
         <router-link
           class="nav_button"
-          :to="{ path: '/application/expense', query: { id: '3' } }"
+          :to="{ path: '/application/expense', query: { id: UID } }"
           >差务经费</router-link
         >
         <router-link
           class="nav_button"
-          :to="{ path: '/application/purchase', query: { id: '3' } }"
+          :to="{ path: '/application/purchase', query: { id: UID } }"
           >设备购买</router-link
         >
         <router-link
           class="nav_button"
-          :to="{ path: '/application/repair', query: { id: '3' } }"
+          :to="{ path: '/application/repair', query: { id: UID } }"
           >设备维修</router-link
         >
       </nav>
@@ -114,6 +114,7 @@ export default {
     return {
         name: "", // 获取登入姓名
         department:'',
+        UID: this.$route.query.id || "3"
     };
   },
   computed: {
@@ -157,7 +158,7 @@ export default {
         .post("/api/data/userdata", { id: userId })
         .then((result) => {
             this.name = result.data.name || "未定义"; // 确保 name 有默认值
-            this.department = result.data.department.name;
+            this.department = result.data.department.name || "业务部";
         })
         .catch((error) => {
           console.error("Error fetching mock data:", error);
