@@ -98,7 +98,7 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         [HttpPost("purchase")]
-        public async Task<IActionResult> Purchase([FromBody] PurchaseForm form)
+        public async Task<IActionResult> Purchase([FromBody] PurchaseForm2 form)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == form.id);
             if (employee == null)
@@ -174,7 +174,7 @@ namespace FilmCompanyManagement.Server.Controllers
         public decimal amount { get; set; }
     }
 
-    public class PurchaseForm
+    public class PurchaseForm2
     {
         public string id { get; set; }
         public string equipment { get; set; }

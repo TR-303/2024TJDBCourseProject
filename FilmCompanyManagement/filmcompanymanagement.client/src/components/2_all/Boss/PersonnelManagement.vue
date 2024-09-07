@@ -36,18 +36,18 @@
         <h2>人员管理</h2>
 
         <div>
-            <el-button class="main_button" 
-                :style="{ backgroundColor: employeeID === '2' ? '#409EFF' : '', color: employeeID === '2' ? 'white' : '' }"
-                type="primary" size="large" plain @click="setEmployeeID('2')">人员总览</el-button>
-            <el-button class="main_button" 
-                :style="{ backgroundColor: employeeID === '0' ? '#409EFF' : '', color: employeeID === '0' ? 'white' : '' }" 
-                type="primary" size="large" plain @click="setEmployeeID('0')">招聘管理</el-button>
-            <el-button class="main_button" 
-                :style="{ backgroundColor: employeeID === '1' ? '#409EFF' : '', color: employeeID === '1' ? 'white' : '' }"
-                type="primary" size="large" plain @click="setEmployeeID('1')">实习总览</el-button>
-            <el-button class="main_button" 
-                :style="{ backgroundColor: employeeID === '3' ? '#409EFF' : '', color: employeeID === '3' ? 'white' : '' }"
-                type="primary" size="large" plain @click="setEmployeeID('3')">员工培训</el-button>
+            <el-button class="main_button"
+                       :style="{ backgroundColor: employeeID === '2' ? '#409EFF' : '', color: employeeID === '2' ? 'white' : '' }"
+                       type="primary" size="large" plain @click="setEmployeeID('2')">人员总览</el-button>
+            <el-button class="main_button"
+                       :style="{ backgroundColor: employeeID === '0' ? '#409EFF' : '', color: employeeID === '0' ? 'white' : '' }"
+                       type="primary" size="large" plain @click="setEmployeeID('0')">招聘管理</el-button>
+            <el-button class="main_button"
+                       :style="{ backgroundColor: employeeID === '1' ? '#409EFF' : '', color: employeeID === '1' ? 'white' : '' }"
+                       type="primary" size="large" plain @click="setEmployeeID('1')">实习总览</el-button>
+            <el-button class="main_button"
+                       :style="{ backgroundColor: employeeID === '3' ? '#409EFF' : '', color: employeeID === '3' ? 'white' : '' }"
+                       type="primary" size="large" plain @click="setEmployeeID('3')">员工培训</el-button>
         </div>
 
         <!-- 招聘管理 -->
@@ -57,7 +57,7 @@
             </div>
 
             <div class="dataTable">
-                 <el-table :data="employee_list" style="width: 1000">
+                <el-table :data="employee_list" style="width: 1000">
                     <el-table-column prop="id" label="招聘编号" width="auto"></el-table-column>
                     <el-table-column prop="name" label="姓名" width="auto"></el-table-column>
                     <el-table-column prop="gender" label="性别" width="auto"></el-table-column>
@@ -92,7 +92,7 @@
                         <el-input-number v-model="form.salary" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <el-input-number v-model="form.phone" :controls="false"></el-input-number>
+                        <el-input v-model="form.phone" :controls="false"></el-input>
                     </el-form-item>
                     <el-form-item label="电子邮件">
                         <el-input v-model="form.email"></el-input>
@@ -106,7 +106,7 @@
                                 </span>
                             </el-option>
                         </el-select>
-                    </el-form-item>   
+                    </el-form-item>
                     <el-form-item label="面试阶段">
                         <el-select v-model="form.interviewerStage" placeholder="请选择状态">
                             <el-option label="一面" value="一面"></el-option>
@@ -134,7 +134,7 @@
             </div>
 
             <div class="dataTable">
-                 <el-table :data="employee_list" style="width: 1000">
+                <el-table :data="employee_list" style="width: 1000">
                     <el-table-column prop="internId" label="实习生编号" width="auto"></el-table-column>
                     <el-table-column prop="intern" label="姓名" width="auto"></el-table-column>
                     <el-table-column prop="advicer" label="指导老师" width="auto"></el-table-column>
@@ -159,7 +159,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="实习生姓名"> 
+                    <el-form-item label="实习生姓名">
                         <el-input v-model="form.intern" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="指导老师编号">
@@ -198,7 +198,7 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                 <el-table :data="employee_list" style="width: 1000">
+                <el-table :data="employee_list" style="width: 1000">
                     <el-table-column prop="id" label="员工编号" width="auto"></el-table-column>
                     <el-table-column prop="name" label="员工姓名" width="auto"></el-table-column>
                     <el-table-column prop="salary" label="员工薪水" width="auto"></el-table-column>
@@ -229,7 +229,7 @@
                             <el-input v-model="form.position"></el-input>
                         </el-form-item>
                         <el-form-item label="联系电话">
-                            <el-input-number v-model="form.phone" :controls="false"></el-input-number>
+                            <el-input v-model="form.phone" :controls="false"></el-input>
                         </el-form-item>
                         <el-form-item label="邮箱">
                             <el-input v-model="form.email"></el-input>
@@ -261,16 +261,16 @@
                                     </el-select>
                                 </el-form-item>
                             </el-collapse-item>
-                        <el-form-item label="KPI">
-                            <el-input v-model="form.kpi" disabled></el-input>
-                        </el-form-item>
-                        <el-form-item label="部门">
-                            <el-select v-model="form.department" placeholder="请选择部门">
-                                <el-option label="管理部" value="管理部"></el-option>
-                                <el-option label="财务部" value="财务部"></el-option>
-                                <el-option label="业务部" value="业务部"></el-option>
-                            </el-select>
-                        </el-form-item>
+                            <el-form-item label="KPI">
+                                <el-input v-model="form.kpi" disabled></el-input>
+                            </el-form-item>
+                            <el-form-item label="部门">
+                                <el-select v-model="form.department" placeholder="请选择部门">
+                                    <el-option label="管理部" value="管理部"></el-option>
+                                    <el-option label="财务部" value="财务部"></el-option>
+                                    <el-option label="业务部" value="业务部"></el-option>
+                                </el-select>
+                            </el-form-item>
 
                             <el-collapse-item title="其它" name="2">
                                 <el-form-item label="实习生">
@@ -314,7 +314,7 @@
                                     </el-table>
                                 </el-form-item>
                             </el-collapse-item>
-                        </el-collapse>    
+                        </el-collapse>
                     </el-form>
                     <span slot="footer" class="dialog-footer">
                         <el-button type="primary" @click="submitForm">保存</el-button>
@@ -330,7 +330,7 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                 <el-table :data="employee_list" style="width: 1000">
+                <el-table :data="employee_list" style="width: 1000">
                     <el-table-column prop="id" label="培训编号" width="auto"></el-table-column>
                     <el-table-column prop="teacher" label="授课老师" width="auto"></el-table-column>
                     <el-table-column prop="dateTime" label="授课日期" width="auto"></el-table-column>
@@ -358,7 +358,7 @@
                                 </span>
                             </el-option>
                         </el-select>
-                    </el-form-item> 
+                    </el-form-item>
                     <el-form-item label="培训开始时间">
                         <el-date-picker v-model="form.dateTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
                     </el-form-item>
@@ -370,28 +370,28 @@
                             <el-form-item label="">
                                 <el-table :data="form.employees" style="width: 100%">
                                     <el-table-column label="编号" width="180">
-                                      <template v-slot="scope">
-                                        <el-select v-model="scope.row.id" placeholder="请选择职位" filterable clearable @change="updateEmployee(scope.row, scope.$index)">
-                                            <el-option v-for="employee in overview_employee_list" :key="employee.id" :label="employee.id" :value="employee.id">
-                                                <span style="display: flex; justify-content: space-between; width: 100%;">
-                                                    <span>{{ employee.id }}</span>
-                                                    <span>{{ employee.name }}</span>
-                                                </span>
-                                            </el-option>
-                                        </el-select>
-                                      </template>
+                                        <template v-slot="scope">
+                                            <el-select v-model="scope.row.id" placeholder="请选择职位" filterable clearable @change="updateEmployee(scope.row, scope.$index)">
+                                                <el-option v-for="employee in overview_employee_list" :key="employee.id" :label="employee.id" :value="employee.id">
+                                                    <span style="display: flex; justify-content: space-between; width: 100%;">
+                                                        <span>{{ employee.id }}</span>
+                                                        <span>{{ employee.name }}</span>
+                                                    </span>
+                                                </el-option>
+                                            </el-select>
+                                        </template>
                                     </el-table-column>
                                     <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-                                    <el-table-column prop="right" label="操作" >
+                                    <el-table-column prop="right" label="操作">
                                         <template v-slot="scope">
                                             <el-button type="danger" @click="removeEmployee(scope.$index)">删除</el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
-                              <el-button type="primary" @click="addEmployee">添加人员</el-button>
-                            </el-form-item>   
+                                <el-button type="primary" @click="addEmployee">添加人员</el-button>
+                            </el-form-item>
                         </el-collapse-item>
-                    </el-collapse>   
+                    </el-collapse>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
@@ -413,9 +413,9 @@
                 name: '', // 获取登入姓名
                 dialogVisible: false,
                 employeeID: '2',
-                employee_list:[],
-                overview_employee_list:[],
-                form:           { id: '' },
+                employee_list: [],
+                overview_employee_list: [],
+                form: {},
             }
         },
         computed: {
@@ -464,55 +464,58 @@
                     });
             },
             setEmployeeID(id) {
+                this.form = { id: "" };
+
+                console.log(this.form);
                 this.employeeID = id;
+                console.log(this.form);
+
                 this.getIncome();
             },
 
             //表单用
-            changeEmployee(type){        //同步id的修改
-                switch(type)
-                {
-                    case 'intern': this.form.intern = this.overview_employee_list.find(emp => emp.id === this.form.internId).name;break;
-                    case 'adbicer': this.form.advicer = this.overview_employee_list.find(emp => emp.id === this.form.advicerId).name;break;
+            changeEmployee(type) {        //同步id的修改
+                switch (type) {
+                    case 'intern': this.form.intern = this.overview_employee_list.find(emp => emp.id === this.form.internId).name; break;
+                    case 'adbicer': this.form.advicer = this.overview_employee_list.find(emp => emp.id === this.form.advicerId).name; break;
                 }
             },
             addEmployee() {
-                this.form.employees.push({id:'', name:''}); // 添加一个新的空行              
+                this.form.employees.push({ id: '', name: '' }); // 添加一个新的空行
             },
             updateEmployee(value, index) {
                 this.form.employees[index] = value; // 更新学生信息
-                if(this.form.employees[index].id){
+                if (this.form.employees[index].id) {
                     value.name = this.overview_employee_list.find(emp => emp.id === this.form.employees[index].id).name;
                 }
-                else{
+                else {
                     value.name = '';
                 }
             },
             removeEmployee(index) {
-              this.form.employees.splice(index, 1); // 删除指定索引的学生
+                this.form.employees.splice(index, 1); // 删除指定索引的学生
             },
             //获取信息
-            getIncome(){
+            getIncome() {
                 let path;
-                switch(this.employeeID){
+                switch (this.employeeID) {
                     case '0':
-                        path='/api/PersonnelManagement/get-invite';
+                        path = '/api/PersonnelManagement/get-invite';
                         break;
                     case '1':
-                        path='/api/PersonnelManagement/get-intern';
+                        path = '/api/PersonnelManagement/get-intern';
                         break;
                     case '2':
-                        path='/api/PersonnelManagement/get-overview';
+                        path = '/api/PersonnelManagement/get-overview';
                         break;
                     case '3':
-                        path='/api/PersonnelManagement/get-train';
+                        path = '/api/PersonnelManagement/get-train';
                         break;
                 }
                 axios.get(path)
                     .then(response => {
-                        this.employee_list = response.data|| [];
-                        if(this.employeeID == '2')
-                        {
+                        this.employee_list = response.data || [];
+                        if (this.employeeID == '2') {
                             this.overview_employee_list = this.employee_list;
                         }
                     })
@@ -523,42 +526,94 @@
             //提交表单
             submitForm() {
                 let path;
-                switch(this.employeeID){
+                switch (this.employeeID) {
                     case '0':
-                        if ( !this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary || 
+                        if (!this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary ||
                             !this.form.phone || !this.form.email || !this.form.interviewer || !this.form.interviewerStage || !this.form.state) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/PersonnelManagement/submit-invite-form';
+                        path = '/api/PersonnelManagement/submit-invite-form';
                         break;
                     case '1':
-                        if ( !this.form.advicer || !this.form.internId || !this.form.intern || 
+                        if (!this.form.advicer || !this.form.internId || !this.form.intern ||
                             !this.form.internshipStartDate || !this.form.internshipEndDate || !this.form.remarks) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/PersonnelManagement/submit-intern-form';
+                        path = '/api/PersonnelManagement/submit-intern-form';
                         break;
                     case '2':
-                        if ( !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
-                            !this.form.phone || !this.form.email ||  !this.form.billAmount || 
-                            !this.form.billType ||  !this.form.billStatus || 
+                        if (!this.form.name || !this.form.gender || !this.form.position || !this.form.salary ||
+                            !this.form.phone || !this.form.email ||
                             !this.form.department) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/PersonnelManagement/submit-overview-form';
+                        path = '/api/PersonnelManagement/submit-overview-form';
                         break;
                     case '3':
-                        if ( !this.form.teacher || !this.form.dateTime || !this.form.endTime ||  !this.form.employees[0].id) {
+                        if (!this.form.teacher || !this.form.dateTime || !this.form.endTime || !this.form.employees[0].id) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/PersonnelManagement/submit-train-form';
+                        path = '/api/PersonnelManagement/submit-train-form';
                         break;
                 }
-                axios.post(path, this.form)
+                let post;
+                switch (this.employeeID) {
+                    case '0': // 招聘管理
+                        post = {
+                            id: this.form.id,
+                            name: this.form.name,
+                            gender: this.form.gender,
+                            positionTitle: this.form.positionTitle,
+                            salary: this.form.salary,
+                            phone: this.form.phone,
+                            email: this.form.email,
+                            interviewer: this.form.interviewer,
+                            interviewerStage: this.form.interviewerStage,
+                            state: this.form.state
+                        };
+                        break;
+
+                    case '1': // 实习总览
+                        post = {
+                            internId: this.form.internId,
+                            intern: this.form.intern,
+                            advicerId: this.form.advicerId,
+                            advicer: this.form.advicer,
+                            internshipStartDate: this.form.internshipStartDate,
+                            internshipEndDate: this.form.internshipEndDate,
+                            remarks: this.form.remarks
+                        };
+                        break;
+
+                    case '2': // 员工总览
+                        post = {
+                            id: this.form.id,
+                            name: this.form.name,
+                            gender: this.form.gender,
+                            position: this.form.position,
+                            phone: this.form.phone,
+                            email: this.form.email,
+                            salary: this.form.salary,
+                            department: this.form.department
+                        };
+                        break;
+
+                    case '3': // 员工培训
+                        post = {
+                            id: this.form.id,
+                            teacher: this.form.teacher,
+                            dateTime: this.form.dateTime,
+                            endTime: this.form.endTime,
+                            employees: this.form.employees.map(emp => emp.id) // 提取员工编号
+                        };
+                        break;
+                }
+                console.log(post);
+                axios.post(path, post)
                     .then(response => {
                         console.log('提交成功:', response.data.message); // 打印消息
                         this.$message({
@@ -575,21 +630,21 @@
                         });
                     });
                 //重新请求数据
-                getIncome();
+                this.getIncome();
             },
             //新建
-            createNew(){
-                this.form = {id:'0', customerid: '0', billId:'0', billDate: '2024-09-08', fileId:'0', employees:[{id: '',name: ''}] };
+            createNew() {
+                this.form = { id: '0', customerid: '0', billId: '0', billDate: '2024-09-08', fileId: '0', employees: [{ id: '', name: '' }] };
                 this.dialogVisible = true;
             },
             //删除
             Delete(row) {
                 let path;
-                switch(this.employeeID){
-                    case '0':path='/api/PersonnelManagement/delete-invite-form';break;
-                    case '1':path='/api/PersonnelManagement/delete-intern-form';break;
-                    case '2':path='/api/PersonnelManagement/delete-overview-form';break;
-                    case '3':path='/api/PersonnelManagement/delete-train-form';break;
+                switch (this.employeeID) {
+                    case '0': path = '/api/PersonnelManagement/delete-invite-form'; break;
+                    case '1': path = '/api/PersonnelManagement/delete-intern-form'; break;
+                    case '2': path = '/api/PersonnelManagement/delete-overview-form'; break;
+                    case '3': path = '/api/PersonnelManagement/delete-train-form'; break;
                 }
                 axios.post(path, this.row)
                     .then(response => {
@@ -607,21 +662,21 @@
                         });
                     });
                 //重新请求数据
-                getIncome();
+                this.getIncome();
             },
             // 查看详情
-            viewDetails(row) {      
+            viewDetails(row) {
                 let path;
-                switch(this.employeeID){
-                    case '0':path='/api/PersonnelManagement/details-invite';break;
-                    case '1':path='/api/PersonnelManagement/details-intern';break;
-                    case '2':path='/api/PersonnelManagement/details-overview';break;
-                    case '3':path='/api/PersonnelManagement/details-train';break;
+                switch (this.employeeID) {
+                    case '0': path = '/api/PersonnelManagement/details-invite'; break;
+                    case '1': path = '/api/PersonnelManagement/details-intern'; break;
+                    case '2': path = '/api/PersonnelManagement/details-overview'; break;
+                    case '3': path = '/api/PersonnelManagement/details-train'; break;
                 }
-                axios.post(path, { id: row.id}).then(response => {
+                axios.post(path, { id: row.id }).then(response => {
                     this.form = response.data[0];
-                // 显示表单
-                this.dialogVisible = true;
+                    // 显示表单
+                    this.dialogVisible = true;
                 }).catch(error => {
                     console.error('获取表单数据失败', error);
                 });
@@ -630,7 +685,7 @@
         mounted() {
             this.getdata();
             this.getIncome();
- 
+
         }
     }
 </script>
@@ -709,7 +764,7 @@
     }
 
     .dataTable {
-        max-width:1000px;
+        max-width: 1000px;
         display: flex;
         justify-content: center; /* 或 flex-start, flex-end, space-between, space-around */
         align-items: center; /* 或 flex-start, flex-end, stretch */
@@ -748,5 +803,4 @@
         flex-direction: column;
         padding: 10px;
     }
-
 </style>

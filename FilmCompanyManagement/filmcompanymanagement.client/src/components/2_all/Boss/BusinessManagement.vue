@@ -95,7 +95,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <el-input-number v-model="form.customerPhone" :controls="false"></el-input-number>
+                        <el-input v-model="form.customerPhone" :controls="false"></el-input>
                     </el-form-item>
                     <el-form-item label="电子邮箱">
                         <el-input v-model="form.customerEmail"></el-input>
@@ -218,7 +218,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="联系电话">
-                            <el-input-number v-model="form.customerPhone" :controls="false"></el-input-number>
+                            <el-input v-model="form.customerPhone" :controls="false"></el-input>
                         </el-form-item>
                         <el-form-item label="电子邮箱">
                             <el-input v-model="form.customerEmail"></el-input>
@@ -316,7 +316,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <el-input-number v-model="form.customerPhone" :controls="false"></el-input-number>
+                        <el-input v-model="form.customerPhone" :controls="false"></el-input>
                     </el-form-item>
                     <el-form-item label="电子邮箱">
                         <el-input v-model="form.customerEmail"></el-input>
@@ -417,7 +417,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="联系电话">
-                                <el-input-number v-model="form.customerPhone" :controls="false"></el-input-number>
+                                <el-input v-model="form.customerPhone" :controls="false"></el-input>
                             </el-form-item>
                             <el-form-item label="电子邮箱">
                                 <el-input v-model="form.customerEmail"></el-input>
@@ -701,6 +701,7 @@
                         }
                         path='/api/BusinessManagement/submit-project-form';break;
                 }
+                console.log(this.form);
                 axios.post(path, this.form)
                     .then(response => {
                         console.log('提交成功:', response.data.message); // 打印消息
@@ -718,7 +719,7 @@
                         });
                     });
                 //重新请求数据
-                getIncome();
+                this.getIncome();
             },
             //新建
             createNew(){
@@ -734,7 +735,7 @@
                     case '2':path='/api/BusinessManagement/delete-lease-form';break;
                     case '3':path='/api/BusinessManagement/delete-project-form';break;
                 }
-                axios.post(path, this.row)
+                axios.post(path, row)
                     .then(response => {
                         console.log('删除成功:', response.data.message); // 打印消息
                         this.$message({
@@ -750,7 +751,7 @@
                         });
                     });
                 //重新请求数据
-                getIncome();
+                this.getIncome();
             },
             // 查看详情
             viewDetails(row) {      
@@ -761,8 +762,8 @@
                     case '2':path='/api/BusinessManagement/details-lease';break;
                     case '3':path='/api/BusinessManagement/details-project';break;
                 }
-                axios.post(path, { id: row.id}).then(response => {
-                    this.form = response.data[0];
+                axios.get(`${path}/${row.id}`).then(response => {
+                    this.form = response.data;
                     // 显示表单
                     this.dialogVisible = true;
                     }).catch(error => {

@@ -2,6 +2,7 @@ using FilmCompanyManagement.Server.EntityFrame;
 using FilmCompanyManagement.Server.EntityFrame.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System.Linq;
 using System.Threading.Tasks;
 using File = FilmCompanyManagement.Server.EntityFrame.Models.File;
@@ -171,9 +172,9 @@ namespace FilmCompanyManagement.Server.Controllers
 
         // 删除外部投资信息
         [HttpPost("delete-invest-form")]
-        public async Task<IActionResult> DeleteInvestForm([FromBody] Investment form)
+        public async Task<IActionResult> DeleteInvestForm([FromBody] InvestmentRow form)
         {
-            var investment = await _context.Investments.FindAsync(form.Id);
+            var investment = await _context.Investments.FindAsync(form.id);
             if (investment == null)
                 return NotFound("Investment not found.");
 
@@ -185,9 +186,9 @@ namespace FilmCompanyManagement.Server.Controllers
 
         // 删除成片购买信息
         [HttpPost("delete-buy-form")]
-        public async Task<IActionResult> DeleteBuyForm([FromBody] FinishedProduct form)
+        public async Task<IActionResult> DeleteBuyForm([FromBody] PurchaseRow form)
         {
-            var purchase = await _context.FinishedProducts.FindAsync(form.Id);
+            var purchase = await _context.FinishedProducts.FindAsync(form.id);
             if (purchase == null)
                 return NotFound("Finished product purchase not found.");
 
@@ -199,9 +200,9 @@ namespace FilmCompanyManagement.Server.Controllers
 
         // 删除设备租赁信息
         [HttpPost("delete-lease-form")]
-        public async Task<IActionResult> DeleteLeaseForm([FromBody] EquipmentLease form)
+        public async Task<IActionResult> DeleteLeaseForm([FromBody] LeaseRow form)
         {
-            var lease = await _context.EquipmentLeases.FindAsync(form.Id);
+            var lease = await _context.EquipmentLeases.FindAsync(form.id);
             if (lease == null)
                 return NotFound("Equipment lease not found.");
 
@@ -213,9 +214,9 @@ namespace FilmCompanyManagement.Server.Controllers
 
         // 删除公司项目信息
         [HttpPost("delete-project-form")]
-        public async Task<IActionResult> DeleteProjectForm([FromBody] Project form)
+        public async Task<IActionResult> DeleteProjectForm([FromBody] ProjectRow form)
         {
-            var project = await _context.Projects.FindAsync(form.Id);
+            var project = await _context.Projects.FindAsync(form.id);
             if (project == null)
                 return NotFound("Project not found.");
 
@@ -226,28 +227,42 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         // 查看外部投资详情
-        [HttpPost("details-invest")]
-        public async Task<IActionResult> DetailsInvest([FromBody] Investment form)
+        [HttpGet("details-invest/{id}")]
+        public async Task<IActionResult> DetailsInvest(int id)
         {
             var investment = await _context.Investments
                 .Include(i => i.Customer)
                 .Include(i => i.Bill)
-                .FirstOrDefaultAsync(i => i.Id == form.Id);
+                .FirstOrDefaultAsync(i => i.Id == id);
 
             if (investment == null)
                 return NotFound("Investment not found.");
 
-            return Ok(new[] { investment });
+            return Ok(new
+            {
+                id=investment.Id.ToString(),
+                customerType= investment.Customer.BusinessType,
+                customerName=investment.Customer.CustomerName,
+                customerBusinessType=investment.Customer.BusinessType,
+                customerPhone=investment.Customer.CustomerPhone,
+                customerEmail=investment.Customer.CustomerEmail,
+                customerAddress=investment.Customer.CustomerAddress,
+                billId=investment.Bill.Id,
+                billAmount=investment.Bill.Amount,
+                billType=investment.Bill.Type,
+                billDate=investment.Bill.AssignDate,
+                billStatus=investment.Bill.Status?"已处理":"未处理"
+            });
         }
 
         // 查看成片购买详情
-        [HttpPost("details-buy")]
-        public async Task<IActionResult> DetailsBuy([FromBody] FinishedProduct form)
+        [HttpGet("details-buy/{id}")]
+        public async Task<IActionResult> DetailsBuy(int id)
         {
             var purchase = await _context.FinishedProducts
                 .Include(fp => fp.Customer)
                 .Include(fp => fp.Bill)
-                .FirstOrDefaultAsync(fp => fp.Id == form.Id);
+                .FirstOrDefaultAsync(fp => fp.Id == id);
 
             if (purchase == null)
                 return NotFound("Finished product purchase not found.");
@@ -256,13 +271,13 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         // 查看设备租赁详情
-        [HttpPost("details-lease")]
-        public async Task<IActionResult> DetailsLease([FromBody] EquipmentLease form)
+        [HttpGet("details-lease/{id}")]
+        public async Task<IActionResult> DetailsLease(int id)
         {
             var lease = await _context.EquipmentLeases
                 .Include(el => el.Customer)
                 .Include(el => el.Bill)
-                .FirstOrDefaultAsync(el => el.Id == form.Id);
+                .FirstOrDefaultAsync(el => el.Id == id);
 
             if (lease == null)
                 return NotFound("Equipment lease not found.");
@@ -271,20 +286,21 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         // 查看公司项目详情
-        [HttpPost("details-project")]
-        public async Task<IActionResult> DetailsProject([FromBody] Project form)
+        [HttpGet("details-project/{id}")]
+        public async Task<IActionResult> DetailsProject(int id)
         {
             var project = await _context.Projects
                 .Include(p => p.Customer)
                 .Include(p => p.Bill)
                 .Include(p => p.Manager)
-                .FirstOrDefaultAsync(p => p.Id == form.Id);
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (project == null)
                 return NotFound("Project not found.");
 
             return Ok(new[] { project });
         }
+
     }
     public class InvestmentForm
     {
@@ -364,5 +380,41 @@ namespace FilmCompanyManagement.Server.Controllers
         public string Status { get; set; } // 项目状态（进行中、已完成、已取消）
     }
 
+    public class InvestmentRow
+    {
+        public int id { get; set; }  // 投资编号
+        public string billDate { get; set; }  // 投资日期
+        public string customerName { get; set; }  // 投资方
+        public decimal billAmount { get; set; }  // 投资金额
+        public string billStatus { get; set; }  // 账单状态
+    }
+
+    public class PurchaseRow
+    {
+        public int id { get; set; }  // 购买编号
+        public string billDate { get; set; }  // 购买日期
+        public string customerName { get; set; }  // 购买人
+        public decimal billAmount { get; set; }  // 购买金额
+        public string status { get; set; }  // 订单状态
+    }
+
+    public class LeaseRow
+    {
+        public int id { get; set; }  // 租赁编号
+        public string billDate { get; set; }  // 租赁日期
+        public string customerName { get; set; }  // 租赁人
+        public decimal billAmount { get; set; }  // 租赁金额
+        public string status { get; set; }  // 租赁状态
+    }
+
+    public class ProjectRow
+    {
+        public int id { get; set; }  // 项目编号
+        public string billDate { get; set; }  // 项目日期
+        public string customerName { get; set; }  // 项目客户
+        public decimal billAmount { get; set; }  // 项目金额
+        public string manager { get; set; }  // 项目负责人
+        public string status { get; set; }  // 项目状态
+    }
 
 }
