@@ -92,21 +92,9 @@
     import { ref, onMounted, computed } from 'vue';
     import axios from 'axios';
     import { useRoute, useRouter } from 'vue-router';
-import DepartmentVue from '../Department.vue';
 
     export default {
         name: 'UploadView',
-        data() {
-            return {
-                name: '', // 获取登入姓名
-                department:'',
-            }
-        },
-        computed: {
-            showWorkerMenu() {
-                return this.department === "业务部";
-            },
-        },
         setup() {
             const fileList = ref([]);
             const form = ref({
@@ -117,14 +105,19 @@ import DepartmentVue from '../Department.vue';
             });
             const currentWorkerID = ref(null);
             const name = ref('');
+            const department = ref('');
             const route = useRoute();
             const router = useRouter();
-            const department = ref('');
             const userID = route.query.id;
 
-            onMounted(async () => {
-                try {
+            // 计算属性，使用 ref 的值
+            const showWorkerMenu = computed(() => {
+                return department.value === "业务部";
+            });
 
+            onMounted(async () => {
+                console.log("Department before fetching:", department.value);
+                try {
                     // 获取所有文件
                     const fileResponse = await axios.get('/api/worker/files');
                     console.log(fileResponse.data);
@@ -133,17 +126,19 @@ import DepartmentVue from '../Department.vue';
                         fileList.value = fileResponse.data.filter(file => file.workerID.toString() === userID);
                         console.log("Filtered File List:", fileList.value); // 打印过滤后的文件列表
                         if (fileList.value.length === 0) {
-                            alert("没有找到相关的文件");
+                            //alert("没有找到相关的文件");
                         }
                     } else {
                         alert("读取文件列表失败");
                     }
 
-                    // 获取用户姓名
+                    // 获取用户姓名和部门信息
                     const userResponse = await axios.post('/api/data/userdata', { id: route.query.id });
+                    console.log("User data:", userResponse.data);  // 打印调试用户数据
                     if (userResponse.data.name) {
                         name.value = userResponse.data.name;
-                        department.value = userResponse.data.department.name;
+                        department.value = userResponse.data.department?.name || "业务部";
+                        console.log("Department after fetching:", department.value);
                     } else {
                         name.value = '未定义';
                     }
@@ -163,27 +158,21 @@ import DepartmentVue from '../Department.vue';
             };
 
             const uploadFile = async () => {
-                // 检查所有字段是否已填写
                 if (!form.value.fileName || !form.value.fileType || !form.value.fileSize || !form.value.fileDescription) {
                     alert("请完成所有内容的填写再提交！");
                     return;
                 }
 
                 try {
-                    console.log('begin 1');
-                    axios.post('/api/worker/upload', {
+                    console.log('Uploading...');
+                    await axios.post('/api/worker/upload', {
                         id: userID,
                         name: form.value.fileName,
                         type: form.value.fileType,
                         size: form.value.fileSize,
                         description: form.value.fileDescription
-                    }).then(function (res) {
-                        if (1) {
-                            alert("提交成功")
-                        } else {
-                            alert("提交失败")
-                        }
-                    })
+                    });
+                    alert("提交成功");
                 } catch (error) {
                     console.error(error);
                     alert("提交失败");
@@ -222,7 +211,7 @@ import DepartmentVue from '../Department.vue';
                 }
             };
 
-            return { fileList, form, handleFileUpload, uploadFile, addShadow, removeShadow, jump, name };
+            return { fileList, form, handleFileUpload, uploadFile, addShadow, removeShadow, jump, name, department, showWorkerMenu };
         }
     };
 </script>
