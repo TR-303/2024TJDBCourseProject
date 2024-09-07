@@ -211,7 +211,7 @@
                 return this.department === '财务部';
             },
             showWorkerMenu() {
-                return this.deparmenmt === '业务部';
+                return this.department === '业务部';
             }
         },
         watch: {
