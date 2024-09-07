@@ -103,7 +103,7 @@
                         <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="账单类型">
-                        <el-select v-model="form.billType" placeholder="请选择部门">
+                        <el-select v-model="form.billType" placeholder="请选择账单类型">
                             <el-option label="存款" value="存款"></el-option>
                             <el-option label="拨款" value="拨款"></el-option>
                         </el-select>
@@ -219,7 +219,7 @@
                             <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                         </el-form-item>
                         <el-form-item label="账单类型">
-                            <el-select v-model="form.billType" placeholder="请选择部门">
+                            <el-select v-model="form.billType" placeholder="请选择账单类型">
                                 <el-option label="存款" value="存款"></el-option>
                                 <el-option label="拨款" value="拨款"></el-option>
                             </el-select>
@@ -310,7 +310,7 @@
                         <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="账单类型">
-                        <el-select v-model="form.billType" placeholder="请选择部门">
+                        <el-select v-model="form.billType" placeholder="请选择账单类型">
                             <el-option label="存款" value="存款"></el-option>
                             <el-option label="拨款" value="拨款"></el-option>
                         </el-select>
@@ -406,7 +406,7 @@
                                 <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                             </el-form-item>
                             <el-form-item label="账单类型">
-                                <el-select v-model="form.billType" placeholder="请选择部门">
+                                <el-select v-model="form.billType" placeholder="请选择账单类型">
                                     <el-option label="存款" value="存款"></el-option>
                                     <el-option label="拨款" value="拨款"></el-option>
                                 </el-select>
@@ -632,7 +632,7 @@
                 let path;
                 switch(this.businessID){
                     case '0':
-                        if (!this.form.id || !this.form.customerid || !this.form.customerName || 
+                        if (!this.form.id || !this.form.customerName || 
                             !this.form.customerBusinessType || !this.form.customerPhone || !this.form.customerEmail || 
                             !this.form.customerAddress || !this.form.billId || !this.form.billAmount || 
                             !this.form.billType || !this.form.billDate || !this.form.billStatus) {
@@ -641,10 +641,10 @@
                         }
                         path='/api/BusinessManagement/submit-invest-form';break;
                     case '1':
-                        if (!this.form.id || !this.form.type || !this.form.fileId || !this.form.fileName || 
+                        if (!this.form.id || !this.form.type || !this.form.fileName || 
                             !this.form.fileType || !this.form.fileContentType || !this.form.fileSize || 
                             !this.form.filePath || !this.form.fileUploadDate || !this.form.filestatus || 
-                            !this.form.customerid || !this.form.customerName || !this.form.customerBusinessType ||
+                            !this.form.customerName || !this.form.customerBusinessType ||
                             !this.form.customerPhone || !this.form.customerEmail || !this.form.customerAddress || 
                             !this.form.billId || !this.form.billAmount || this.form.billType || !this.form.billDate || 
                             !this.form.billStatus || !this.form.status) {
@@ -653,7 +653,7 @@
                         }
                         path='/api/BusinessManagement/submit-buy-form';break;
                     case '2':
-                        if (!this.form.id || !this.form.employee || !this.form.customerid || 
+                        if (!this.form.id || !this.form.employee || 
                             !this.form.customerName || !this.form.customerBusinessType || !this.form.customerPhone || 
                             !this.form.customerEmail || !this.form.customerAddress || !this.form.billId || 
                             !this.form.billAmount || !this.form.billType || !this.form.billDate || !this.form.billStatus || 
@@ -663,10 +663,9 @@
                         }
                         path='/api/BusinessManagement/submit-lease-form';break;
                     case '3':
-                        if (!this.form.id || !this.form.manager || !this.form.fileId || !this.form.fileName || 
+                        if (!this.form.id || !this.form.manager || !this.form.fileName || 
                             !this.form.fileType || !this.form.fileContentType || !this.form.fileSize || 
-                            !this.form.filePath || !this.form.fileUploadDate || !this.form.fileStatus || 
-                            !this.form.customerid || !this.form.customerName || 
+                            !this.form.filePath || !this.form.fileUploadDate || !this.form.fileStatus || !this.form.customerName || 
                             !this.form.customerBusinessType || !this.form.customerPhone || !this.form.customerEmail || 
                             !this.form.customerAddress || !this.form.billId || !this.form.billAmount || 
                             !this.form.billType || !this.form.billDate || !this.form.billStatus || 

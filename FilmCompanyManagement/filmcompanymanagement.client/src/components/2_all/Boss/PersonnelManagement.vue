@@ -246,7 +246,7 @@
                                     <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                                 </el-form-item>
                                 <el-form-item label="账单类型">
-                                    <el-select v-model="form.billType" placeholder="请选择部门">
+                                    <el-select v-model="form.billType" placeholder="请选择账单类型">
                                         <el-option label="存款" value="存款"></el-option>
                                         <el-option label="拨款" value="拨款"></el-option>
                                     </el-select>
@@ -255,7 +255,7 @@
                                     <el-date-picker v-model="form.billDate" type="date" disabled></el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="账单状态">
-                                    <el-select v-model="form.billStatus" placeholder="请选择部门">
+                                    <el-select v-model="form.billStatus" placeholder="请选择账单状态">
                                         <el-option label="发起" value="发起"></el-option>
                                         <el-option label="完成" value="完成"></el-option>
                                     </el-select>
@@ -531,7 +531,7 @@
                 let path;
                 switch (this.employeeID) {
                     case '0':
-                        if (!this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary ||
+                        if (!this.form.name || !this.form.gender || !this.form.positionTitle ||
                             !this.form.phone || !this.form.email || !this.form.interviewer || !this.form.interviewerStage || !this.form.state) {
                             alert("请完成所有内容的填写再提交！");
                             return;
@@ -547,7 +547,7 @@
                         path = '/api/PersonnelManagement/submit-intern-form';
                         break;
                     case '2':
-                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
+                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.position || 
                             !this.form.phone || !this.form.email || !this.form.department || !this.form.kpi) {
                             alert("请完成所有内容的填写再提交！");
                             return;

@@ -87,7 +87,7 @@
                     <el-input-number v-model="form.billAmount" :controls="false" disabled></el-input-number>
                 </el-form-item>
                 <el-form-item label="账单类型">
-                    <el-select v-model="form.billType" placeholder="请选择部门" disabled>
+                    <el-select v-model="form.billType" placeholder="请选择账单类型" disabled>
                         <el-option label="存款" value="存款"></el-option>
                         <el-option label="拨款" value="拨款"></el-option>
                     </el-select>
@@ -96,7 +96,7 @@
                     <el-date-picker v-model="form.billDate" type="date" disabled></el-date-picker>
                 </el-form-item>
                 <el-form-item label="账单状态">
-                    <el-select v-model="form.billStatus" placeholder="请选择部门" disabled>
+                    <el-select v-model="form.billStatus" placeholder="请选择账单状态" disabled>
                         <el-option label="发起" value="发起"></el-option>
                         <el-option label="完成" value="完成"></el-option>
                     </el-select>
@@ -214,7 +214,7 @@
             },
             //删除申请
             Delete(row) {
-                axios.post('/api/ApplicationApproval/delete-form', this.row)
+                axios.post('/api/ApplicationApproval/delete-form', row)
                     .then(response => {
                         console.log('删除成功:', response.data.message); // 打印消息
                         this.$message({
