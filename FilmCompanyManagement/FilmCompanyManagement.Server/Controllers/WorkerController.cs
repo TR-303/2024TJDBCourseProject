@@ -72,7 +72,7 @@ namespace FilmCompanyManagement.Server.Controllers
                 return BadRequest("Employee not found.");
             }
 
-            var photoEquipment = await _context.PhotoEquipments.FindAsync(form.equipmentID);
+            var photoEquipment = await _context.PhotoEquipments.FindAsync(Convert.ToInt32(form.equipmentID));
             if (photoEquipment == null)
             {
                 return BadRequest("PhotoEquipment not found.");
@@ -118,8 +118,8 @@ namespace FilmCompanyManagement.Server.Controllers
     public class RepairForm
     {
         public string id { get; set; }
-        public int equipmentID { get; set; }
+        public string equipmentID { get; set; }
         public string date { get; set; }
-        public int amount { get; set; }
+        public decimal amount { get; set; }
     }
 }

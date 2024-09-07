@@ -6,11 +6,11 @@
         </div>
         <div class="form-group">
             <label for="equipment">设备编号</label>
-            <input type="number" v-model="form.equipment" id="equipment" />
+            <input type="text" v-model="form.equipment" id="equipment" />
         </div>
         <div class="form-group">
             <label for="cost">维修费用</label>
-            <input type="number" v-model="inputAmount" @blur="formatAmount" @input="validateAmount" id="cost" />
+            <input type="text" v-model="inputAmount" @blur="formatAmount" @input="validateAmount" id="cost" />
         </div>
         <button type="submit" class="submit_button">提交</button>
     </form>
@@ -69,7 +69,6 @@
                         date: form.value.repairDate,
                         amount: form.value.amount
                     }).then(function (res) {
-
                         if (1) {
                             alert("提交成功")
                         } else {
