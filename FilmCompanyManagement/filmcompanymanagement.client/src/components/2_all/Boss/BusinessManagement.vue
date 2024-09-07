@@ -36,18 +36,18 @@
         <h2>业务管理</h2>
 
         <div>
-            <el-button class="main_button"
-                       :style="{ backgroundColor: businessID === '0' ? '#409EFF' : '', color: businessID === '0' ? 'white' : '' }"
-                       type="primary" size="large" plain @click="setBusinessID('0')">外部投资</el-button>
-            <el-button class="main_button"
-                       :style="{ backgroundColor: businessID === '1' ? '#409EFF' : '', color: businessID === '1' ? 'white' : '' }"
-                       type="primary" size="large" plain @click="setBusinessID('1')">成片购买</el-button>
-            <el-button class="main_button"
-                       :style="{ backgroundColor: businessID === '2' ? '#409EFF' : '', color: businessID === '2' ? 'white' : '' }"
-                       type="primary" size="large" plain @click="setBusinessID('2')">设备租赁</el-button>
-            <el-button class="main_button"
-                       :style="{ backgroundColor: businessID === '3' ? '#409EFF' : '', color: businessID === '3' ? 'white' : '' }"
-                       type="primary" size="large" plain @click="setBusinessID('3')">公司项目</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: businessID === '0' ? '#409EFF' : '', color: businessID === '0' ? 'white' : '' }" 
+                type="primary" size="large" plain @click="setBusinessID('0')">外部投资</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: businessID === '1' ? '#409EFF' : '', color: businessID === '1' ? 'white' : '' }"
+                type="primary" size="large" plain @click="setBusinessID('1')">成片购买</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: businessID === '2' ? '#409EFF' : '', color: businessID === '2' ? 'white' : '' }"
+                type="primary" size="large" plain @click="setBusinessID('2')">设备租赁</el-button>
+            <el-button class="main_button" 
+                :style="{ backgroundColor: businessID === '3' ? '#409EFF' : '', color: businessID === '3' ? 'white' : '' }"
+                type="primary" size="large" plain @click="setBusinessID('3')">公司项目</el-button>
         </div>
 
 
@@ -57,7 +57,7 @@
             </div>
 
             <div class="dataTable">
-                <el-table :data="businesses_list" style="width: 1000">
+                 <el-table :data="businesses_list" style="width: 1000">
                     <el-table-column prop="id" label="投资编号" width="auto"></el-table-column>
                     <el-table-column prop="billDate" label="投资日期" width="auto"></el-table-column>
                     <el-table-column prop="customerName" label="投资方" width="auto"></el-table-column>
@@ -87,9 +87,6 @@
                     </el-form-item>
                     <el-form-item label="客户名称">
                         <el-input v-model="form.customerName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="业务类型">
-                        <el-input v-model="form.customerBusinessType"></el-input>
                     </el-form-item>
                     <el-form-item label="业务类型">
                         <el-select v-model="form.customerBusinessType" placeholder="请选择客户类型">
@@ -140,7 +137,7 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                <el-table :data="businesses_list" style="width: 1000">
+                 <el-table :data="businesses_list" style="width: 1000">
                     <el-table-column prop="id" label="购买编号" width="auto"></el-table-column>
                     <el-table-column prop="billDate" label="购买日期" width="auto"></el-table-column>
                     <el-table-column prop="customerName" label="购买人" width="auto"></el-table-column>
@@ -271,7 +268,7 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                <el-table :data="businesses_list" style="width: 1000">
+                 <el-table :data="businesses_list" style="width: 1000">
                     <el-table-column prop="id" label="租赁编号" width="auto"></el-table-column>
                     <el-table-column prop="billDate" label="租赁日期" width="auto"></el-table-column>
                     <el-table-column prop="customerName" label="租赁人" width="auto"></el-table-column>
@@ -538,7 +535,7 @@
                         </el-select>
                     </el-form-item>
                 </el-form>
-
+                
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitForm">保存</el-button>
                     <el-button type="primary" plain @click="dialogVisible = false">取消</el-button>
@@ -550,8 +547,6 @@
 
 <script>
     import axios from 'axios';
-    import global from '../Boss/global_variable_boss.vue'
-
 
     export default {
         name: 'AuthorizeRequisition',
@@ -602,7 +597,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/api/data/userdata', { id: userId })
+                axios.post('/data/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
                     })
@@ -614,7 +609,7 @@
                 this.businessID = id;
                 this.getIncome();
             },
-
+            
             //表单用
             addEmployee() {
                 this.form.employees.push({id:'', name:''}); // 添加一个新的空行              
@@ -629,7 +624,7 @@
                 }
             },
             removeEmployee(index) {
-                this.form.employees.splice(index, 1); // 删除指定索引的学生
+              this.form.employees.splice(index, 1); // 删除指定索引的学生
             },
             //获取信息
             gitEmployNameList(){
@@ -643,11 +638,11 @@
             },
             getIncome(){
                 let path;
-                switch (this.businessID) {
-                    case '0': path = '/api/BusinessManagement/get-invest'; break;
-                    case '1': path = '/api/BusinessManagement/get-buy'; break;
-                    case '2': path = '/api/BusinessManagement/get-lease'; break;
-                    case '3': path = '/api/BusinessManagement/get-project'; break;
+                switch(this.businessID){
+                    case '0':path='/api/get-invest';break;
+                    case '1':path='/api/get-buy';break;
+                    case '2':path='/api/get-lease';break;
+                    case '3':path='/api/get-project';break;
                 }
                 axios.get(path)
                     .then(response => {
@@ -733,11 +728,11 @@
             //删除
             Delete(row) {
                 let path;
-                switch (this.businessID) {
-                    case '0': path = '/api/BusinessManagement/delete-invest-form'; break;
-                    case '1': path = '/api/BusinessManagement/delete-buy-form'; break;
-                    case '2': path = '/api/BusinessManagement/delete-lease-form'; break;
-                    case '3': path = '/api/BusinessManagement/delete-project-form'; break;
+                switch(this.businessID){
+                    case '0':path='/api/delete-invest-form';break;
+                    case '1':path='/api/delete-buy-form';break;
+                    case '2':path='/api/delete-lease-form';break;
+                    case '3':path='/api/delete-project-form';break;
                 }
                 axios.post(path, this.row)
                     .then(response => {
@@ -758,21 +753,21 @@
                 getIncome();
             },
             // 查看详情
-            viewDetails(row) {
+            viewDetails(row) {      
                 let path;
-                switch (this.businessID) {
-                    case '0': path = '/api/BusinessManagement/details-invest'; break;
-                    case '1': path = '/api/BusinessManagement/details-buy'; break;
-                    case '2': path = '/api/BusinessManagement/details-lease'; break;
-                    case '3': path = '/api/BusinessManagement/details-project'; break;
+                switch(this.businessID){
+                    case '0':path='/api/details-invest';break;
+                    case '1':path='/api/details-buy';break;
+                    case '2':path='/api/details-lease';break;
+                    case '3':path='/api/details-project';break;
                 }
-                axios.post(path, { id: row.id }).then(response => {
+                axios.post(path, { id: row.id}).then(response => {
                     this.form = response.data[0];
                     // 显示表单
                     this.dialogVisible = true;
-                }).catch(error => {
-                    console.error('获取表单数据失败', error);
-                });
+                    }).catch(error => {
+                        console.error('获取表单数据失败', error);
+                    });
             },
         },
         mounted() {
@@ -857,7 +852,7 @@
     }
 
     .dataTable {
-        max-width: 1000px;
+        max-width:1000px;
         display: flex;
         justify-content: center; /* 或 flex-start, flex-end, space-between, space-around */
         align-items: center; /* 或 flex-start, flex-end, stretch */

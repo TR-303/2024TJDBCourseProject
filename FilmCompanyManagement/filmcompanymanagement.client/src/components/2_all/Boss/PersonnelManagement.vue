@@ -57,7 +57,7 @@
             </div>
 
             <div class="dataTable">
-                <el-table :data="employee_list" style="width: 1000">
+                 <el-table :data="employee_list" style="width: 1000">
                     <el-table-column prop="id" label="招聘编号" width="auto"></el-table-column>
                     <el-table-column prop="name" label="姓名" width="auto"></el-table-column>
                     <el-table-column prop="gender" label="性别" width="auto"></el-table-column>
@@ -134,7 +134,7 @@
             </div>
 
             <div class="dataTable">
-                <el-table :data="employee_list" style="width: 1000">
+                 <el-table :data="employee_list" style="width: 1000">
                     <el-table-column prop="internId" label="实习生编号" width="auto"></el-table-column>
                     <el-table-column prop="intern" label="姓名" width="auto"></el-table-column>
                     <el-table-column prop="advicer" label="指导老师" width="auto"></el-table-column>
@@ -198,7 +198,7 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                <el-table :data="employee_list" style="width: 1000">
+                 <el-table :data="employee_list" style="width: 1000">
                     <el-table-column prop="id" label="员工编号" width="auto"></el-table-column>
                     <el-table-column prop="name" label="员工姓名" width="auto"></el-table-column>
                     <el-table-column prop="salary" label="员工薪水" width="auto"></el-table-column>
@@ -330,7 +330,7 @@
                 <el-button type="primary" size="medium" @click="createNew">新建</el-button>
             </div>
             <div class="dataTable">
-                <el-table :data="employee_list" style="width: 1000">
+                 <el-table :data="employee_list" style="width: 1000">
                     <el-table-column prop="id" label="培训编号" width="auto"></el-table-column>
                     <el-table-column prop="teacher" label="授课老师" width="auto"></el-table-column>
                     <el-table-column prop="dateTime" label="授课日期" width="auto"></el-table-column>
@@ -413,9 +413,9 @@
                 name: '', // 获取登入姓名
                 dialogVisible: false,
                 employeeID: '2',
-                employee_list: [],
-                overview_employee_list: [],
-                form: { id: '' },
+                employee_list:[],
+                overview_employee_list:[],
+                form:           { id: '' },
             }
         },
         computed: {
@@ -455,7 +455,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/api/data/userdata', { id: userId })
+                axios.post('/data/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
                     })
@@ -492,20 +492,20 @@
               this.form.employees.splice(index, 1); // 删除指定索引的学生
             },
             //获取信息
-            getIncome() {
+            getIncome(){
                 let path;
-                switch (this.employeeID) {
+                switch(this.employeeID){
                     case '0':
-                        path = '/api/PersonnelManagement/get-invite';
+                        path='/api/get-invite';
                         break;
                     case '1':
-                        path = '/api/PersonnelManagement/get-intern';
+                        path='/api/get-intern';
                         break;
                     case '2':
-                        path = '/api/PersonnelManagement/get-overview';
+                        path='/api/get-overview';
                         break;
                     case '3':
-                        path = '/api/PersonnelManagement/get-train';
+                        path='/api/get-train';
                         break;
                 }
                 axios.get(path)
@@ -523,7 +523,7 @@
             //提交表单
             submitForm() {
                 let path;
-                switch (this.employeeID) {
+                switch(this.employeeID){
                     case '0':
                         if (!this.form.id || !this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary || 
                             !this.form.phone || !this.form.email || !this.form.interviewer || !this.form.interviewerStage || !this.form.state) {
@@ -568,7 +568,6 @@
                         this.dialogVisible = false; // 关闭对话框
                     })
                     .catch(error => {
-                        console.log(this.form);
                         console.error('提交表单失败', error);
                         this.$message({
                             type: 'error',
@@ -576,23 +575,23 @@
                         });
                     });
                 //重新请求数据
-                this.getIncome();
+                getIncome();
             },
             //新建
-            createNew() {
+            createNew(){
+                this.form = {id:'0', customerid: '0', billId:'0', billDate: '2024-09-08', fileId:'0', employees:[{id: '',name: ''}] };
                 this.dialogVisible = true;
             },
             //删除
             Delete(row) {
                 let path;
-                switch (this.employeeID) {
-                    case '0': path = '/api/PersonnelManagement/delete-invite-form'; break;
-                    case '1': path = '/api/PersonnelManagement/delete-intern-form'; break;
-                    case '2': path = '/api/PersonnelManagement/delete-overview-form'; break;
-                    case '3': path = '/api/PersonnelManagement/delete-train-form'; break;
+                switch(this.employeeID){
+                    case '0':path='/api/delete-invite-form';break;
+                    case '1':path='/api/delete-intern-form';break;
+                    case '2':path='/api/delete-overview-form';break;
+                    case '3':path='/api/delete-train-form';break;
                 }
-                console.log(row);
-                axios.post(path, row)
+                axios.post(path, this.row)
                     .then(response => {
                         console.log('删除成功:', response.data.message); // 打印消息
                         this.$message({
@@ -611,18 +610,18 @@
                 getIncome();
             },
             // 查看详情
-            viewDetails(row) {
+            viewDetails(row) {      
                 let path;
-                switch (this.employeeID) {
-                    case '0': path = '/api/PersonnelManagement/details-invite'; break;
-                    case '1': path = '/api/PersonnelManagement/details-intern'; break;
-                    case '2': path = '/api/PersonnelManagement/details-overview'; break;
-                    case '3': path = '/api/PersonnelManagement/details-train'; break;
+                switch(this.employeeID){
+                    case '0':path='/api/details-invite';break;
+                    case '1':path='/api/details-intern';break;
+                    case '2':path='/api/details-overview';break;
+                    case '3':path='/api/details-train';break;
                 }
-                axios.post(path, { id: row.id }).then(response => {
+                axios.post(path, { id: row.id}).then(response => {
                     this.form = response.data[0];
-                    // 显示表单
-                    this.dialogVisible = true;
+                // 显示表单
+                this.dialogVisible = true;
                 }).catch(error => {
                     console.error('获取表单数据失败', error);
                 });
@@ -710,7 +709,7 @@
     }
 
     .dataTable {
-        max-width: 1000px;
+        max-width:1000px;
         display: flex;
         justify-content: center; /* 或 flex-start, flex-end, space-between, space-around */
         align-items: center; /* 或 flex-start, flex-end, stretch */
@@ -749,4 +748,5 @@
         flex-direction: column;
         padding: 10px;
     }
+
 </style>
