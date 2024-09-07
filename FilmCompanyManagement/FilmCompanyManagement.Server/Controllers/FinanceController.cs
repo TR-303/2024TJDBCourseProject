@@ -16,7 +16,7 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         [HttpGet("investment/{status}")]
-        public async Task<IActionResult> GetInvestment(int status)
+        public async Task<IActionResult> GetInvestment(bool status)
         {
             var ret = await _context.Investments.Include(i => i.Bill).Include(i => i.Customer).Where(i => i.Bill.Status == status).Select(i => new
             {
@@ -25,7 +25,7 @@ namespace FilmCompanyManagement.Server.Controllers
                 orderId = i.Bill.Id,
                 orderDate = i.Bill.AssignDate,
                 amount = i.Bill.Amount,
-                processedDate = status == 1 ? i.Bill.ProcessedDate : null
+                processedDate = status ? i.Bill.ProcessedDate : null
             }).ToListAsync();
             return Ok(ret);
         }
@@ -36,14 +36,14 @@ namespace FilmCompanyManagement.Server.Controllers
             Investment tar = await _context.Investments.Include(i => i.Bill).Include(i => i.Customer).SingleAsync(i => i.Id == request.Id);
             if (tar == null) return BadRequest("Invalid Id");
 
-            tar.Bill.Status = 1;
+            tar.Bill.Status = true;
             tar.Bill.ProcessedDate = DateTime.Parse(request.ProcessedDate);
             await _context.SaveChangesAsync();
             return Ok();
         }
 
         [HttpGet("equipmentlease/{status}")]
-        public async Task<IActionResult> GetEquipmentLease(int status)
+        public async Task<IActionResult> GetEquipmentLease(bool status)
         {
             var ret = await _context.EquipmentLeases.Include(i => i.Bill).Include(i => i.Customer).Where(i => i.Bill.Status == status).Select(i => new
             {
@@ -51,7 +51,7 @@ namespace FilmCompanyManagement.Server.Controllers
                 orderId = i.Bill.Id,
                 orderDate = i.Bill.AssignDate,
                 amount = i.Bill.Amount,
-                processedDate = status == 1 ? i.Bill.ProcessedDate : null
+                processedDate = status ? i.Bill.ProcessedDate : null
             }).ToListAsync();
             return Ok(ret);
         }
@@ -62,14 +62,14 @@ namespace FilmCompanyManagement.Server.Controllers
             EquipmentLease tar = await _context.EquipmentLeases.Include(i => i.Bill).Include(i => i.Customer).SingleAsync(i => i.Id == request.Id);
             if (tar == null) return BadRequest("Invalid Id");
 
-            tar.Bill.Status = 1;
+            tar.Bill.Status = true;
             tar.Bill.ProcessedDate = DateTime.Parse(request.ProcessedDate);
             await _context.SaveChangesAsync();
             return Ok();
         }
 
         [HttpGet("finishedproduct/{status}")]
-        public async Task<IActionResult> GetFinishedProduct(int status)
+        public async Task<IActionResult> GetFinishedProduct(bool status)
         {
             var ret = await _context.FinishedProducts.Include(i => i.Bill).Include(i => i.Customer).Where(i => i.Bill.Status == status).Select(i => new
             {
@@ -77,7 +77,7 @@ namespace FilmCompanyManagement.Server.Controllers
                 orderId = i.Bill.Id,
                 orderDate = i.Bill.AssignDate,
                 amount = i.Bill.Amount,
-                processedDate = status == 1 ? i.Bill.ProcessedDate : null
+                processedDate = status ? i.Bill.ProcessedDate : null
             }).ToListAsync();
             return Ok(ret);
         }
@@ -88,14 +88,14 @@ namespace FilmCompanyManagement.Server.Controllers
             FinishedProduct tar = await _context.FinishedProducts.Include(i => i.Bill).Include(i => i.Customer).SingleAsync(i => i.Id == request.Id);
             if (tar == null) return BadRequest("Invalid Id");
 
-            tar.Bill.Status = 1;
+            tar.Bill.Status = true;
             tar.Bill.ProcessedDate = DateTime.Parse(request.ProcessedDate);
             await _context.SaveChangesAsync();
             return Ok();
         }
 
         [HttpGet("salary/{status}")]
-        public async Task<IActionResult> GetSalary(int status)
+        public async Task<IActionResult> GetSalary(bool status)
         {
             var ret = await _context.Employees.Include(i => i.SalaryBill).Where(i => i.SalaryBill != null && i.SalaryBill.Status == status).Select(i => new
             {
@@ -104,7 +104,7 @@ namespace FilmCompanyManagement.Server.Controllers
                 orderId = i.SalaryBill.Id,
                 orderDate = i.SalaryBill.AssignDate,
                 salary = i.Salary,
-                processedDate = status == 1 ? i.SalaryBill.ProcessedDate : null
+                processedDate = status ? i.SalaryBill.ProcessedDate : null
             }).ToListAsync();
             return Ok(ret);
         }
@@ -115,7 +115,7 @@ namespace FilmCompanyManagement.Server.Controllers
             Employee tar = await _context.Employees.Include(i => i.SalaryBill).SingleAsync(i => i.Id == request.Id && i.SalaryBill != null);
             if (tar == null) return BadRequest("Invalid Id");
 
-            tar.SalaryBill.Status = 1;
+            tar.SalaryBill.Status = true;
             tar.SalaryBill.ProcessedDate = DateTime.Parse(request.ProcessedDate);
             tar.SalaryBill = null;
             await _context.SaveChangesAsync();
@@ -123,7 +123,7 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         [HttpGet("projectincome/{status}")]
-        public async Task<IActionResult> GetProjectIncome(int status)
+        public async Task<IActionResult> GetProjectIncome(bool status)
         {
             var ret = await _context.Projects.Include(i => i.Bill).Include(i => i.Customer).Where(i => i.Bill.Status == status).Select(i => new
             {
@@ -131,7 +131,7 @@ namespace FilmCompanyManagement.Server.Controllers
                 orderId = i.Bill.Id,
                 orderDate = i.Bill.AssignDate,
                 amount = i.Bill.Amount,
-                processedDate = status == 1 ? i.Bill.ProcessedDate : null
+                processedDate = status ? i.Bill.ProcessedDate : null
             }).ToListAsync();
             return Ok(ret);
         }
@@ -142,7 +142,7 @@ namespace FilmCompanyManagement.Server.Controllers
             FinishedProduct tar = await _context.FinishedProducts.Include(i => i.Bill).Include(i => i.Customer).SingleAsync(i => i.Id == request.Id);
             if (tar == null) return BadRequest("Invalid Id");
 
-            tar.Bill.Status = 1;
+            tar.Bill.Status = true;
             tar.Bill.ProcessedDate = DateTime.Parse(request.ProcessedDate);
             await _context.SaveChangesAsync();
             return Ok();
