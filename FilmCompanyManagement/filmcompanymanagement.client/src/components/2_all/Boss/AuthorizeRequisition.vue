@@ -171,7 +171,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/data/userdata', { id: userId })
+                axios.post('/api/data/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
                     })
@@ -180,7 +180,7 @@
                     });
             },
             getRequisition() {
-                axios.get('/api/requisition')
+                axios.get('/api/AuthorizeRequisition/requisition')
                     .then(response => {
                         this.requisition = response.data.requisition || [];
                     })
@@ -190,7 +190,7 @@
             },
             //提交表单
             submitForm() {
-                axios.post('/api/submit-req-form', this.form)
+                axios.post('/api/AuthorizeRequisition/submit-req-form', this.form)
                     .then(response => {
                         console.log('提交成功:', response.data.message); // 打印消息
                         this.$message({
@@ -211,7 +211,7 @@
             },
             //删除申请
             Delete(row) {
-                axios.post('/api/delete-form', this.row)
+                axios.post('/api/AuthorizeRequisition/delete-form', this.row)
                     .then(response => {
                         console.log('删除成功:', response.data.message); // 打印消息
                         this.$message({
@@ -233,7 +233,7 @@
             viewDetails(row) {
                 // 根据申请类型发送请求
                 this.form_type = row.type
-                axios.post('/api/details-req-form', { id: row.id, type: row.type }).then(response => {
+                axios.post('/api/AuthorizeRequisition/details-req-form', { id: row.id, type: row.type }).then(response => {
                     this.form = response.data[0];
                     // 显示表单
                     this.dialogVisible = true;
