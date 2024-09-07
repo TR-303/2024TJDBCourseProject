@@ -98,7 +98,7 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         [HttpPost("purchase")]
-        public async Task<IActionResult> Purchase([FromBody] PurchaseForm form)
+        public async Task<IActionResult> Purchase([FromBody] purchaseForm form)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == form.id);
             if (employee == null)
@@ -140,8 +140,8 @@ namespace FilmCompanyManagement.Server.Controllers
             {
                 id = p.Id,
                 managerID = p.Manager == null ? null : p.Manager.Id.ToString(),
-                orderDate=p.Bill.AssignDate.ToString(),
-                orderStatus=p.Bill.Status?"已处理":"未处理",
+                orderDate = p.Bill.AssignDate.ToString(),
+                orderStatus = p.Bill.Status ? "已处理" : "未处理",
             })
             .ToList();
 
@@ -174,7 +174,7 @@ namespace FilmCompanyManagement.Server.Controllers
         public decimal amount { get; set; }
     }
 
-    public class PurchaseForm
+    public class purchaseForm
     {
         public string id { get; set; }
         public string equipment { get; set; }
