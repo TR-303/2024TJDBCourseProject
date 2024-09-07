@@ -181,11 +181,11 @@ let inviteList = [
         state: '未录用'
     }
 ]
-Mock.mock('/api/get-invite', 'get', {
+Mock.mock('/api/PersonnelManagement/get-invite', 'get', {
     employee_list: inviteList,
 })
 
-Mock.mock('/api/details-invite', 'post', (params) => {
+Mock.mock('/api/PersonnelManagement/details-invite', 'post', (params) => {
     let data = JSON.parse(params.body);
     const employeedata = inviteList.filter(item => item.id === data.id);
     if (employeedata) {
@@ -194,11 +194,11 @@ Mock.mock('/api/details-invite', 'post', (params) => {
     }
 })
 
-Mock.mock('/api/submit-invite-form', 'post', {
+Mock.mock('/api/PersonnelManagement/submit-invite-form', 'post', {
     message: 'invite提交成功'
 })
 
-Mock.mock('/api/delete-invite-form', 'post', {
+Mock.mock('/api/PersonnelManagement/delete-invite-form', 'post', {
     message: 'invite删除成功'
 })
 
@@ -254,11 +254,11 @@ let internList = [
     }
 ]
 
-Mock.mock('/api/get-intern', 'get', {
+Mock.mock('/api/PersonnelManagement/get-intern', 'get', {
     employee_list: internList,
 })
 
-Mock.mock('/api/details-intern', 'post', (params) => {
+Mock.mock('/api/PersonnelManagement/details-intern', 'post', (params) => {
     let data = JSON.parse(params.body);
     const employeedata = internList.filter(item => item.id === data.id);
     if (employeedata) {
@@ -267,11 +267,11 @@ Mock.mock('/api/details-intern', 'post', (params) => {
     }
 })
 
-Mock.mock('/api/submit-intern-form', 'post', {
+Mock.mock('/api/PersonnelManagement/submit-intern-form', 'post', {
     message: 'intern提交成功'
 })
 
-Mock.mock('/api/delete-intern-form', 'post', {
+Mock.mock('/api/PersonnelManagement/delete-intern-form', 'post', {
     message: 'intern删除成功'
 })
 
@@ -470,12 +470,12 @@ let overviewList = [
 ] 
 
 
-Mock.mock('/api/get-overview', 'get', {
+Mock.mock('/api/PersonnelManagement/get-overview', 'get', {
     employee_list: overviewList,
 })
 
 
-Mock.mock('/api/details-overview', 'post', (params) => {
+Mock.mock('/api/PersonnelManagement/details-overview', 'post', (params) => {
     let data = JSON.parse(params.body);
     const employeedata = overviewList.filter(item => item.id === data.id);
     if (employeedata) {
@@ -484,11 +484,11 @@ Mock.mock('/api/details-overview', 'post', (params) => {
     }
 })
 
-Mock.mock('/api/submit-overview-form', 'post', {
+Mock.mock('/api/PersonnelManagement/submit-overview-form', 'post', {
     message: 'overview提交成功'
 })
 
-Mock.mock('/api/delete-overview-form', 'post', {
+Mock.mock('/api/PersonnelManagement/delete-overview-form', 'post', {
     message: 'overview删除成功'
 })
 
@@ -574,11 +574,11 @@ let trainList = [
     }
 ] 
 
-Mock.mock('/api/get-train', 'get', {
+Mock.mock('/api/PersonnelManagement/get-train', 'get', {
     employee_list: trainList,
 })
 
-Mock.mock('/api/details-train', 'post', (params) => {
+Mock.mock('/api/PersonnelManagement/details-train', 'post', (params) => {
     let data = JSON.parse(params.body);
     const employeedata = trainList.filter(item => item.id === data.id);
     if (employeedata) {
@@ -587,11 +587,11 @@ Mock.mock('/api/details-train', 'post', (params) => {
     }
 })
 
-Mock.mock('/api/submit-train-form', 'post', {
+Mock.mock('/api/PersonnelManagement/submit-train-form', 'post', {
     message: 'train提交成功'
 })
 
-Mock.mock('/api/delete-train-form', 'post', {
+Mock.mock('/api/PersonnelManagement/delete-train-form', 'post', {
     message: 'train删除成功'
 })
 
@@ -693,11 +693,11 @@ let requiredataList = [
     }
 ] 
 
-Mock.mock('/api/requisition', 'get', {
+Mock.mock('/api/AuthorizeRequisition/requisition', 'get', {
     requisition: requiredataList,
 })
 
-Mock.mock('/api/details-req-form', 'post', (params) => {
+Mock.mock('/api/AuthorizeRequisition/details-req-form', 'post', (params) => {
     let data = JSON.parse(params.body);
     const requiredata = requiredataList.filter(item => item.id === data.id && item.type === data.type);
     if (requiredata) {
@@ -707,11 +707,11 @@ Mock.mock('/api/details-req-form', 'post', (params) => {
 }
 )
 
-Mock.mock('/api/submit-req-form', 'post', {
+Mock.mock('/api/AuthorizeRequisition/submit-req-form', 'post', {
     message: 'req提交成功'
 })
 
-Mock.mock('/api/delete-form', 'post', {
+Mock.mock('/api/AuthorizeRequisition/delete-form', 'post', {
     message: 'req删除成功'
 })
 
@@ -785,11 +785,11 @@ let investList = [
     }
 ] 
 
-Mock.mock('/api/get-invest', 'get', {
+Mock.mock('/api/BusinessManagement/get-invest', 'get', {
     businesses_list: investList,
 })
 
-Mock.mock('/api/details-invest', 'post', (params) => {
+Mock.mock('/api/BusinessManagement/details-invest', 'post', (params) => {
     let data = JSON.parse(params.body);
     const businessesdata = investList.filter(item => item.id === data.id);
     if (businessesdata) {
@@ -799,11 +799,11 @@ Mock.mock('/api/details-invest', 'post', (params) => {
 }
 )
 
-Mock.mock('/api/submit-invest-form', 'post', {
+Mock.mock('/api/BusinessManagement/submit-invest-form', 'post', {
     message: 'invest提交成功'
 })
 
-Mock.mock('/api/delete-invest-form', 'post', {
+Mock.mock('/api/BusinessManagement/delete-invest-form', 'post', {
     message: 'invest删除成功'
 })
 
@@ -903,11 +903,11 @@ let buyList = [
     }
 ] 
 
-Mock.mock('/api/get-buy', 'get', {
+Mock.mock('/api/BusinessManagement/get-buy', 'get', {
     businesses_list: buyList,
 })
 
-Mock.mock('/api/details-buy', 'post', (params) => {
+Mock.mock('/api/BusinessManagement/details-buy', 'post', (params) => {
     let data = JSON.parse(params.body);
     const businessesdata = buyList.filter(item => item.id === data.id);
     if (businessesdata) {
@@ -917,11 +917,11 @@ Mock.mock('/api/details-buy', 'post', (params) => {
 }
 )
 
-Mock.mock('/api/submit-buy-form', 'post', {
+Mock.mock('/api/BusinessManagement/submit-buy-form', 'post', {
     message: 'buy提交成功'
 })
 
-Mock.mock('/api/delete-buy-form', 'post', {
+Mock.mock('/api/BusinessManagement/delete-buy-form', 'post', {
     message: 'buy删除成功'
 })
 
@@ -1019,11 +1019,11 @@ let leaseList = [
     }
 ] 
 
-Mock.mock('/api/get-lease', 'get', {
+Mock.mock('/api/BusinessManagement/get-lease', 'get', {
     businesses_list: leaseList,
 })
 
-Mock.mock('/api/details-lease', 'post', (params) => {
+Mock.mock('/api/BusinessManagement/details-lease', 'post', (params) => {
     let data = JSON.parse(params.body);
     const businessesdata = leaseList.filter(item => item.id === data.id);
     if (businessesdata) {
@@ -1033,11 +1033,11 @@ Mock.mock('/api/details-lease', 'post', (params) => {
 }
 )
 
-Mock.mock('/api/submit-lease-form', 'post', {
+Mock.mock('/api/BusinessManagement/submit-lease-form', 'post', {
     message: 'lease提交成功'
 })
 
-Mock.mock('/api/delete-lease-form', 'post', {
+Mock.mock('/api/BusinessManagement/delete-lease-form', 'post', {
     message: 'lease删除成功'
 })
 
@@ -1193,11 +1193,11 @@ let projectList = [
     }
 ] 
 
-Mock.mock('/api/get-project', 'get', {
+Mock.mock('/api/BusinessManagement/get-project', 'get', {
     businesses_list: projectList,
 })
 
-Mock.mock('/api/details-project', 'post', (params) => {
+Mock.mock('/api/BusinessManagement/details-project', 'post', (params) => {
     let data = JSON.parse(params.body);
     const businessesdata = projectList.filter(item => item.id === data.id);
     if (businessesdata) {
@@ -1207,11 +1207,11 @@ Mock.mock('/api/details-project', 'post', (params) => {
 }
 )
 
-Mock.mock('/api/submit-project-form', 'post', {
+Mock.mock('/api/BusinessManagement/submit-project-form', 'post', {
     message: 'project提交成功'
 })
 
-Mock.mock('/api/delete-project-form', 'post', {
+Mock.mock('/api/BusinessManagement/delete-project-form', 'post', {
     message: 'project删除成功'
 })
 //worker

@@ -628,7 +628,7 @@
             },
             //获取信息
             gitEmployNameList(){
-                axios.get('/api/get-overview')
+                axios.get('/api/PersonnelManagement/get-overview')
                     .then(response => {
                         this.overview_employee_list = response.data.employee_list || [];
                     })
@@ -639,10 +639,10 @@
             getIncome(){
                 let path;
                 switch(this.businessID){
-                    case '0':path='/api/get-invest';break;
-                    case '1':path='/api/get-buy';break;
-                    case '2':path='/api/get-lease';break;
-                    case '3':path='/api/get-project';break;
+                    case '0':path='/api/BusinessManagement/get-invest';break;
+                    case '1':path='/api/BusinessManagement/get-buy';break;
+                    case '2':path='/api/BusinessManagement/get-lease';break;
+                    case '3':path='/api/BusinessManagement/get-project';break;
                 }
                 axios.get(path)
                     .then(response => {
@@ -664,7 +664,7 @@
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-invest-form';break;
+                        path='/api/BusinessManagement/submit-invest-form';break;
                     case '1':
                         if (!this.form.id || !this.form.type || !this.form.fileId || !this.form.fileName || 
                             !this.form.fileType || !this.form.fileContentType || !this.form.fileSize || 
@@ -676,7 +676,7 @@
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-buy-form';break;
+                        path='/api/BusinessManagement/submit-buy-form';break;
                     case '2':
                         if (!this.form.id || !this.form.employee || !this.form.customerid || !this.form.customerType || 
                             !this.form.customerName || !this.form.customerBusinessType || !this.form.customerPhone || 
@@ -686,7 +686,7 @@
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-lease-form';break;
+                        path='/api/BusinessManagement/submit-lease-form';break;
                     case '3':
                         if (!this.form.id || !this.form.manager || !this.form.fileId || !this.form.fileName || 
                             !this.form.fileType || !this.form.fileContentType || !this.form.fileSize || 
@@ -699,7 +699,7 @@
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-project-form';break;
+                        path='/api/BusinessManagement/submit-project-form';break;
                 }
                 axios.post(path, this.form)
                     .then(response => {
@@ -729,10 +729,10 @@
             Delete(row) {
                 let path;
                 switch(this.businessID){
-                    case '0':path='/api/delete-invest-form';break;
-                    case '1':path='/api/delete-buy-form';break;
-                    case '2':path='/api/delete-lease-form';break;
-                    case '3':path='/api/delete-project-form';break;
+                    case '0':path='/api/BusinessManagement/delete-invest-form';break;
+                    case '1':path='/api/BusinessManagement/delete-buy-form';break;
+                    case '2':path='/api/BusinessManagement/delete-lease-form';break;
+                    case '3':path='/api/BusinessManagement/delete-project-form';break;
                 }
                 axios.post(path, this.row)
                     .then(response => {
@@ -756,10 +756,10 @@
             viewDetails(row) {      
                 let path;
                 switch(this.businessID){
-                    case '0':path='/api/details-invest';break;
-                    case '1':path='/api/details-buy';break;
-                    case '2':path='/api/details-lease';break;
-                    case '3':path='/api/details-project';break;
+                    case '0':path='/api/BusinessManagement/details-invest';break;
+                    case '1':path='/api/BusinessManagement/details-buy';break;
+                    case '2':path='/api/BusinessManagement/details-lease';break;
+                    case '3':path='/api/BusinessManagement/details-project';break;
                 }
                 axios.post(path, { id: row.id}).then(response => {
                     this.form = response.data[0];
