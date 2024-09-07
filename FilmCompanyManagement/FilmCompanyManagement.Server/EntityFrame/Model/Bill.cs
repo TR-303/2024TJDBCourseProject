@@ -16,7 +16,7 @@ namespace FilmCompanyManagement.Server.EntityFrame.Models
         public string? Type { get; set; }
 
         [Required, Column(TypeName = "NUMBER(1)")]
-        public bool Status { get; set; } = false;
+        public int Status { get; set; } = 0;
 
         [Required, Column(TypeName = "Date")]
         public DateTime AssignDate { get; set; }

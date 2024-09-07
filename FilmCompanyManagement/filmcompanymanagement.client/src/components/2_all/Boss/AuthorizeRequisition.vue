@@ -56,7 +56,7 @@
         </div>
 
         <!--表单显示-->
-         <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
+        <el-dialog title="申请表详细信息" v-model="dialogVisible" width="60%" :before-close="handleClose">
             <el-form :model="form" label-width="120px">
                 <el-form-item label="申请编号">
                     <el-input v-model="form.id" disabled></el-input>
@@ -96,7 +96,7 @@
                     <el-input v-model="form.billStatus" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="申请状态">
-                    <el-select v-model="form.status" placeholder="请选择状态" >
+                    <el-select v-model="form.status" placeholder="请选择状态">
                         <el-option label="待定" value="待定"></el-option>
                         <el-option label="通过" value="通过"></el-option>
                         <el-option label="拒绝" value="拒绝"></el-option>
@@ -125,7 +125,7 @@
                 name: '', // 获取登入姓名
                 requisition: [], //默认申请数据
                 dialogVisible: false,
-                form:    { id: ''},
+                form: { id: '' },
             }
         },
         computed: {
@@ -165,7 +165,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/data/userdata', { id: userId })
+                axios.post('/api/data/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
                     })
@@ -174,7 +174,7 @@
                     });
             },
             getRequisition() {
-                axios.get('/api/requisition')
+                axios.get('/api/ApplicationApproval/requisition')
                     .then(response => {
                         this.requisition = response.data.requisition || [];
                     })
@@ -184,7 +184,7 @@
             },
             //提交表单
             submitForm() {
-                axios.post('/api/submit-req-form', this.form)
+                axios.post('/api/ApplicationApproval/submit-req-form', this.form)
                     .then(response => {
                         console.log('提交成功:', response.data.message); // 打印消息
                         this.$message({
@@ -205,7 +205,7 @@
             },
             //删除申请
             Delete(row) {
-                axios.post('/api/delete-form', this.row)
+                axios.post('/api/ApplicationApproval/delete-form', this.row)
                     .then(response => {
                         console.log('删除成功:', response.data.message); // 打印消息
                         this.$message({
@@ -220,12 +220,14 @@
                             message: error.response.data.message // 假设错误信息也在 message 字段中
                         });
                     });
+                //重新请求数据
+                getRequisition();
             },
             // 查看详情
             viewDetails(row) {
                 // 根据申请类型发送请求
                 this.form_type = row.type
-                axios.post('/api/details-req-form', { id: row.id, type: row.type }).then(response => {
+                axios.post('/api/ApplicationApproval/details-req-form', { id: row.id, type: row.type }).then(response => {
                     this.form = response.data[0];
                     // 显示表单
                     this.dialogVisible = true;

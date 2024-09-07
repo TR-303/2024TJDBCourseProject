@@ -19,7 +19,7 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         // 获取所有申请
-        [HttpGet("get-requisitions")]
+        [HttpGet("requisition")]
         public async Task<IActionResult> GetRequisitions()
         {
             var requisitions = await _context.FundingApplications

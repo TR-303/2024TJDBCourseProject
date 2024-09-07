@@ -99,7 +99,7 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost]
         public async Task<ActionResult> GetInvestments()//500
         {//finance:投资数据
-            var investments = await _context.Investments.Include(i => i.Bill).Where(i => i.Bill.Status == false).ToListAsync();
+            var investments = await _context.Investments.Include(i => i.Bill).Where(i => i.Bill.Status == 0).ToListAsync();
             return Ok(investments);
         }
 
