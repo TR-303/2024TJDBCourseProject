@@ -415,12 +415,13 @@
                 employeeID: '2',
                 employee_list:[],
                 overview_employee_list:[],
-                form:           { id: '' },
+                form: { id: '' },
+                department: '',
             }
         },
         computed: {
             showBossMenu() {
-                return this.$route.query.id === '1';
+                return this.department === '管理部';
             }
         },
         methods: {
@@ -455,12 +456,14 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/api/data/userdata', { id: userId })
-                    .then(result => {
-                        this.name = result.data.name || '未定义'; // 确保 name 有默认值
+                axios
+                    .post("/api/data/userdata", { id: userId })
+                    .then((result) => {
+                        this.name = result.data.name || "未定义"; // 确保 name 有默认值
+                        this.department = result.data.department.name;
                     })
-                    .catch(error => {
-                        console.error('Error fetching mock data:', error);
+                    .catch((error) => {
+                        console.error("Error fetching mock data:", error);
                     });
             },
             setEmployeeID(id) {
