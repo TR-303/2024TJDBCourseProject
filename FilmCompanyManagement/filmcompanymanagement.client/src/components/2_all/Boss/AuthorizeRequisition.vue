@@ -172,7 +172,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('api/data/userdata', { id: userId })
+                axios.post('/api/data/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name;
                         this.department = result.data.department.name;
