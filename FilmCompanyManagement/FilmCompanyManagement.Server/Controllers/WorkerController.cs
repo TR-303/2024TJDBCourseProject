@@ -49,6 +49,40 @@ namespace FilmCompanyManagement.Server.Controllers
             }).ToListAsync();
             return Ok(ret);
         }
+
+        [HttpPost("repair")]
+        public async Task<IActionResult> Repair([FromBody] RepairForm form)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == form.id);
+            if (employee == null)
+            {
+                return BadRequest("Employee not found.");
+            }
+
+            var photoEquipment = await _context.PhotoEquipments.FindAsync(form.equipmentID);
+            if (photoEquipment == null)
+            {
+                return BadRequest("PhotoEquipment not found.");
+            }
+
+            var newBill = new Bill
+            {
+                Amount = form.amount,
+                Type = "Repair",
+                Status = false,       // ��ʼ״̬Ϊfalse
+                AssignDate = DateTime.Parse(form.date)
+            };
+
+            await _context.EquipmentRepairs.AddAsync(new EquipmentRepair
+            {
+                Employee = employee,
+                PhotoEquipment = photoEquipment,
+                Bill = newBill,
+            });
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Repair created successfully" });
+        }
     }
 
     public class UploadForm
@@ -58,5 +92,13 @@ namespace FilmCompanyManagement.Server.Controllers
         public string type { get; set; }
         public int size { get; set; }
         public string description { get; set; }
+    }
+
+    public class RepairForm
+    {
+        public string id { get; set; }
+        public int equipmentID { get; set; }
+        public string date { get; set; }
+        public int amount { get; set; }
     }
 }
