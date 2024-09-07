@@ -24,69 +24,52 @@
                 </li>
                 <li role="menuitem" id="menu_2" tabindex="-1" class="li_node" aria-haspopup="true" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleSubMenu">
                     查看财政表
+                </li>
+            </ul>
+        </div>
 
-                </li>
-                <!-- 二级导航项 -->
-                <li v-if="showSubMenu" class="sub_menu " role="menuitem" id="submenu_1" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleInvesSubMenu">
-                    查看外部投资
-                </li>
-                <!-- 三级导航项 -->
-                <li v-if="showInvesSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_investment_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedInvestmentF">
-                    未处理
-                </li>
-                <li v-if="showInvesSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_investment_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedInvestmentF">
-                    已处理
-                </li>
+        <h2>查看财政表</h2>
 
-                <!-- 二级导航项 -->
-                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_2" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleLeasingSubMenu">
-                    查看设备租赁
-                </li>
-                <!-- 三级导航项 -->
-                <li v-if="showLeasingSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_leasing_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedLeasingF">
-                    未处理
-                </li>
-                <li v-if="showLeasingSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_leasing_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedLeasingF">
-                    已处理
-                </li>
+        <!-- 二级导航栏横向显示 -->
+        <div v-if="showSubMenu" class="secondary_menu">
+            <ul>
+                <li :class="{'active': activeMenuItem === 'inves'}" role="menuitem" tabindex="-1" @click="toggleInvesSubMenu">查看外部投资</li>
+                <li :class="{'active': activeMenuItem === 'leasing'}" role="menuitem" tabindex="-1" @click="toggleLeasingSubMenu">查看设备租赁</li>
+                <li :class="{'active': activeMenuItem === 'blockPurchaseOrder'}" role="menuitem" tabindex="-1" @click="toggleBlockPurchaseOrderSubMenu">查看成片购买订单</li>
+                <li :class="{'active': activeMenuItem === 'salary'}" role="menuitem" tabindex="-1" @click="toggleSalarySubMenu">查看工资</li>
+                <li :class="{'active': activeMenuItem === 'projectIncome'}" role="menuitem" tabindex="-1" @click="toggleProjectIncomeSubMenu">查看项目收入</li>
+            </ul>
+        </div>
 
-                <!-- 二级导航项 -->
-                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_3" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleBlockPurchaseOrderSubMenu">
-                    查看成片购买订单
-                </li>
-                <!-- 三级导航项 -->
-                <li v-if="showBlockPurchaseOrderSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_blockPurchaseOrder_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedBlockPurchaseOrderF">
-                    未处理
-                </li>
-                <li v-if="showBlockPurchaseOrderSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_blockPurchaseOrder_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedBlockPurchaseOrderF">
-                    已处理
-                </li>
-
-                <!-- 二级导航项 -->
-                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_4" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleSalarySubMenu">
-                    查看工资
-                </li>
-                <!-- 三级导航项 -->
-                <li v-if="showSalarySubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_salary_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedSalaryF">
-                    未处理
-                </li>
-                <!--<li v-if="showSalarySubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_salary_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedSalaryF">
-                    已处理
-                </li>-->
-
-
-                <!-- 二级导航项 -->
-                <li v-if="showSubMenu" class="sub_menu" role="menuitem" id="submenu_5" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="toggleProjectIncomeSubMenu">
-                    查看项目收入
-                </li>
-                <!-- 三级导航项 -->
-                <li v-if="showProjectIncomeSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_project_income_unprocessed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showUnprocessedProjectIncomeF">
-                    未处理
-                </li>
-                <li v-if="showProjectIncomeSubMenu" class="sub_menu sub_sub_menu" role="menuitem" id="submenu_project_income_processed" tabindex="-1" @mouseout="removeShadow($event)" @mouseover="addShadow($event)" @click="showProcessedProjectIncomeF">
-                    已处理
-                </li>
-
+        <!-- 三级导航栏下拉 -->
+        <div v-if="showInvesSubMenu" class="tertiary_menu">
+            <ul>
+                <li :class="{'active': activeTertiaryMenuItem === 'unprocessedInvestment'}" role="menuitem" tabindex="-1" @click="showUnprocessedInvestmentF(); selectTertiaryMenu('unprocessedInvestment')">未处理</li>
+                <li :class="{'active': activeTertiaryMenuItem === 'processedInvestment'}" role="menuitem" tabindex="-1" @click="showProcessedInvestmentF(); selectTertiaryMenu('processedInvestment')">已处理</li>
+            </ul>
+        </div>
+        <div v-if="showLeasingSubMenu" class="tertiary_menu">
+            <ul>
+                <li :class="{'active': activeTertiaryMenuItem === 'unprocessedLeasing'}" role="menuitem" tabindex="-1" @click="showUnprocessedLeasingF(); selectTertiaryMenu('unprocessedLeasing')">未处理</li>
+                <li :class="{'active': activeTertiaryMenuItem === 'processedLeasing'}" role="menuitem" tabindex="-1" @click="showProcessedLeasingF(); selectTertiaryMenu('processedLeasing')">已处理</li>
+            </ul>
+        </div>
+        <div v-if="showBlockPurchaseOrderSubMenu" class="tertiary_menu">
+            <ul>
+                <li :class="{'active': activeTertiaryMenuItem === 'unprocessedBlockPurchaseOrder'}" role="menuitem" tabindex="-1" @click="showUnprocessedBlockPurchaseOrderF(); selectTertiaryMenu('unprocessedBlockPurchaseOrder')">未处理</li>
+                <li :class="{'active': activeTertiaryMenuItem === 'processedBlockPurchaseOrder'}" role="menuitem" tabindex="-1" @click="showProcessedBlockPurchaseOrderF(); selectTertiaryMenu('processedBlockPurchaseOrder')">已处理</li>
+            </ul>
+        </div>
+        <div v-if="showSalarySubMenu" class="tertiary_menu">
+            <ul>
+                <li :class="{'active': activeTertiaryMenuItem === 'unprocessedSalary'}" role="menuitem" tabindex="-1" @click="showUnprocessedSalaryF(); selectTertiaryMenu('unprocessedSalary')">未处理</li>
+                <li :class="{'active': activeTertiaryMenuItem === 'processedSalary'}" role="menuitem" tabindex="-1" @click="showProcessedSalaryF(); selectTertiaryMenu('processedSalary')">已处理</li>
+            </ul>
+        </div>
+        <div v-if="showProjectIncomeSubMenu" class="tertiary_menu">
+            <ul>
+                <li :class="{'active': activeTertiaryMenuItem === 'unprocessedProjectIncome'}" role="menuitem" tabindex="-1" @click="showUnprocessedProjectIncomeF(); selectTertiaryMenu('unprocessedProjectIncome')">未处理</li>
+                <li :class="{'active': activeTertiaryMenuItem === 'processedProjectIncome'}" role="menuitem" tabindex="-1" @click="showProcessedProjectIncomeF(); selectTertiaryMenu('processedProjectIncome')">已处理</li>
             </ul>
         </div>
 
@@ -243,7 +226,7 @@
         </div>
 
         <!-- 工资已处理数据显示部分 -->
-        <!--<div class="container" v-if="showProcessedSalary">
+        <div class="container" v-if="showProcessedSalary">
             <div class="container_head">
                 <label class="container_head_left">已处理工资</label>
                 <button class="container_head_right" @click="refreshProcessedSalaryData">
@@ -260,7 +243,7 @@
                     <el-table-column prop="processedDate" label="发放日期" />
                 </el-table>
             </div>
-        </div>-->
+        </div>
 
         <!-- 项目收入未处理数据显示部分 -->
         <div class="container" v-if="showUnprocessedProjectIncome">
@@ -334,6 +317,8 @@
 
 
                 showSubMenu: false, // 控制二级导航显示
+                activeMenuItem: '', // 当前选中的二级导航项
+                activeTertiaryMenuItem: '', // 当前选中的三级导航项
 
                 showInvesSubMenu: false, //控制外部投资三级导航显示
                 showUnprocessedInvestment: false, // 控制未处理投资数据显示
@@ -379,7 +364,7 @@
             },
             toggleSubMenu() {
                 // 切换显示二级菜单
-                this.showSubMenu = !this.showSubMenu;
+                this.showSubMenu = true;
                 // 关闭三级菜单
                 if (this.showInvesSubMenu === true)
                     this.showInvesSubMenu = false;
@@ -391,26 +376,136 @@
                     this.showSalarySubMenu = false;
                 if (this.showProjectIncomeSubMenu === true)
                     this.showProjectIncomeSubMenu = false;
+                //关闭三级菜单数据表
+                this.closeTertiaryData();
+                this.activeMenuItem = '';
             },
             toggleInvesSubMenu() {
+                if (this.activeMenuItem === '' || this.activeMenuItem !== 'inves')
+                    this.activeMenuItem = 'inves';
+                else
+                    this.activeMenuItem = '';
+
                 // 切换显示外部投资的三级菜单
                 this.showInvesSubMenu = !this.showInvesSubMenu;
+                // 关闭其他三级菜单
+                if (this.showLeasingSubMenu === true)
+                    this.showLeasingSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
+                if (this.showProjectIncomeSubMenu === true)
+                    this.showProjectIncomeSubMenu = false;
+                //关闭三级菜单数据表
+                this.closeTertiaryData();
+                this.activeTertiaryMenuItem = ''; // 重置三级导航项
             },
             toggleLeasingSubMenu() {
+                if (this.activeMenuItem === '' || this.activeMenuItem !== 'leasing')
+                    this.activeMenuItem = 'leasing';
+                else
+                    this.activeMenuItem = '';
                 // 切换显示设备租赁的三级菜单
                 this.showLeasingSubMenu = !this.showLeasingSubMenu;
+                // 关闭其他三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
+                if (this.showProjectIncomeSubMenu === true)
+                    this.showProjectIncomeSubMenu = false;
+                //关闭三级菜单数据表
+                this.closeTertiaryData();
+                this.activeTertiaryMenuItem = ''; // 重置三级导航项
             },
             toggleBlockPurchaseOrderSubMenu() {
+                if (this.activeMenuItem === '' || this.activeMenuItem !== 'blockPurchaseOrder')
+                    this.activeMenuItem = 'blockPurchaseOrder';
+                else
+                    this.activeMenuItem = '';
                 // 切换显示成片购买订单的三级菜单
                 this.showBlockPurchaseOrderSubMenu = !this.showBlockPurchaseOrderSubMenu;
+                // 关闭其他三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
+                if (this.showLeasingSubMenu === true)
+                    this.showLeasingSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
+                if (this.showProjectIncomeSubMenu === true)
+                    this.showProjectIncomeSubMenu = false;
+                //关闭三级菜单数据表
+                this.closeTertiaryData();
+                this.activeTertiaryMenuItem = ''; // 重置三级导航项
             },
             toggleSalarySubMenu() {
+                if (this.activeMenuItem === '' || this.activeMenuItem !== 'salary')
+                    this.activeMenuItem = 'salary';
+                else
+                    this.activeMenuItem = '';
                 // 切换显示工资的三级菜单
                 this.showSalarySubMenu = !this.showSalarySubMenu;
+                // 关闭其他三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
+                if (this.showLeasingSubMenu === true)
+                    this.showLeasingSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showProjectIncomeSubMenu === true)
+                    this.showProjectIncomeSubMenu = false;
+                //关闭三级菜单数据表
+                this.closeTertiaryData();
+                this.activeTertiaryMenuItem = ''; // 重置三级导航项
             },
             toggleProjectIncomeSubMenu() {
+                if (this.activeMenuItem === '' || this.activeMenuItem !== 'projectIncome')
+                    this.activeMenuItem = 'projectIncome';
+                else
+                    this.activeMenuItem = '';
                 // 切换显示项目收入的三级菜单
                 this.showProjectIncomeSubMenu = !this.showProjectIncomeSubMenu;
+                // 关闭其他三级菜单
+                if (this.showInvesSubMenu === true)
+                    this.showInvesSubMenu = false;
+                if (this.showLeasingSubMenu === true)
+                    this.showLeasingSubMenu = false;
+                if (this.showBlockPurchaseOrderSubMenu === true)
+                    this.showBlockPurchaseOrderSubMenu = false;
+                if (this.showSalarySubMenu === true)
+                    this.showSalarySubMenu = false;
+                //关闭三级菜单数据表
+                this.closeTertiaryData();
+                this.activeTertiaryMenuItem = ''; // 重置三级导航项
+            },
+            selectTertiaryMenu(item) {
+                this.activeTertiaryMenuItem = item; // 设置选中的三级导航项
+            },
+            // 关闭三级菜单数据表
+            closeTertiaryData() {
+                if (this.showUnprocessedInvestment === true)
+                    this.showUnprocessedInvestment = false;
+                if (this.showProcessedInvestment === true)
+                    this.showProcessedInvestment = false;
+                if (this.showUnprocessedLeasing === true)
+                    this.showUnprocessedLeasing = false;
+                if (this.showProcessedLeasing === true)
+                    this.showProcessedLeasing = false;
+                if (this.showProcessedBlockPurchaseOrder === true)
+                    this.showProcessedBlockPurchaseOrder = false;
+                if (this.showUnprocessedBlockPurchaseOrder === true)
+                    this.showUnprocessedBlockPurchaseOrder = false;
+                if (this.showProcessedSalary === true)
+                    this.showProcessedSalary = false;
+                if (this.showUnprocessedSalary === true)
+                    this.showUnprocessedSalary = false;
+                if (this.showProcessedProjectIncome === true)
+                    this.showProcessedProjectIncome = false;
+                if (this.showUnprocessedProjectIncome === true)
+                    this.showUnprocessedProjectIncome = false;
             },
             // 显示未处理外部投资数据
             showUnprocessedInvestmentF() {
@@ -917,5 +1012,104 @@
 
     #submenu_investment_processed {
         margin-bottom: 8px;
+    }
+
+    /* 横向二级导航栏 */
+    .secondary_menu ul {
+        display: flex;
+        /*        justify-content:space-evenly;*/
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        margin-left: 160px;
+        /*        background-color: #f0f0f0;*/
+    }
+
+    /*    .secondary_menu li {
+        padding: 10px;
+        cursor: pointer;
+    }*/
+
+    /* 未选中时的样式 */
+    .secondary_menu li {
+        background-color: #e7f5ff;
+        color: #4dabf7;
+        border: 1px solid #74c0fc;
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+        /* 悬停时的样式 */
+        .secondary_menu li:hover {
+            background-color: #a5d8ff;
+            color: #1c7ed6;
+            border-color: #4dabf7;
+        }
+
+        /* 选中时的样式 */
+        .secondary_menu li.active {
+            background-color: #228be6;
+            color: white;
+            border: 1px solid #228be6;
+            border-radius: 5px;
+        }
+
+    /* 三级导航栏下拉菜单 */
+    .tertiary_menu {
+        /*        width: 300px;*/
+        /*        background-color: #f9f9f9;*/
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+
+
+
+        .tertiary_menu ul {
+            display: flex;
+            /*            justify-content:center;*/
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-left: 160px;
+        }
+
+        /* 未选中时的三级导航项样式 */
+        .tertiary_menu li {
+            background-color: #e7f5ff;
+            color: #4dabf7;
+            border: 1px solid #74c0fc;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+            /* 悬停时的样式 */
+            .tertiary_menu li:hover {
+                background-color: #a5d8ff;
+                color: #1c7ed6;
+                border-color: #4dabf7;
+            }
+
+            /* 选中时的三级导航项样式 */
+            .tertiary_menu li.active {
+                background-color: #228be6;
+                color: white;
+                border: 1px solid #228be6;
+                border-radius: 5px;
+            }
+
+
+    /* 显示下拉菜单 */
+    .show {
+        display: block;
+    }
+
+    h2 {
+        padding-left: 160px;
     }
 </style>
