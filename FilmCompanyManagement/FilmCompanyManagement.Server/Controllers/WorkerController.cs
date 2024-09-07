@@ -82,7 +82,7 @@ namespace FilmCompanyManagement.Server.Controllers
             {
                 Amount = form.amount,
                 Type = "Repair",
-                Status = false,       // ³õÊ¼×´Ì¬Îªfalse
+                Status = false,       // ï¿½ï¿½Ê¼×´Ì¬Îªfalse
                 AssignDate = DateTime.Parse(form.date)
             };
 
@@ -140,8 +140,8 @@ namespace FilmCompanyManagement.Server.Controllers
             {
                 id = p.Id,
                 managerID = p.Manager == null ? null : p.Manager.Id.ToString(),
-                orderDate=p.Bill.AssignDate.ToString(),
-                orderStatus=p.Bill.Status?"ÒÑ´¦Àí":"Î´´¦Àí",
+                orderDate = p.Bill.AssignDate.ToString(),
+                orderStatus = p.Bill.Status ? "ï¿½Ñ´ï¿½ï¿½ï¿½" : "Î´ï¿½ï¿½ï¿½ï¿½",
             })
             .ToList();
 

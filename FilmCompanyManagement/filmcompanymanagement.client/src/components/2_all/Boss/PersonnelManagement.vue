@@ -413,14 +413,15 @@
                 name: '', // 获取登入姓名
                 dialogVisible: false,
                 employeeID: '2',
-                employee_list: [],
-                overview_employee_list: [],
-                form: {},
+                employee_list:[],
+                overview_employee_list:[],
+                form: { id: '' },
+                department: '',
             }
         },
         computed: {
             showBossMenu() {
-                return this.$route.query.id === '1';
+                return this.department === '管理部';
             }
         },
         methods: {
@@ -455,12 +456,14 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/api/data/userdata', { id: userId })
-                    .then(result => {
-                        this.name = result.data.name || '未定义'; // 确保 name 有默认值
+                axios
+                    .post("/api/data/userdata", { id: userId })
+                    .then((result) => {
+                        this.name = result.data.name || "未定义"; // 确保 name 有默认值
+                        this.department = result.data.department.name;
                     })
-                    .catch(error => {
-                        console.error('Error fetching mock data:', error);
+                    .catch((error) => {
+                        console.error("Error fetching mock data:", error);
                     });
             },
             setEmployeeID(id) {
@@ -544,9 +547,8 @@
                         path = '/api/PersonnelManagement/submit-intern-form';
                         break;
                     case '2':
-                        if (!this.form.name || !this.form.gender || !this.form.position || !this.form.salary ||
-                            !this.form.phone || !this.form.email ||
-                            !this.form.department) {
+                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
+                            !this.form.phone || !this.form.email || !this.form.department || !this.form.kpi) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
@@ -633,8 +635,8 @@
                 this.getIncome();
             },
             //新建
-            createNew() {
-                this.form = { id: '0', customerid: '0', billId: '0', billDate: '2024-09-08', fileId: '0', employees: [{ id: '', name: '' }] };
+            createNew(){
+                this.form = {id:'0', customerid: '0', fileId:'0', kpi:'0', employees:[{id: '',name: ''}] };
                 this.dialogVisible = true;
             },
             //删除

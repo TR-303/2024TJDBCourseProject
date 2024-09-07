@@ -66,13 +66,14 @@
         data() {
             return {
                 name: '', // 获取登入姓名
-                projects: [] // 项目列表数据
+                projects: [], // 项目列表数据
+                department:'',
             }
         },
         computed: {
             showWorkerMenu() {
-                return this.$route.query.id === '3';
-            }
+                return this.department === "业务部";
+            },
         },
         methods: {
             addShadow(event) {
@@ -109,6 +110,7 @@
                 axios.post('/api/data/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
+                        this.department = result.data.department.name;
                     })
                     .catch(error => {
                         console.error('Error fetching user data:', error);
