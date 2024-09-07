@@ -18,17 +18,27 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> EmployeesInDepartment(string department)
+        public async Task<ActionResult> EmployeesInDepartment(departmentRequest request)
         {
-            var dept = await _context.Departments.Include(d => d.Employees).SingleAsync(d => d.Name == department);
+            var dept = await _context.Departments.Include(d => d.Employees).SingleAsync(d => d.Name == request.department);
             return Ok(dept.Employees);
         }
 
         [HttpGet]
-        public async Task<ActionResult> DeptLeader(string userName)
+        public async Task<ActionResult> DeptLeader(thisRequest request)
         {
-            var user = await _context.Employees.Include(e => e.Department).SingleAsync(e => e.UserName == userName);
+            var user = await _context.Employees.Include(e => e.Department).SingleAsync(e => e.UserName == request.userName);
             return Ok(user.Department.Leader);
+        }
+
+        public class thisRequest
+        {
+            public string userName { get; set; }
+        }
+
+        public class departmentRequest
+        {
+            public string department { get; set; }
         }
     }
 }
