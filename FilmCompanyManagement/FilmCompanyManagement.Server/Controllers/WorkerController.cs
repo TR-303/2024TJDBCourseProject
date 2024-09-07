@@ -15,6 +15,19 @@ namespace FilmCompanyManagement.Server.Controllers
             _context = context;
         }
 
+        [HttpPost("expense")]
+        public async Task<ActionResult> InsertExpense(expenseRequest request)
+        {
+            var bill = new Bill
+            {
+                AssignDate = Convert.ToDateTime(request.date),
+                Amount = request.amount
+            };
+            _context.Bills.Add(bill);
+            await _context.SaveChangesAsync();
+            return Ok(1);
+        }
+
         [HttpPost("upload")]
         public async Task<IActionResult> Upload([FromBody] UploadForm form)
         {
@@ -58,5 +71,13 @@ namespace FilmCompanyManagement.Server.Controllers
         public string type { get; set; }
         public int size { get; set; }
         public string description { get; set; }
+    }
+
+    public class expenseRequest
+    {
+        public string id { get; set; }
+        public string date { get; set; }
+        public string description { get; set; }
+        public decimal amount { get; set; }
     }
 }
