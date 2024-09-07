@@ -510,7 +510,7 @@
                 }
                 axios.get(path)
                     .then(response => {
-                        this.employee_list = response.data.employee_list || [];
+                        this.employee_list = response.data|| [];
                         if(this.employeeID == '2')
                         {
                             this.overview_employee_list = this.employee_list;
@@ -525,7 +525,7 @@
                 let path;
                 switch(this.employeeID){
                     case '0':
-                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary || 
+                        if ( !this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary || 
                             !this.form.phone || !this.form.email || !this.form.interviewer || !this.form.interviewerStage || !this.form.state) {
                             alert("请完成所有内容的填写再提交！");
                             return;
@@ -533,7 +533,7 @@
                         path='/api/PersonnelManagement/submit-invite-form';
                         break;
                     case '1':
-                        if (!this.form.advicerId || !this.form.advicer || !this.form.internId || !this.form.intern || 
+                        if ( !this.form.advicer || !this.form.internId || !this.form.intern || 
                             !this.form.internshipStartDate || !this.form.internshipEndDate || !this.form.remarks) {
                             alert("请完成所有内容的填写再提交！");
                             return;
@@ -541,17 +541,17 @@
                         path='/api/PersonnelManagement/submit-intern-form';
                         break;
                     case '2':
-                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
-                            !this.form.phone || !this.form.email || !this.form.billId || !this.form.billAmount || 
-                            !this.form.billType || !this.form.billDate || !this.form.billStatus || 
-                            !this.form.department || !this.form.kpi) {
+                        if ( !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
+                            !this.form.phone || !this.form.email ||  !this.form.billAmount || 
+                            !this.form.billType ||  !this.form.billStatus || 
+                            !this.form.department) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
                         path='/api/PersonnelManagement/submit-overview-form';
                         break;
                     case '3':
-                        if (!this.form.id || !this.form.teacher || !this.form.dateTime || !this.form.endTime ||  !this.form.employees[0].id) {
+                        if ( !this.form.teacher || !this.form.dateTime || !this.form.endTime ||  !this.form.employees[0].id) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }

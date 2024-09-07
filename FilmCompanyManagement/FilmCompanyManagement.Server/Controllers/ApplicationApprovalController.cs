@@ -22,10 +22,17 @@ namespace FilmCompanyManagement.Server.Controllers
         [HttpGet("requisition")]
         public async Task<IActionResult> GetRequisitions()
         {
-            var requisitions = await _context.FundingApplications
-                                             .Include(f => f.Employee) // 包含申请人信息
-                                             .Include(f => f.Bill) // 包含账单信息
-                                             .ToListAsync();
+            var requisitions = await _context.FundingApplications.Include(f => f.Bill).Include(f=>f.Employee)
+                .Select(f => new
+                {
+                    id = f.Id,
+                    employee = f.Employee.Name ,
+                    type = f.Opinion,
+                    billAmount = f.Bill.Amount,
+                    billDate = f.Bill.AssignDate.ToString(),
+                    status = f.Bill.Status ? "已处理" : "未处理"
+                })
+                .ToListAsync();
             return Ok(new { requisition = requisitions });
         }
 

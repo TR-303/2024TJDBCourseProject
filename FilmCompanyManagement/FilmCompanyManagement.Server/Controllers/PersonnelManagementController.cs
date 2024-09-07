@@ -218,6 +218,135 @@ namespace FilmCompanyManagement.Server.Controllers
             return Ok(new { message = "培训记录已删除" });
         }
 
+        [HttpPost("details-invite")]
+        public async Task<IActionResult> CreateOrUpdateInvite([FromBody] RecruitForm form)
+        {
+            // 查找现有的记录
+            var invite = await _context.Recruiters.FindAsync(form.id);
+
+            // 如果没有记录，说明是新建操作
+            if (invite == null)
+            {
+                // 新建招聘信息
+                await _context.Recruiters.AddAsync(new Recruiter
+                {
+                    Name = form.name,
+                    Gender = form.gender,
+                    Position = form.positionTitle,
+                    Salary = form.salary,
+                    Phone = form.phone,
+                    Email = form.email,
+                    Interviewer = _context.Employees.Single(e => e.Id == form.interviewer), // 根据面试官 ID 找到面试官
+                    InterviewStage = form.interviewerStage == "一面" ? 1 : 2,
+                    State = form.state == "已录用"
+                });
+
+                await _context.SaveChangesAsync();
+                return Ok(new
+                {
+                    message = "提交成功"
+                });
+            }
+            else // 如果找到了记录，执行更新操作
+            {
+                invite.Name = form.name;
+                invite.Gender = form.gender;
+                invite.Position = form.positionTitle;
+                invite.Salary = form.salary;
+                invite.Phone = form.phone;
+                invite.Email = form.email;
+                invite.Interviewer = await _context.Employees.FindAsync(form.interviewer); // 根据面试官 ID 找到面试官
+                invite.InterviewStage = form.interviewerStage == "一面" ? 1 : 2;
+                invite.State = form.state == "已录用";
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    message = "更新成功"
+                });
+            }
+        }
+        [HttpPost("details-intern")]
+        public async Task<IActionResult> GetInternDetails([FromBody] IdRequest request)
+        {
+            var intern = await _context.AdvicerIntern
+                .Where(ai => ai.Intern.Id == request.Id)
+                .Select(ai => new
+                {
+                    InternId = ai.Intern.Id,
+                    Intern = ai.Intern.Name,
+                    AdvicerId = ai.Advicer.Id,
+                    Advicer = ai.Advicer.Name,
+                    InternshipStartDate = ai.InternshipStartDate,
+                    InternshipEndDate = ai.InternshipEndDate,
+                    Remarks = ai.Remarks
+                })
+                .FirstOrDefaultAsync();
+
+            if (intern == null)
+                return NotFound(new { message = "实习信息未找到" });
+
+            return Ok(new[] { intern });
+        }
+        [HttpPost("details-overview")]
+        public async Task<IActionResult> GetOverviewDetails([FromBody] IdRequest request)
+        {
+            var employee = await _context.Employees
+                .Where(e => e.Id == request.Id)
+                .Include(e => e.SalaryBill)  // 连表查询 Bill
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Name,
+                    e.Gender,
+                    e.Position,
+                    e.Phone,
+                    e.Email,
+                    e.Salary,
+                    BillId = e.SalaryBill == null ? null : (int?)e.SalaryBill.Id,
+                    BillAmount = e.SalaryBill == null ? null : (decimal?)e.SalaryBill.Amount,
+                    BillType = e.SalaryBill == null ? null : e.SalaryBill.Type,
+                    BillDate = e.SalaryBill == null ? null : (DateTime?)e.SalaryBill.AssignDate,
+                    BillStatus = e.SalaryBill == null ? null : (e.SalaryBill.Status ? "已处理" : "未处理"),
+                    e.KPI,
+                    e.Department
+                })
+                .FirstOrDefaultAsync();
+
+            if (employee == null)
+                return NotFound(new { message = "员工信息未找到" });
+
+            return Ok(new[] { employee });
+        }
+
+        [HttpPost("details-train")]
+        public async Task<IActionResult> GetTrainDetails([FromBody] IdRequest request)
+        {
+            var training = await _context.Drills
+                .Where(d => d.Id == request.Id)
+                .Select(d => new
+                {
+                    d.Id,
+                    TeacherId = d.Teacher == null ? null : (int?)d.Teacher.Id,  // Teacher 可能为 null
+                    Teacher = d.Teacher == null ? "未指定" : d.Teacher.Name,   // 如果为 null，则返回 "未指定"
+                    DateTime = d.StartTime,
+                    EndTime = d.EndTime,
+                })
+                .FirstOrDefaultAsync();
+
+            if (training == null)
+                return NotFound(new { message = "培训信息未找到" });
+
+            return Ok(new[] { training });
+        }
+
+
+
+    }
+    public class IdRequest
+    {
+        public int Id { get; set; }
     }
 
     public class RecruitForm
