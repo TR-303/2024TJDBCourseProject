@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FilmCompanyManagement.Server.EntityFrame;
+using FilmCompanyManagement.Server.EntityFrame.Models;
 
 namespace FilmCompanyManagement.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
+    [ApiController, Route("api/worker")]
     public class WorkerController : ControllerBase
     {
 
@@ -16,22 +16,17 @@ namespace FilmCompanyManagement.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> userdata(workerRequest request)
+        [HttpPost("expense")]
+        public async Task<ActionResult> InsertExpense(expenseRequest request)
         {
-            var user = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == request.id);
-            if (user == null)
-                return BadRequest(0);
-            return Ok(user.Name);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> expense(expenseRequest request)
-        {
-            var user = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == request.id);
-            if (user == null)
-                return BadRequest(0);
-            return Ok(user.Name);
+            var bill = new Bill
+            {
+                AssignDate = Convert.ToDateTime(request.date),
+                Amount = request.amount
+            };
+            _context.Bills.Add(bill);
+            await _context.SaveChangesAsync();
+            return Ok(1);
         }
     }
 
@@ -46,6 +41,5 @@ namespace FilmCompanyManagement.Controllers
         public string date { get; set; }
         public string description { get; set; }
         public decimal amount { get; set; }
-    }
     }
 }
