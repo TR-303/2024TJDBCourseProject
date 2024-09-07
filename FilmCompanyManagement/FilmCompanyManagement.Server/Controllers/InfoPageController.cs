@@ -20,36 +20,36 @@ namespace FilmCompanyManagement.Controllers
 
         //通知板块
         [HttpPost]
-        public async Task<ActionResult> GetFundingApplications(thisRequest userName)
+        public async Task<ActionResult> GetFundingApplications(thisRequest requestBody)
         {//worker:报销申请
-            return Ok(await _context.FundingApplications.Include(fa => fa.Employee).Include(fa => fa.Bill).Where(fa => fa.Employee.UserName == userName.id).ToListAsync());
+            return Ok(await _context.FundingApplications.Include(fa => fa.Employee).Include(fa => fa.Bill).Where(fa => fa.Employee.UserName == requestBody.userName).ToListAsync());
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetEquipments(thisRequest userName)
+        public async Task<ActionResult> GetEquipments(thisRequest requestBody)
         {//worker:设备购买
-            var unfinishedProjects = await _context.PhotoEquipments.Include(p => p.Employee).Include(p => p.Bill).Where(p => p.Employee.UserName == userName.id).ToListAsync();
+            var unfinishedProjects = await _context.PhotoEquipments.Include(p => p.Employee).Include(p => p.Bill).Where(p => p.Employee.UserName == requestBody.userName).ToListAsync();
             return Ok(unfinishedProjects);
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetEquipmentsRepairs(thisRequest userName)
+        public async Task<ActionResult> GetEquipmentsRepairs(thisRequest requestBody)
         {//worker:设备维修
-            var unfinishedProjects = await _context.EquipmentRepairs.Include(p => p.Employee).Include(p => p.PhotoEquipment).Include(p => p.Bill).Where(p => p.Employee.UserName == userName.id).ToListAsync();
+            var unfinishedProjects = await _context.EquipmentRepairs.Include(p => p.Employee).Include(p => p.PhotoEquipment).Include(p => p.Bill).Where(p => p.Employee.UserName == requestBody.userName).ToListAsync();
             return Ok(unfinishedProjects);
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetUnfinishedDrills(thisRequest userName)
+        public async Task<ActionResult> GetUnfinishedDrills(thisRequest requestBody)
         {//worker:培训通知
-            var user = await _context.Employees.Where(d => d.UserName == userName.id).SingleAsync();
+            var user = await _context.Employees.Where(d => d.UserName == requestBody.userName).SingleAsync();
             return Ok(await _context.Drills.Include(d => d.Students).Include(d => d.Teacher).Include(d => d.Students).Where(d => DateTime.Now < d.EndTime && d.Students.Contains(user)).ToListAsync());
         }
 
         [HttpPost]
-        public async Task<ActionResult> BossGetFundingApplications(thisRequest userName)
+        public async Task<ActionResult> BossGetFundingApplications(thisRequest requestBody)
         {//boss:报销申请
-            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName.id).ToListAsync();
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == requestBody.userName).ToListAsync();
             var fundingApplications = new List<FundingApplication>();
             foreach (var worker in workers)
                 fundingApplications.AddRange(await _context.FundingApplications.Include(fa => fa.Employee).Include(fa => fa.Bill).Where(fa => fa.Employee == worker).ToListAsync());
@@ -57,9 +57,9 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> BossGetEquipments(thisRequest userName)
+        public async Task<ActionResult> BossGetEquipments(thisRequest requestBody)
         {//boss:设备购买
-            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName.id).ToListAsync();
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == requestBody.userName).ToListAsync();
             var photoEquipments = new List<PhotoEquipment>();
             foreach (var worker in workers)
                 photoEquipments.AddRange(await _context.PhotoEquipments.Include(pe => pe.Employee).Include(pe => pe.Bill).Where(pe => pe.Employee == worker).ToListAsync());
@@ -67,9 +67,9 @@ namespace FilmCompanyManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> BossGetEquipmentsRepairs(thisRequest userName)
+        public async Task<ActionResult> BossGetEquipmentsRepairs(thisRequest requestBody)
         {//boss:设备维修
-            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == userName.id).ToListAsync();
+            var workers = await _context.Employees.Include(e => e.Department).Include(e => e.Department.Leader).Where(e => e.Department.Leader.UserName == requestBody.userName).ToListAsync();
             var equipmentRepairs = new List<EquipmentRepair>();
             foreach (var worker in workers)
                 equipmentRepairs.AddRange(await _context.EquipmentRepairs.Include(er => er.Employee).Include(er => er.Bill).Include(er => er.PhotoEquipment).Where(pe => pe.Employee == worker).ToListAsync());
@@ -104,23 +104,23 @@ namespace FilmCompanyManagement.Controllers
 
         //考勤板块
         [HttpPost]
-        public async Task<ActionResult> IsAttended(thisRequest userName)
+        public async Task<ActionResult> IsAttended(thisRequest requestBody)
         {
-            return Ok(await _context.Attendances.Include(a => a.Employee).Where(a => a.Employee.UserName == userName.id ).FirstOrDefaultAsync() == null);
+            return Ok(await _context.Attendances.Include(a => a.Employee).Where(a => a.Employee.UserName == requestBody.userName ).FirstOrDefaultAsync() == null);
         }
 
         [HttpPost]
-        public async Task<ActionResult> InsertAttendenceRecord(thisRequest userName, int state)
+        public async Task<ActionResult> InsertAttendenceRecord(stateRequest requestBody)
         {
-            var user = await _context.Employees.Where(e => e.UserName == userName.id).SingleAsync();
-            if (await _context.Attendances.Include(a => a.Employee).FirstOrDefaultAsync(a => a.Employee.UserName == userName.id && a.Date == DateTime.Now) == null)
+            var user = await _context.Employees.Where(e => e.UserName == requestBody.userName).SingleAsync();
+            if (await _context.Attendances.Include(a => a.Employee).FirstOrDefaultAsync(a => a.Employee.UserName == requestBody.userName && a.Date == DateTime.Now) == null)
             {
                 await _context.Attendances.AddAsync(new Attendance
                 {
                     Date = DateTime.Now,
                     Employee = user,
-                    CheckInTime = state == 1 ? DateTime.Now : null,
-                    CheckOutTime = state == 0 ? DateTime.Now : null
+                    CheckInTime = requestBody.state == 1 ? DateTime.Now : null,
+                    CheckOutTime = requestBody.state == 0 ? DateTime.Now : null
                 });
             }
             await _context.SaveChangesAsync();
@@ -129,20 +129,26 @@ namespace FilmCompanyManagement.Controllers
 
         //绩效板块
         [HttpPost]
-        public async Task<ActionResult> GetKPIs(thisRequest userName)
+        public async Task<ActionResult> GetKPIs(thisRequest requestBody)
         {
             var KPIs = await _context.KPI.Include(k => k.Project).Include(k => k.Project.Manager).
-                Where(k => k.Project.Manager.UserName == userName.id).ToListAsync();
+                Where(k => k.Project.Manager.UserName == requestBody.userName).ToListAsync();
             if (KPIs.Count == 0)
                 return Ok();
             var latestDate = KPIs.Max<KPI>(k => (long)k.Date.Subtract(new DateTime(1970, 1, 1)).TotalDays);
             var latestKPI = await _context.KPI.Include(k => k.Project).Include(k => k.Project.Manager).Include(k => k.Project.Bill).Include(k => k.Project.Customer).Include(k => k.Project.Employees).
-                Where(k => k.Project.Manager.UserName == userName.id && (long)k.Date.Subtract(new DateTime(1970, 1, 1)).TotalDays == latestDate).SingleAsync();
+                Where(k => k.Project.Manager.UserName == requestBody.userName && (long)k.Date.Subtract(new DateTime(1970, 1, 1)).TotalDays == latestDate).SingleAsync();
             return Ok(latestKPI.Project);
         }
         public class thisRequest
         {
-            public string id { get; set; }
+            public string userName { get; set; }
+        }
+
+        public class stateRequest
+        {
+            public string userName { get; set; }
+            public int state { get; set; }
         }
     }
 }
