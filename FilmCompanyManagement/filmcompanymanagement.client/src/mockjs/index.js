@@ -1172,7 +1172,6 @@ let investList = [
 
         //customer
         customerid: 'CUST123456', // 客户方ID——PK
-        customerType: '企业', // 客户类型
         customerName: '蓝天科技', // 客户名称
         customerBusinessType: 'IT服务', // 业务类型
         customerPhone: '12345678901', // 联系电话
@@ -1189,7 +1188,6 @@ let investList = [
       {
         id: 'BILL123460',
         customerid: 'CUST123460',
-        customerType: '企业',
         customerName: '蓝海科技',
         customerBusinessType: 'IT服务',
         customerPhone: '12345678905',
@@ -1204,7 +1202,6 @@ let investList = [
     {
         id: 'BILL123461',
         customerid: 'CUST123461',
-        customerType: '政府',
         customerName: '城市发展局',
         customerBusinessType: '城市规划',
         customerPhone: '12345678906',
@@ -1219,7 +1216,6 @@ let investList = [
     {
         id: 'BILL123462',
         customerid: 'CUST123462',
-        customerType: '个人',
         customerName: '王晓明',
         customerBusinessType: '教育咨询',
         customerPhone: '12345678907',
@@ -1274,7 +1270,6 @@ let buyList = [
 
         //customer
         customerid: 'CUST123456', // 客户方ID——PK
-        customerType: '企业', // 客户类型
         customerName: '蓝天科技', // 客户名称
         customerBusinessType: 'IT服务', // 业务类型
         customerPhone: '12345678901', // 联系电话
@@ -1305,7 +1300,6 @@ let buyList = [
         filestatus: '已上传',
     
         customerid: 'CUST123457',
-        customerType: '政府',
         customerName: '城市发展部',
         customerBusinessType: '城市规划',
         customerPhone: '12345678902',
@@ -1334,7 +1328,6 @@ let buyList = [
         filestatus: '未上传',
     
         customerid: 'CUST123458',
-        customerType: '个人',
         customerName: '周梅',
         customerBusinessType: '市场分析',
         customerPhone: '12345678903',
@@ -1381,7 +1374,6 @@ let leaseList = [
 
         //customer
         customerid: 'CUST123456', // 客户方ID——PK
-        customerType: '企业', // 客户类型
         customerName: '蓝天科技', // 客户名称
         customerBusinessType: 'IT服务', // 业务类型
         customerPhone: '12345678901', // 联系电话
@@ -1401,7 +1393,6 @@ let leaseList = [
         id: 'ORD789013',
         employee: '员工002',
         customerid: 'CUST123457',
-        customerType: '政府',
         customerName: '城市发展局',
         customerBusinessType: '公共管理',
         customerPhone: '12345678902',
@@ -1418,7 +1409,6 @@ let leaseList = [
         id: 'ORD789014',
         employee: '员工003',
         customerid: 'CUST123458',
-        customerType: '个人',
         customerName: '李华',
         customerBusinessType: '自由职业',
         customerPhone: '12345678903',
@@ -1435,7 +1425,6 @@ let leaseList = [
         id: 'ORD789015',
         employee: '员工004',
         customerid: 'CUST123459',
-        customerType: '企业',
         customerName: '绿源能源',
         customerBusinessType: '可再生能源',
         customerPhone: '12345678904',
@@ -1452,7 +1441,6 @@ let leaseList = [
         id: 'ORD789016',
         employee: '员工005',
         customerid: 'CUST123460',
-        customerType: '个人',
         customerName: '张伟',
         customerBusinessType: '写作与出版',
         customerPhone: '12345678905',
@@ -1517,7 +1505,6 @@ let projectList = [
 
         //customer
         customerid: 'CUST123456', // 客户方ID——PK
-        customerType: '企业', // 客户类型
         customerName: '蓝天科技', // 客户名称
         customerBusinessType: 'IT服务', // 业务类型
         customerPhone: '12345678901', // 联系电话
@@ -1554,7 +1541,6 @@ let projectList = [
         fileUploadDate: '2024-09-07',
         fileStatus: '已上传',
         customerid: 'CUST123457',
-        customerType: '政府',
         customerName: '市政建设部',
         customerBusinessType: '城市建设',
         customerPhone: '12345678902',
@@ -1589,7 +1575,6 @@ let projectList = [
         fileUploadDate: '2024-09-08',
         fileStatus: '未上传',
         customerid: 'CUST123458',
-        customerType: '个人',
         customerName: '孙小姐',
         customerBusinessType: '咨询服务',
         customerPhone: '12345678903',
@@ -1626,7 +1611,6 @@ let projectList = [
         fileUploadDate: '2024-09-09',
         fileStatus: '已上传',
         customerid: 'CUST123459',
-        customerType: '企业',
         customerName: '红星制造',
         customerBusinessType: '机械制造',
         customerPhone: '12345678904',

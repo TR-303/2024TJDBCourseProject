@@ -78,13 +78,6 @@
                     <el-form-item label="投资编号">
                         <el-input v-model="form.id" disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="客户类型">
-                        <el-select v-model="form.customerType" placeholder="请选择客户类型">
-                            <el-option label="企业" value="企业"></el-option>
-                            <el-option label="政府" value="政府"></el-option>
-                            <el-option label="个人" value="个人"></el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item label="客户名称">
                         <el-input v-model="form.customerName"></el-input>
                     </el-form-item>
@@ -201,13 +194,6 @@
                                 <el-option label="上传失败" value="上传失败"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="客户类型">
-                            <el-select v-model="form.customerType" placeholder="请选择客户类型">
-                                <el-option label="企业" value="企业"></el-option>
-                                <el-option label="政府" value="政府"></el-option>
-                                <el-option label="个人" value="个人"></el-option>
-                            </el-select>
-                        </el-form-item>
                         <el-form-item label="客户名称">
                             <el-input v-model="form.customerName"></el-input>
                         </el-form-item>
@@ -299,13 +285,6 @@
                             </el-option>
                         </el-select>
                     </el-form-item> 
-                    <el-form-item label="客户类型">
-                        <el-select v-model="form.customerType" placeholder="请选择客户类型">
-                            <el-option label="企业" value="企业"></el-option>
-                            <el-option label="政府" value="政府"></el-option>
-                            <el-option label="个人" value="个人"></el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item label="客户名称">
                         <el-input v-model="form.customerName"></el-input>
                     </el-form-item>
@@ -399,13 +378,6 @@
                     </el-form-item> 
                     <el-collapse v-model="activeNames" @change="handleChange">
                         <el-collapse-item title="客户" name="1">
-                            <el-form-item label="客户类型">
-                                <el-select v-model="form.customerType" placeholder="请选择客户类型">
-                                    <el-option label="企业" value="企业"></el-option>
-                                    <el-option label="政府" value="政府"></el-option>
-                                    <el-option label="个人" value="个人"></el-option>
-                                </el-select>
-                            </el-form-item>
                             <el-form-item label="客户名称">
                                 <el-input v-model="form.customerName"></el-input>
                             </el-form-item>
@@ -660,7 +632,7 @@
                 let path;
                 switch(this.businessID){
                     case '0':
-                        if (!this.form.id || !this.form.customerid || !this.form.customerType || !this.form.customerName || 
+                        if (!this.form.id || !this.form.customerid || !this.form.customerName || 
                             !this.form.customerBusinessType || !this.form.customerPhone || !this.form.customerEmail || 
                             !this.form.customerAddress || !this.form.billId || !this.form.billAmount || 
                             !this.form.billType || !this.form.billDate || !this.form.billStatus) {
@@ -672,16 +644,16 @@
                         if (!this.form.id || !this.form.type || !this.form.fileId || !this.form.fileName || 
                             !this.form.fileType || !this.form.fileContentType || !this.form.fileSize || 
                             !this.form.filePath || !this.form.fileUploadDate || !this.form.filestatus || 
-                            !this.form.customerid || !this.form.customerType || !this.form.customerName || 
-                            !this.form.customerBusinessType || !this.form.customerPhone || !this.form.customerEmail || 
-                            !this.form.customerAddress || !this.form.billId || !this.form.billAmount || 
-                            !this.form.billType || !this.form.billDate || !this.form.billStatus || !this.form.status) {
+                            !this.form.customerid || !this.form.customerName || !this.form.customerBusinessType ||
+                            !this.form.customerPhone || !this.form.customerEmail || !this.form.customerAddress || 
+                            !this.form.billId || !this.form.billAmount || this.form.billType || !this.form.billDate || 
+                            !this.form.billStatus || !this.form.status) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
                         path='/api/BusinessManagement/submit-buy-form';break;
                     case '2':
-                        if (!this.form.id || !this.form.employee || !this.form.customerid || !this.form.customerType || 
+                        if (!this.form.id || !this.form.employee || !this.form.customerid || 
                             !this.form.customerName || !this.form.customerBusinessType || !this.form.customerPhone || 
                             !this.form.customerEmail || !this.form.customerAddress || !this.form.billId || 
                             !this.form.billAmount || !this.form.billType || !this.form.billDate || !this.form.billStatus || 
@@ -694,7 +666,7 @@
                         if (!this.form.id || !this.form.manager || !this.form.fileId || !this.form.fileName || 
                             !this.form.fileType || !this.form.fileContentType || !this.form.fileSize || 
                             !this.form.filePath || !this.form.fileUploadDate || !this.form.fileStatus || 
-                            !this.form.customerid || !this.form.customerType || !this.form.customerName || 
+                            !this.form.customerid || !this.form.customerName || 
                             !this.form.customerBusinessType || !this.form.customerPhone || !this.form.customerEmail || 
                             !this.form.customerAddress || !this.form.billId || !this.form.billAmount || 
                             !this.form.billType || !this.form.billDate || !this.form.billStatus || 
