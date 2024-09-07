@@ -98,7 +98,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <el-input v-model="form.customerPhone"></el-input>
+                        <el-input-number v-model="form.customerPhone" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="电子邮箱">
                         <el-input v-model="form.customerEmail"></el-input>
@@ -110,7 +110,7 @@
                         <el-input v-model="form.billId" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="金额">
-                        <el-input v-model="form.billAmount"></el-input>
+                        <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="账单类型">
                         <el-select v-model="form.billType" placeholder="请选择部门">
@@ -174,10 +174,19 @@
                             <el-input v-model="form.fileName"></el-input>
                         </el-form-item>
                         <el-form-item label="文件类型">
-                            <el-input v-model="form.fileType"></el-input>
+                            <el-select v-model="form.fileType" placeholder="请选账单状态">
+                                <el-option label="图片" value="图片"></el-option>
+                                <el-option label="视频" value="视频"></el-option>
+                                <el-option label="文档" value="文档"></el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="内容类型">
-                            <el-input v-model="form.fileContentType"></el-input>
+                            <el-select v-model="form.fileContentType" placeholder="请选账单状态">
+                                <el-option label="项目报告" value="项目报告"></el-option>
+                                <el-option label="成片" value="成片"></el-option>
+                                <el-option label="项目文档" value="项目文档"></el-option>
+                                <el-option label="会议记录" value="会议记录"></el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="文件大小">
                             <el-input-number v-model="form.fileSize"></el-input-number>
@@ -206,10 +215,13 @@
                             <el-input v-model="form.customerName"></el-input>
                         </el-form-item>
                         <el-form-item label="业务类型">
-                            <el-input v-model="form.customerBusinessType"></el-input>
+                            <el-select v-model="form.customerBusinessType" placeholder="请选账单状态">
+                                <el-option label="短期租赁" value="短期租赁"></el-option>
+                                <el-option label="长期租赁" value="长期租赁"></el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="联系电话">
-                            <el-input v-model="form.customerPhone"></el-input>
+                            <el-input-number v-model="form.customerPhone" :controls="false"></el-input-number>
                         </el-form-item>
                         <el-form-item label="电子邮箱">
                             <el-input v-model="form.customerEmail"></el-input>
@@ -221,7 +233,7 @@
                             <el-input v-model="form.billId" disabled></el-input>
                         </el-form-item>
                         <el-form-item label="金额">
-                            <el-input v-model="form.billAmount"></el-input>
+                            <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                         </el-form-item>
                         <el-form-item label="账单类型">
                             <el-select v-model="form.billType" placeholder="请选择部门">
@@ -289,7 +301,7 @@
                                 </span>
                             </el-option>
                         </el-select>
-                    </el-form-item>
+                    </el-form-item> 
                     <el-form-item label="客户类型">
                         <el-select v-model="form.customerType" placeholder="请选择客户类型">
                             <el-option label="企业" value="企业"></el-option>
@@ -307,7 +319,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <el-input v-model="form.customerPhone"></el-input>
+                        <el-input-number v-model="form.customerPhone" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="电子邮箱">
                         <el-input v-model="form.customerEmail"></el-input>
@@ -319,7 +331,7 @@
                         <el-input v-model="form.billId" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="金额">
-                        <el-input v-model="form.billAmount"></el-input>
+                        <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="账单类型">
                         <el-select v-model="form.billType" placeholder="请选择部门">
@@ -387,7 +399,7 @@
                                 </span>
                             </el-option>
                         </el-select>
-                    </el-form-item>
+                    </el-form-item> 
                     <el-collapse v-model="activeNames" @change="handleChange">
                         <el-collapse-item title="客户" name="1">
                             <el-form-item label="客户类型">
@@ -408,7 +420,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="联系电话">
-                                <el-input v-model="form.customerPhone"></el-input>
+                                <el-input-number v-model="form.customerPhone" :controls="false"></el-input-number>
                             </el-form-item>
                             <el-form-item label="电子邮箱">
                                 <el-input v-model="form.customerEmail"></el-input>
@@ -422,7 +434,7 @@
                                 <el-input v-model="form.billId" disabled></el-input>
                             </el-form-item>
                             <el-form-item label="金额">
-                                <el-input v-model="form.billAmount"></el-input>
+                                <el-input-number v-model="form.billAmount" :controls="false"></el-input-number>
                             </el-form-item>
                             <el-form-item label="账单类型">
                                 <el-select v-model="form.billType" placeholder="请选择部门">
@@ -444,46 +456,62 @@
                             <el-form-item label="项目员工">
                                 <el-table :data="form.employees" style="width: 100%">
                                     <el-table-column label="编号" width="180">
-                                        <template v-slot="scope">
-                                            <el-select v-model="scope.row.id" placeholder="请选择职位" filterable clearable @change="updateEmployee(scope.row, scope.$index)">
-                                                <el-option v-for="employee in overview_employee_list" :key="employee.id" :label="employee.id" :value="employee.id">
-                                                    <span style="display: flex; justify-content: space-between; width: 100%;">
-                                                        <span>{{ employee.id }}</span>
-                                                        <span>{{ employee.name }}</span>
-                                                    </span>
-                                                </el-option>
-                                            </el-select>
-                                        </template>
+                                      <template v-slot="scope">
+                                        <el-select v-model="scope.row.id" placeholder="请选择职位" filterable clearable @change="updateEmployee(scope.row, scope.$index)">
+                                            <el-option v-for="employee in overview_employee_list" :key="employee.id" :label="employee.id" :value="employee.id">
+                                                <span style="display: flex; justify-content: space-between; width: 100%;">
+                                                    <span>{{ employee.id }}</span>
+                                                    <span>{{ employee.name }}</span>
+                                                </span>
+                                            </el-option>
+                                        </el-select>
+                                      </template>
                                     </el-table-column>
                                     <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-                                    <el-table-column prop="right" label="操作">
+                                    <el-table-column prop="right" label="操作" >
                                         <template v-slot="scope">
                                             <el-button type="danger" @click="removeEmployee(scope.$index)">删除</el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
-                                <el-button type="primary" @click="addEmployee">添加人员</el-button>
-                            </el-form-item>
+                              <el-button type="primary" @click="addEmployee">添加人员</el-button>
+                            </el-form-item>   
                         </el-collapse-item>
-                        <el-form-item label="绩效评定时间">
-                            <el-date-picker v-model="form.kpiDate" type="date" placeholder="选择日期"></el-date-picker>
-                        </el-form-item>
-                        <div class="block">
-                            <span class="demonstration" style="margin-left: 25px;">评定结果打分</span>
-                            <el-rate v-model="form.result" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" style="margin-left: 25px;"></el-rate>
-                        </div>
-                        <el-form-item label="评定者">
-                            <el-input v-model="form.judger"></el-input>
-                        </el-form-item>
+                    <el-form-item label="绩效评定时间">
+                        <el-date-picker v-model="form.kpiDate" type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <div class="block">
+                        <span class="demonstration" style="margin-left: 25px;">评定结果打分</span>
+                         <el-rate v-model="form.result" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" style="margin-left: 25px;"></el-rate>
+                    </div>
+                    <el-form-item label="评定者">
+                        <el-select v-model="form.judger" placeholder="请选择员工" filterable clearable>
+                            <el-option v-for="employee in overview_employee_list" :key="employee.id" :label="employee.name" :value="employee.id">
+                                <span style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>{{ employee.name }}</span>
+                                    <span>{{ employee.id }}</span>
+                                </span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item> 
                         <el-collapse-item title="文件" name="4">
                             <el-form-item label="文件名">
                                 <el-input v-model="form.fileName"></el-input>
                             </el-form-item>
                             <el-form-item label="文件类型">
-                                <el-input v-model="form.fileType"></el-input>
+                                <el-select v-model="form.fileType" placeholder="请选账单状态">
+                                    <el-option label="图片" value="图片"></el-option>
+                                    <el-option label="视频" value="视频"></el-option>
+                                    <el-option label="文档" value="文档"></el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item label="内容类型">
-                                <el-input v-model="form.fileContentType"></el-input>
+                                <el-select v-model="form.fileContentType" placeholder="请选账单状态">
+                                    <el-option label="项目报告" value="项目报告"></el-option>
+                                    <el-option label="成片" value="成片"></el-option>
+                                    <el-option label="项目文档" value="项目文档"></el-option>
+                                    <el-option label="会议记录" value="会议记录"></el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item label="文件大小">
                                 <el-input-number v-model="form.fileSize"></el-input-number>
@@ -501,7 +529,7 @@
                                 </el-select>
                             </el-form-item>
                         </el-collapse-item>
-                    </el-collapse>
+                    </el-collapse>                   
                     <el-form-item label="项目状态">
                         <el-select v-model="form.status" placeholder="请选择订单状态">
                             <el-option label="进行中" value="进行中"></el-option>
@@ -532,10 +560,9 @@
                 name: '', // 获取登入姓名
                 dialogVisible: false,
                 businessID: '0',
-                businesses_list: [],
-                overview_employee_list: [],
-                template_form: { id: '0', billId: '0', fileId: '0', employees: [''] },
-                form: { id: '' },
+                businesses_list:[],
+                overview_employee_list:[],
+                form:           { id: '' },
             }
         },
         computed: {
@@ -590,14 +617,14 @@
 
             //表单用
             addEmployee() {
-                this.form.employees.push({ id: '', name: '' }); // 添加一个新的空行
+                this.form.employees.push({id:'', name:''}); // 添加一个新的空行              
             },
             updateEmployee(value, index) {
                 this.form.employees[index] = value; // 更新学生信息
-                if (this.form.employees[index].id) {
+                if(this.form.employees[index].id){
                     value.name = this.overview_employee_list.find(emp => emp.id === this.form.employees[index].id).name;
                 }
-                else {
+                else{
                     value.name = '';
                 }
             },
@@ -605,8 +632,8 @@
                 this.form.employees.splice(index, 1); // 删除指定索引的学生
             },
             //获取信息
-            gitEmployNameList() {
-                axios.get('/api/BusinessManagement/get-overview')
+            gitEmployNameList(){
+                axios.get('/api/get-overview')
                     .then(response => {
                         this.overview_employee_list = response.data.employee_list || [];
                     })
@@ -614,7 +641,7 @@
                         console.error('Error fetching:', error);
                     });
             },
-            getIncome() {
+            getIncome(){
                 let path;
                 switch (this.businessID) {
                     case '0': path = '/api/BusinessManagement/get-invest'; break;
@@ -633,11 +660,51 @@
             //提交表单
             submitForm() {
                 let path;
-                switch (this.businessID) {
-                    case '0': path = '/api/BusinessManagement/submit-invest-form'; break;
-                    case '1': path = '/api/BusinessManagement/submit-buy-form'; break;
-                    case '2': path = '/api/BusinessManagement/submit-lease-form'; break;
-                    case '3': path = '/api/BusinessManagement/submit-project-form'; break;
+                switch(this.businessID){
+                    case '0':
+                        if (!this.form.id || !this.form.customerid || !this.form.customerType || !this.form.customerName || 
+                            !this.form.customerBusinessType || !this.form.customerPhone || !this.form.customerEmail || 
+                            !this.form.customerAddress || !this.form.billId || !this.form.billAmount || 
+                            !this.form.billType || !this.form.billDate || !this.form.billStatus) {
+                            alert("请完成所有内容的填写再提交！");
+                            return;
+                        }
+                        path='/api/submit-invest-form';break;
+                    case '1':
+                        if (!this.form.id || !this.form.type || !this.form.fileId || !this.form.fileName || 
+                            !this.form.fileType || !this.form.fileContentType || !this.form.fileSize || 
+                            !this.form.filePath || !this.form.fileUploadDate || !this.form.filestatus || 
+                            !this.form.customerid || !this.form.customerType || !this.form.customerName || 
+                            !this.form.customerBusinessType || !this.form.customerPhone || !this.form.customerEmail || 
+                            !this.form.customerAddress || !this.form.billId || !this.form.billAmount || 
+                            !this.form.billType || !this.form.billDate || !this.form.billStatus || !this.form.status) {
+                            alert("请完成所有内容的填写再提交！");
+                            return;
+                        }
+                        path='/api/submit-buy-form';break;
+                    case '2':
+                        if (!this.form.id || !this.form.employee || !this.form.customerid || !this.form.customerType || 
+                            !this.form.customerName || !this.form.customerBusinessType || !this.form.customerPhone || 
+                            !this.form.customerEmail || !this.form.customerAddress || !this.form.billId || 
+                            !this.form.billAmount || !this.form.billType || !this.form.billDate || !this.form.billStatus || 
+                            !this.form.status) {
+                            alert("请完成所有内容的填写再提交！");
+                            return;
+                        }
+                        path='/api/submit-lease-form';break;
+                    case '3':
+                        if (!this.form.id || !this.form.manager || !this.form.fileId || !this.form.fileName || 
+                            !this.form.fileType || !this.form.fileContentType || !this.form.fileSize || 
+                            !this.form.filePath || !this.form.fileUploadDate || !this.form.fileStatus || 
+                            !this.form.customerid || !this.form.customerType || !this.form.customerName || 
+                            !this.form.customerBusinessType || !this.form.customerPhone || !this.form.customerEmail || 
+                            !this.form.customerAddress || !this.form.billId || !this.form.billAmount || 
+                            !this.form.billType || !this.form.billDate || !this.form.billStatus || 
+                            !this.form.status || !this.form.employees[0].id) {
+                            alert("请完成所有内容的填写再提交！");
+                            return;
+                        }
+                        path='/api/submit-project-form';break;
                 }
                 axios.post(path, this.form)
                     .then(response => {
@@ -659,8 +726,8 @@
                 getIncome();
             },
             //新建
-            createNew() {
-                this.form = this.template_form;
+            createNew(){
+                this.form = {id:'0', customerid: '0', billId:'0', billDate: '2024-09-08', fileId:'0', employees:[{id: '',name: ''}] };
                 this.dialogVisible = true;
             },
             //删除
@@ -831,16 +898,17 @@
     }
 
     .block {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
     }
 
-        .block .demonstration {
-            margin-right: 10px; /* 为标签和评分组件之间添加一些间距 */
-        }
+    .block .demonstration {
+      margin-right: 10px; /* 为标签和评分组件之间添加一些间距 */
+    }
 
-        .block .el-rate {
-            margin-left: 20px; /* 向右移动 20px */
-        }
+    .block .el-rate {
+      margin-left: 20px; /* 向右移动 20px */
+    }
+
 </style>

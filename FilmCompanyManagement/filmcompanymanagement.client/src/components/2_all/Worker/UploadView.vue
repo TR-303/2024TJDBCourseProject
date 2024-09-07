@@ -118,7 +118,7 @@
             const route = useRoute();
             const router = useRouter();
 
-            const userID = this.$route.query.id;
+            const userID = route.query.id;
 
             onMounted(async () => {
                 try {

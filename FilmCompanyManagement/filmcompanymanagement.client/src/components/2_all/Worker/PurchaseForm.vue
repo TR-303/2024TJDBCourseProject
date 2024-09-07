@@ -18,7 +18,8 @@
 
 <script>
     import { ref } from 'vue'
-	import axios from 'axios';
+    import axios from 'axios';
+    import { useRoute, useRouter } from 'vue-router';
 
     export default {
         name: 'PurchaseForm',
@@ -29,7 +30,8 @@
                 amount: 0
             })
 
-            const userID = this.$route.query.id;
+            const route = useRoute();
+            const userID = route.query.id;
 
             const inputAmount = ref('')
 
