@@ -89,10 +89,10 @@
                         <el-input v-model="form.positionTitle"></el-input>
                     </el-form-item>
                     <el-form-item label="工资">
-                        <el-input v-model="form.salary"></el-input>
+                        <el-input-number v-model="form.salary" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <el-input v-model="form.phone"></el-input>
+                        <el-input-number v-model="form.phone" :controls="false"></el-input-number>
                     </el-form-item>
                     <el-form-item label="电子邮件">
                         <el-input v-model="form.email"></el-input>
@@ -182,7 +182,7 @@
                         <el-date-picker v-model="form.internshipEndDate" type="date" placeholder="选择日期"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="备注信息">
-                        <el-input v-model="form.remarks"></el-input>
+                        <el-input type="textarea" v-model="form.remarks"></el-input>
                     </el-form-item>
                 </el-form>
 
@@ -228,8 +228,8 @@
                         <el-form-item label="职位">
                             <el-input v-model="form.position"></el-input>
                         </el-form-item>
-                        <el-form-item label="电话">
-                            <el-input v-model="form.phone"></el-input>
+                        <el-form-item label="联系电话">
+                            <el-input-number v-model="form.phone" :controls="false"></el-input-number>
                         </el-form-item>
                         <el-form-item label="邮箱">
                             <el-input v-model="form.email"></el-input>
@@ -415,7 +415,6 @@
                 employeeID: '2',
                 employee_list:[],
                 overview_employee_list:[],
-                template_form:  { id:'0', billId:'0', fileId:'0', employees:[{id: '',name: ''}] },
                 form:           { id: '' },
             }
         },
@@ -526,15 +525,36 @@
                 let path;
                 switch(this.employeeID){
                     case '0':
+                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary || 
+                            !this.form.phone || !this.form.email || !this.form.interviewer || !this.form.interviewerStage || !this.form.state) {
+                            alert("请完成所有内容的填写再提交！");
+                            return;
+                        }
                         path='/api/submit-invite-form';
                         break;
                     case '1':
+                        if (!this.form.advicerId || !this.form.advicer || !this.form.internId || !this.form.intern || 
+                            !this.form.internshipStartDate || !this.form.internshipEndDate || !this.form.remarks) {
+                            alert("请完成所有内容的填写再提交！");
+                            return;
+                        }
                         path='/api/submit-intern-form';
                         break;
                     case '2':
+                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
+                            !this.form.phone || !this.form.email || !this.form.billId || !this.form.billAmount || 
+                            !this.form.billType || !this.form.billDate || !this.form.billStatus || 
+                            !this.form.department || !this.form.kpi) {
+                            alert("请完成所有内容的填写再提交！");
+                            return;
+                        }
                         path='/api/submit-overview-form';
                         break;
                     case '3':
+                        if (!this.form.id || !this.form.teacher || !this.form.dateTime || !this.form.endTime ||  !this.form.employees[0].id) {
+                            alert("请完成所有内容的填写再提交！");
+                            return;
+                        }
                         path='/api/submit-train-form';
                         break;
                 }
@@ -559,7 +579,7 @@
             },
             //新建
             createNew(){
-                this.form = this.template_form;
+                this.form = {id:'0', customerid: '0', billId:'0', billDate: '2024-09-08', fileId:'0', employees:[{id: '',name: ''}] };
                 this.dialogVisible = true;
             },
             //删除

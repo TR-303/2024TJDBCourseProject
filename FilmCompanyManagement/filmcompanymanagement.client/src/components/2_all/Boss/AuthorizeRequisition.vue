@@ -84,16 +84,22 @@
                     <el-input v-model="form.billId" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="金额">
-                    <el-input v-model="form.billAmount" disabled></el-input>
+                    <el-input-number v-model="form.billAmount" :controls="false" disabled></el-input-number>
                 </el-form-item>
                 <el-form-item label="账单类型">
-                    <el-input v-model="form.billType" disabled></el-input>
+                    <el-select v-model="form.billType" placeholder="请选择部门" disabled>
+                        <el-option label="存款" value="存款"></el-option>
+                        <el-option label="拨款" value="拨款"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="账单日期">
-                    <el-date-picker v-model="form.billDate" type="date" placeholder="选择日期" disabled></el-date-picker>
+                    <el-date-picker v-model="form.billDate" type="date" disabled></el-date-picker>
                 </el-form-item>
                 <el-form-item label="账单状态">
-                    <el-input v-model="form.billStatus" disabled></el-input>
+                    <el-select v-model="form.billStatus" placeholder="请选择部门" disabled>
+                        <el-option label="发起" value="发起"></el-option>
+                        <el-option label="完成" value="完成"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="申请状态">
                     <el-select v-model="form.status" placeholder="请选择状态" >
