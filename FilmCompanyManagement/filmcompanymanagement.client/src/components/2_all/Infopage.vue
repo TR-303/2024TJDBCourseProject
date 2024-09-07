@@ -354,7 +354,9 @@
             },
             //获取数据
             getdata() {
+                console.log(this.id);
                 axios.post('/api/data/userdata', { id: this.id }).then(result => {
+                    console.log(result.data);
                     this.name = result.data.name;// 将服务器返回的 name 更新到组件的 name 属性
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
@@ -363,6 +365,7 @@
             //获取id
             getid() {
                 this.id = this.$route.query.id;
+                console.log(this.id);
             },
             getissign() {
                 axios.post('/api/InfoPage/IsAttended', { id: this.id }).then(result => {

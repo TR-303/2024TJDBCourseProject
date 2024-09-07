@@ -54,18 +54,19 @@ export default {
                     department:this.department,
                 });
                 console.log(response);
+                console.log(this.username);
                 if (response.data==1) {
                     // 登录成功，根据用户类型跳转到相应页面
                     // 跳转到管理员页面
                     if (this.department === '管理部') {
-                        this.$router.push({ path: '/Infopage', query: { id: '1' } });
+                        this.$router.push({ path: '/Infopage', query: { id: this.username } });
                     }
                     // 跳转到财务页面
                     if (this.department == '财务部')
-                        this.$router.push({ path: '/Infopage', query: { id: '2'} });
+                        this.$router.push({ path: '/Infopage', query: { id: this.username} });
                     // 跳转到业务页面
                     if (this.department == '业务部')
-                        this.$router.push({ path: '/Infopage', query: { id: '3' } });
+                        this.$router.push({ path: '/Infopage', query: { id: this.username } });
                 } else{
                     // 清空输入栏
                     this.username = '';
