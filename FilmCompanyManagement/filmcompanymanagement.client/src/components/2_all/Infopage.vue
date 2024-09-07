@@ -167,6 +167,7 @@
             return {
                 name: '',
                 id: '',
+                department:'',
                 count: 0,
                 count2: 0,
                 maxNum: 5,  // 通知栏可存储的最大信息数量
@@ -204,20 +205,20 @@
         },
         computed: {
             showBossMenu() {
-                return this.$route.query.id === '1';
+                return this.department === '管理部';
             },
             showFinanceMenu() {
-                return this.$route.query.id === '2';
+                return this.department === '财务部';
             },
             showWorkerMenu() {
-                return this.$route.query.id === '3';
+                return this.deparmenmt === '业务部';
             }
         },
         watch: {
-            '$route.query.id'(newId) {
-                this.showBossMenu = newId === '1';
-                this.showFinanceMenu = newId === '2';
-                this.showWorkerMenu = newId === '3';
+            department(newId) {
+                this.showBossMenu = newId === '管理部';
+                this.showFinanceMenu = newId === '财务部';
+                this.showWorkerMenu = newId === '业务部';
             }
         },
         methods: {
@@ -358,6 +359,7 @@
                 axios.post('/api/data/userdata', { id: this.id }).then(result => {
                     console.log(result.data);
                     this.name = result.data.name;// 将服务器返回的 name 更新到组件的 name 属性
+                    this.department = result.data.department.name;
                 }).catch(error => {
                     console.error('Error fetching mock data:', error);
                 });

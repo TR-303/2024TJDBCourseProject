@@ -19,13 +19,9 @@ namespace FilmCompanyManagement.Controllers
         [HttpPost("userdata")]
         public async Task<IActionResult> UserData(UserDataRequest request)
         {
-            var ret = await _context.Employees.SingleAsync(e => e.UserName == request.id);
+            var ret = await _context.Employees.Include(e => e.Department).SingleAsync(e => e.UserName == request.id);
             if (ret == null) return BadRequest("not exist");
-
-            return Ok(new
-            {
-                name = ret.Name
-            });
+            return Ok(ret) ;
         }
 
         [HttpPost("departmentuserdata")]
