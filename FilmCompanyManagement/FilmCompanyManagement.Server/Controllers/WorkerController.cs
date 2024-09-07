@@ -2,15 +2,12 @@ using FilmCompanyManagement.Server.EntityFrame;
 using FilmCompanyManagement.Server.EntityFrame.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FilmCompanyManagement.Server.EntityFrame;
 
 namespace FilmCompanyManagement.Server.Controllers
 {
     [ApiController, Route("api/worker")]
     public class WorkerController : ControllerBase
     {
-        public readonly FCMDbContext _context;
-
         private readonly FCMDbContext _context;
 
         public WorkerController(FCMDbContext context)
@@ -39,8 +36,6 @@ namespace FilmCompanyManagement.Server.Controllers
 
         [HttpGet("files")]
         public async Task<IActionResult> GetFiles()
-        [HttpPost]
-        public async Task<ActionResult> userdata(thisRequest request)
         {
             var ret = await _context.Files.Include(f => f.Sender).Select(f => new
             {
@@ -53,14 +48,9 @@ namespace FilmCompanyManagement.Server.Controllers
                 workerID = f.Sender.Id
             }).ToListAsync();
             return Ok(ret);
-            var user = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == request.id);
-            if (user == null)
-                return BadRequest(0);
-            return Ok(user.Name);
         }
     }
 
-    public class thisRequest
     public class UploadForm
     {
         public string id { get; set; }
