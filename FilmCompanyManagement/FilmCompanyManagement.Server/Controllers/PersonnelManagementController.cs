@@ -27,7 +27,7 @@ namespace FilmCompanyManagement.Server.Controllers
                     id = e.Id,
                     name = e.Name,
                     gender = e.Gender,
-                    state = e.State == 1 ? "已录用" : "未录用"
+                    state = e.State ? "已录用" : "未录用"
                 })
                 .ToListAsync();
 
@@ -74,7 +74,7 @@ namespace FilmCompanyManagement.Server.Controllers
                 .Select(e => new
                 {
                     id = e.Id,
-                    teacher = e.Teacher.Name,
+                    teacher = e.Teacher == null ? null : e.Teacher.Name,
                     dateTime = e.StartTime
                 })
                 .ToListAsync();
@@ -83,7 +83,7 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         [HttpPost("submit-invite-form")]
-        public async Task<IActionResult> SubmitInvite([FromBody]RecruitForm form)
+        public async Task<IActionResult> SubmitInvite([FromBody] RecruitForm form)
         {
 
             await _context.Recruiters.AddAsync(new Recruiter
@@ -96,8 +96,8 @@ namespace FilmCompanyManagement.Server.Controllers
                 Email = form.email,
                 Interviewer = null,
                 InterviewStage = 0,
-                State = 0
-            }) ;
+                State = false
+            });
             await _context.SaveChangesAsync();
             return Ok(new
             {
@@ -112,7 +112,7 @@ namespace FilmCompanyManagement.Server.Controllers
         public string name { get; set; }  // 招聘人员姓名
         public string gender { get; set; }  // 性别，'男' 或 '女'
         public string positionTitle { get; set; }  // 职位名称
-        public decimal salary { get; set; }  // 工资
+        public int salary { get; set; }  // 工资
         public string phone { get; set; }  // 联系电话
         public string email { get; set; }  // 电子邮件
         public string? interviewer { get; set; }  // 面试官姓名

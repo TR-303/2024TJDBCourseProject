@@ -65,6 +65,24 @@ namespace FilmCompanyManagement.Server.EntityFrame
                 .HasIndex(e => e.UserName)
                 .IsUnique();
 
+            modelBuilder.Entity<Attendance>()
+                .Property(e => e.IsEarlyLeave)
+                .HasConversion<int>();
+            modelBuilder.Entity<Attendance>()
+                .Property(e => e.IsOnLeave)
+                .HasConversion<int>();
+            modelBuilder.Entity<Attendance>()
+                .Property(e => e.IsLate)
+                .HasConversion<int>();
+
+            modelBuilder.Entity<Bill>()
+                .Property(b=>b.Status)
+                .HasConversion<int>();
+
+            modelBuilder.Entity<Recruiter>()
+                .Property(r=>r.State)
+                .HasConversion<int>();
+
             base.OnModelCreating(modelBuilder);
         }
     }
