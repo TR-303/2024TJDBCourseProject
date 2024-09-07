@@ -48,13 +48,13 @@ export default {
             try {
                 //测试可以跳转
 /*                this.$router.push('/Department');*/
-                const response = await axios.post(`/api/Login/UserLogin`, {
+                const response = await axios.post('/api/Login/UserLogin', {
                     username: this.username,
                     password: this.password,
                     department:this.department,
                 });
                 console.log(response);
-                if (response.data) {
+                if (response.data==1) {
                     // 登录成功，根据用户类型跳转到相应页面
                     // 跳转到管理员页面
                     if (this.department === '管理部') {

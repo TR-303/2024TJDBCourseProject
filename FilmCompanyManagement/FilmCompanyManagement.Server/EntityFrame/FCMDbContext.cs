@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using FilmCompanyManagement.Server.EntityFrame.Models;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FilmCompanyManagement.Server.EntityFrame
 {
@@ -76,14 +77,79 @@ namespace FilmCompanyManagement.Server.EntityFrame
                 .HasConversion<int>();
 
             modelBuilder.Entity<Bill>()
-                .Property(b=>b.Status)
+                .Property(b => b.Status)
                 .HasConversion<int>();
 
             modelBuilder.Entity<Recruiter>()
-                .Property(r=>r.State)
+                .Property(r => r.State)
                 .HasConversion<int>();
 
             base.OnModelCreating(modelBuilder);
         }
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            foreach (var entry in ChangeTracker.Entries<Employee>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    // 获取实体对象
+                    var entity = entry.Entity;
+
+                    if (entity.Id != 0)
+                    {
+                        entity.UserName = entity.Password = entity.Id.ToString();
+                    }
+                }
+            }
+
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            // 创建一个列表用于暂存需要修改的实体
+            var addedEntities = new List<Employee>();
+
+            // 保存前，为 UserName 和 Password 设置唯一的占位符，并将实体暂存
+            foreach (var entry in ChangeTracker.Entries<Employee>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    var entity = entry.Entity;
+
+                    // 生成一个唯一的占位符 (如使用 Guid)
+                    string uniquePlaceholder = Guid.NewGuid().ToString();
+
+                    // 设置占位符，避免 NULL 约束错误并保持唯一性
+                    entity.UserName = "temp_" + Guid.NewGuid().ToString("N").Substring(0, 11);
+                    entity.Password = "temp_password"; // Password 没有唯一约束
+
+                    // 将实体添加到暂存列表
+                    addedEntities.Add(entity);
+                }
+            }
+
+            // 第一次保存
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            // 第二次保存前，修改暂存的实体
+            foreach (var entity in addedEntities)
+            {
+                // 使用生成的 Id 更新 UserName 和 Password
+                entity.UserName = entity.Id.ToString();
+                entity.Password = entity.Id.ToString();
+
+                // 标记属性为已修改
+                var entityEntry = Entry(entity);
+                entityEntry.Property(e => e.UserName).IsModified = true;
+                entityEntry.Property(e => e.Password).IsModified = true;
+            }
+
+            // 第二次保存，更新 UserName 和 Password
+            await base.SaveChangesAsync(cancellationToken);
+
+            return result;
+        }
+
+
     }
 }

@@ -42,14 +42,14 @@ namespace FilmCompanyManagement.Server.Controllers
         [HttpGet("get-invest")]
         public async Task<IActionResult> GetInvest()
         {
-            var investments = await _context.Investments
+            var investments = await _context.Investments.Include(i => i.Bill)
                 .Select(i => new
                 {
-                    i.Id,                             // 投资编号
-                    i.Bill.AssignDate,                // 投资日期
-                    CustomerName = i.Customer.CustomerName,   // 投资方
-                    i.Bill.Amount,                    // 投资金额
-                    i.Bill.Status                     // 账单状态
+                    id = i.Id,                             // 投资编号
+                    billDate = i.Bill.AssignDate.ToString(),                // 投资日期
+                    customerName = i.Customer == null ? null : i.Customer.CustomerName,   // 投资方
+                    billAmount=i.Bill.Amount,                    // 投资金额
+                    billStatus=i.Bill.Status?"已处理":"未处理"                     // 账单状态
                 })
                 .ToListAsync();
 
