@@ -455,7 +455,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-                axios.post('/data/userdata', { id: userId })
+                axios.post('/api/data/userdata', { id: userId })
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
                     })
@@ -496,16 +496,16 @@
                 let path;
                 switch(this.employeeID){
                     case '0':
-                        path='/api/get-invite';
+                        path='/api/PersonnelManagement/get-invite';
                         break;
                     case '1':
-                        path='/api/get-intern';
+                        path='/api/PersonnelManagement/get-intern';
                         break;
                     case '2':
-                        path='/api/get-overview';
+                        path='/api/PersonnelManagement/get-overview';
                         break;
                     case '3':
-                        path='/api/get-train';
+                        path='/api/PersonnelManagement/get-train';
                         break;
                 }
                 axios.get(path)
@@ -530,7 +530,7 @@
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-invite-form';
+                        path='/api/PersonnelManagement/submit-invite-form';
                         break;
                     case '1':
                         if (!this.form.advicerId || !this.form.advicer || !this.form.internId || !this.form.intern || 
@@ -538,7 +538,7 @@
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-intern-form';
+                        path='/api/PersonnelManagement/submit-intern-form';
                         break;
                     case '2':
                         if (!this.form.id || !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
@@ -548,14 +548,14 @@
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-overview-form';
+                        path='/api/PersonnelManagement/submit-overview-form';
                         break;
                     case '3':
                         if (!this.form.id || !this.form.teacher || !this.form.dateTime || !this.form.endTime ||  !this.form.employees[0].id) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-train-form';
+                        path='/api/PersonnelManagement/submit-train-form';
                         break;
                 }
                 axios.post(path, this.form)
@@ -586,10 +586,10 @@
             Delete(row) {
                 let path;
                 switch(this.employeeID){
-                    case '0':path='/api/delete-invite-form';break;
-                    case '1':path='/api/delete-intern-form';break;
-                    case '2':path='/api/delete-overview-form';break;
-                    case '3':path='/api/delete-train-form';break;
+                    case '0':path='/api/PersonnelManagement/delete-invite-form';break;
+                    case '1':path='/api/PersonnelManagement/delete-intern-form';break;
+                    case '2':path='/api/PersonnelManagement/delete-overview-form';break;
+                    case '3':path='/api/PersonnelManagement/delete-train-form';break;
                 }
                 axios.post(path, this.row)
                     .then(response => {
@@ -613,10 +613,10 @@
             viewDetails(row) {      
                 let path;
                 switch(this.employeeID){
-                    case '0':path='/api/details-invite';break;
-                    case '1':path='/api/details-intern';break;
-                    case '2':path='/api/details-overview';break;
-                    case '3':path='/api/details-train';break;
+                    case '0':path='/api/PersonnelManagement/details-invite';break;
+                    case '1':path='/api/PersonnelManagement/details-intern';break;
+                    case '2':path='/api/PersonnelManagement/details-overview';break;
+                    case '3':path='/api/PersonnelManagement/details-train';break;
                 }
                 axios.post(path, { id: row.id}).then(response => {
                     this.form = response.data[0];
