@@ -597,11 +597,7 @@
             },
             getdata() {
                 const userId = this.$route.query.id;
-<<<<<<< HEAD
                 axios.post('api/data/userdata', { id: userId })
-=======
-                axios.post('/api/data/userdata', { id: userId })
->>>>>>> cb5820b07c1d10e07aea8e07e784f083a9aa8c38
                     .then(result => {
                         this.name = result.data.name || '未定义'; // 确保 name 有默认值
                     })
