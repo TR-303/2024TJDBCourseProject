@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using File = FilmCompanyManagement.Server.EntityFrame.Models.File;
 
 namespace FilmCompanyManagement.Server.Controllers
 {
@@ -58,29 +59,43 @@ namespace FilmCompanyManagement.Server.Controllers
 
         // 提交外部投资信息
         [HttpPost("submit-invest-form")]
-        public async Task<IActionResult> SubmitInvestForm([FromBody] Investment form)
+        public async Task<IActionResult> SubmitInvest([FromBody] InvestmentForm form)
         {
-            if (form == null)
-                return BadRequest("Invalid data.");
+            var investment = new Investment
+            {
+                Customer = new Customer
+                {
+                    CustomerName = form.CustomerName,
+                    BusinessType = form.CustomerBusinessType,
+                },
+                Bill = new Bill
+                {
+                    Id = form.BillId,
+                    Amount = form.BillAmount,
+                    Type = form.BillType,
+                    AssignDate = form.BillDate,
+                    Status = form.BillStatus=="未处理"
+                }
+            };
 
-            await _context.Investments.AddAsync(form);
+            await _context.Investments.AddAsync(investment);
             await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Investment submitted successfully!" });
+            return Ok(new { message = "投资记录提交成功" });
         }
+
 
         // 获取成片购买信息
         [HttpGet("get-buy")]
         public async Task<IActionResult> GetBuy()
         {
-            var purchases = await _context.FinishedProducts
+            var purchases = await _context.FinishedProducts.Include(fp=>fp.Bill)
                 .Select(fp => new
                 {
-                    fp.Id,                            // 购买编号
-                    fp.Bill.AssignDate,               // 购买日期
-                    CustomerName = fp.Customer.CustomerName,  // 购买人
-                    fp.Bill.Amount,                   // 购买金额
-                    fp.Status                         // 订单状态
+                    id=fp.Id,                            // 购买编号
+                    billDate=fp.Bill.AssignDate.ToString(),               // 购买日期
+                    customerName = fp.Customer == null ? null : fp.Customer.CustomerName,  // 购买人
+                    billAmount=fp.Bill.Amount,                   // 购买金额
+                    status=fp.Bill.Status?"已处理":"未处理"                      // 订单状态
                 })
                 .ToListAsync();
 
@@ -88,30 +103,21 @@ namespace FilmCompanyManagement.Server.Controllers
         }
 
         // 提交成片购买订单
-        [HttpPost("submit-buy-form")]
-        public async Task<IActionResult> SubmitBuyForm([FromBody] FinishedProduct form)
-        {
-            if (form == null)
-                return BadRequest("Invalid data.");
 
-            await _context.FinishedProducts.AddAsync(form);
-            await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Finished product purchase submitted successfully!" });
-        }
 
         // 获取设备租赁信息
         [HttpGet("get-lease")]
         public async Task<IActionResult> GetLease()
         {
-            var leases = await _context.EquipmentLeases
+            var leases = await _context.EquipmentLeases.Include(el=>el.Bill)
                 .Select(el => new
                 {
-                    el.Id,                            // 租赁编号
-                    el.Bill.AssignDate,               // 租赁日期
-                    CustomerName = el.Customer.CustomerName,  // 租赁人
-                    el.Bill.Amount,                   // 租赁金额
-                    el.Status                         // 租赁状态
+                    id=el.Id,                            // 租赁编号
+                    billDate=el.Bill.AssignDate.ToString(),               // 租赁日期
+                    customerName = el.Customer==null ? null : el.Customer.CustomerName,  // 租赁人
+                    billAmount=el.Bill.Amount,                   // 租赁金额
+                    status=el.Bill.Status ? "已处理" : "未处理"                         // 租赁状态
                 })
                 .ToListAsync();
 
@@ -135,15 +141,15 @@ namespace FilmCompanyManagement.Server.Controllers
         [HttpGet("get-project")]
         public async Task<IActionResult> GetProject()
         {
-            var projects = await _context.Projects
+            var projects = await _context.Projects.Include(p=>p.Bill)
                 .Select(p => new
                 {
-                    p.Id,                            // 项目编号
-                    p.Bill.AssignDate,               // 项目日期
-                    CustomerName = p.Customer.CustomerName,  // 项目客户
-                    p.Bill.Amount,                   // 项目金额
-                    ManagerName = p.Manager.Name,    // 项目负责人
-                    p.Status                         // 项目状态
+                    id=p.Id,                            // 项目编号
+                    billDate=p.Bill.AssignDate.ToString(),               // 项目日期
+                    customerName = p.Customer == null ? null : p.Customer.CustomerName,  // 项目客户
+                    billAmount=p.Bill.Amount,                   // 项目金额
+                    manager=p.Manager == null ? null : p.Manager.Name,    // 项目负责人
+                    status=p.Bill.Status ? "已处理" : "未处理"                         // 项目状态
                 })
                 .ToListAsync();
 
@@ -280,4 +286,83 @@ namespace FilmCompanyManagement.Server.Controllers
             return Ok(new[] { project });
         }
     }
+    public class InvestmentForm
+    {
+        public int Id { get; set; } // 投资编号
+        public string CustomerType { get; set; } // 客户类型（企业、政府、个人）
+        public string CustomerName { get; set; } // 客户名称
+        public string CustomerBusinessType { get; set; } // 业务类型（直接投资、间接投资）
+        public string CustomerPhone { get; set; } // 联系电话
+        public string CustomerEmail { get; set; } // 电子邮件
+        public string CustomerAddress { get; set; } // 客户地址
+        public int BillId { get; set; } // 账单编号
+        public decimal BillAmount { get; set; } // 金额
+        public string BillType { get; set; } // 账单类型（存款、拨款）
+        public DateTime BillDate { get; set; } // 账单日期
+        public string BillStatus { get; set; } // 账单状态（发起、完成）
+    }
+    public class PurchaseForm
+    {
+        public int Id { get; set; } // 订单编号
+        public string Type { get; set; } // 订单类型（标准、加急、特殊）
+        public int FileId { get; set; } // 文件ID
+        public string FileName { get; set; } // 文件名
+        public string FileType { get; set; } // 文件类型（图片、视频、文档）
+        public string FileContentType { get; set; } // 内容类型（项目报告、成片等）
+        public decimal FileSize { get; set; } // 文件大小
+        public string FilePath { get; set; } // 文件路径
+        public DateTime FileUploadDate { get; set; } // 上传日期
+        public string FileStatus { get; set; } // 文件状态（已上传、未上传、上传失败）
+        public string CustomerType { get; set; } // 客户类型（企业、政府、个人）
+        public string CustomerName { get; set; } // 客户名称
+        public string CustomerBusinessType { get; set; } // 业务类型（短期租赁、长期租赁）
+        public string CustomerPhone { get; set; } // 联系电话
+        public string CustomerEmail { get; set; } // 电子邮件
+        public string CustomerAddress { get; set; } // 客户地址
+        public int BillId { get; set; } // 账单编号
+        public decimal BillAmount { get; set; } // 金额
+        public string BillType { get; set; } // 账单类型（存款、拨款）
+        public DateTime BillDate { get; set; } // 账单日期
+        public string BillStatus { get; set; } // 账单状态（发起、完成）
+        public string Status { get; set; } // 订单状态（待发货、已发货、发货中）
+    }
+    public class LeaseForm
+    {
+        public int Id { get; set; } // 租赁编号
+        public string Employee { get; set; } // 对接员工
+        public string CustomerType { get; set; } // 客户类型（企业、政府、个人）
+        public string CustomerName { get; set; } // 客户名称
+        public string CustomerBusinessType { get; set; } // 业务类型（短期租赁、长期租赁）
+        public string CustomerPhone { get; set; } // 联系电话
+        public string CustomerEmail { get; set; } // 电子邮件
+        public string CustomerAddress { get; set; } // 客户地址
+        public int BillId { get; set; } // 账单编号
+        public decimal BillAmount { get; set; } // 金额
+        public string BillType { get; set; } // 账单类型（存款、拨款）
+        public DateTime BillDate { get; set; } // 账单日期
+        public string BillStatus { get; set; } // 账单状态（发起、完成）
+        public string Status { get; set; } // 订单状态（待确认、已确认、已发货）
+    }
+    public class ProjectForm
+    {
+        public int Id { get; set; } // 项目编号
+        public string Manager { get; set; } // 对接经理
+        public string CustomerType { get; set; } // 客户类型（企业、政府、个人）
+        public string CustomerName { get; set; } // 客户名称
+        public string CustomerBusinessType { get; set; } // 业务类型（照片拍摄、视频制作、后期处理）
+        public string CustomerPhone { get; set; } // 联系电话
+        public string CustomerEmail { get; set; } // 电子邮件
+        public string CustomerAddress { get; set; } // 客户地址
+        public int BillId { get; set; } // 账单编号
+        public decimal BillAmount { get; set; } // 金额
+        public string BillType { get; set; } // 账单类型（存款、拨款）
+        public DateTime BillDate { get; set; } // 账单日期
+        public string BillStatus { get; set; } // 账单状态（发起、完成）
+        public DateTime KpiDate { get; set; } // 绩效评定时间
+        public int Result { get; set; } // 评定结果
+        public string Judger { get; set; } // 评定者
+        public string Status { get; set; } // 项目状态（进行中、已完成、已取消）
+    }
+
+
 }

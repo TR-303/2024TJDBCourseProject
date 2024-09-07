@@ -496,21 +496,21 @@
                 let path;
                 switch(this.employeeID){
                     case '0':
-                        path='/api/get-invite';
+                        path='/api/PersonnelManagement/get-invite';
                         break;
                     case '1':
-                        path='/api/get-intern';
+                        path='/api/PersonnelManagement/get-intern';
                         break;
                     case '2':
-                        path='/api/get-overview';
+                        path='/api/PersonnelManagement/get-overview';
                         break;
                     case '3':
-                        path='/api/get-train';
+                        path='/api/PersonnelManagement/get-train';
                         break;
                 }
                 axios.get(path)
                     .then(response => {
-                        this.employee_list = response.data.employee_list || [];
+                        this.employee_list = response.data|| [];
                         if(this.employeeID == '2')
                         {
                             this.overview_employee_list = this.employee_list;
@@ -525,37 +525,37 @@
                 let path;
                 switch(this.employeeID){
                     case '0':
-                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary || 
+                        if ( !this.form.name || !this.form.gender || !this.form.positionTitle || !this.form.salary || 
                             !this.form.phone || !this.form.email || !this.form.interviewer || !this.form.interviewerStage || !this.form.state) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-invite-form';
+                        path='/api/PersonnelManagement/submit-invite-form';
                         break;
                     case '1':
-                        if (!this.form.advicerId || !this.form.advicer || !this.form.internId || !this.form.intern || 
+                        if ( !this.form.advicer || !this.form.internId || !this.form.intern || 
                             !this.form.internshipStartDate || !this.form.internshipEndDate || !this.form.remarks) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-intern-form';
+                        path='/api/PersonnelManagement/submit-intern-form';
                         break;
                     case '2':
-                        if (!this.form.id || !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
-                            !this.form.phone || !this.form.email || !this.form.billId || !this.form.billAmount || 
-                            !this.form.billType || !this.form.billDate || !this.form.billStatus || 
-                            !this.form.department || !this.form.kpi) {
+                        if ( !this.form.name || !this.form.gender || !this.form.position || !this.form.salary || 
+                            !this.form.phone || !this.form.email ||  !this.form.billAmount || 
+                            !this.form.billType ||  !this.form.billStatus || 
+                            !this.form.department) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-overview-form';
+                        path='/api/PersonnelManagement/submit-overview-form';
                         break;
                     case '3':
-                        if (!this.form.id || !this.form.teacher || !this.form.dateTime || !this.form.endTime ||  !this.form.employees[0].id) {
+                        if ( !this.form.teacher || !this.form.dateTime || !this.form.endTime ||  !this.form.employees[0].id) {
                             alert("请完成所有内容的填写再提交！");
                             return;
                         }
-                        path='/api/submit-train-form';
+                        path='/api/PersonnelManagement/submit-train-form';
                         break;
                 }
                 axios.post(path, this.form)
@@ -586,10 +586,10 @@
             Delete(row) {
                 let path;
                 switch(this.employeeID){
-                    case '0':path='/api/delete-invite-form';break;
-                    case '1':path='/api/delete-intern-form';break;
-                    case '2':path='/api/delete-overview-form';break;
-                    case '3':path='/api/delete-train-form';break;
+                    case '0':path='/api/PersonnelManagement/delete-invite-form';break;
+                    case '1':path='/api/PersonnelManagement/delete-intern-form';break;
+                    case '2':path='/api/PersonnelManagement/delete-overview-form';break;
+                    case '3':path='/api/PersonnelManagement/delete-train-form';break;
                 }
                 axios.post(path, this.row)
                     .then(response => {
@@ -613,10 +613,10 @@
             viewDetails(row) {      
                 let path;
                 switch(this.employeeID){
-                    case '0':path='/api/details-invite';break;
-                    case '1':path='/api/details-intern';break;
-                    case '2':path='/api/details-overview';break;
-                    case '3':path='/api/details-train';break;
+                    case '0':path='/api/PersonnelManagement/details-invite';break;
+                    case '1':path='/api/PersonnelManagement/details-intern';break;
+                    case '2':path='/api/PersonnelManagement/details-overview';break;
+                    case '3':path='/api/PersonnelManagement/details-train';break;
                 }
                 axios.post(path, { id: row.id}).then(response => {
                     this.form = response.data[0];

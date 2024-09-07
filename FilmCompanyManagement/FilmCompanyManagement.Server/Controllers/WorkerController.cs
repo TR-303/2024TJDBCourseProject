@@ -124,6 +124,29 @@ namespace FilmCompanyManagement.Server.Controllers
                 message = "Purchase created successfully"
             });
         }
+
+        [HttpGet("projects/{username}")]
+        public async Task<IActionResult> GetProject(string username)
+        {
+            Employee? employee = await _context.Employees
+                .Include(e => e.Projects).ThenInclude(p => p.Manager)
+                .Include(e => e.Projects).ThenInclude(p => p.Bill)
+                .FirstOrDefaultAsync(e => e.UserName == username);
+
+            if (employee == null)
+                return BadRequest("Employee not found");
+
+            var projects = employee.Projects.Select(p => new
+            {
+                id = p.Id,
+                managerID = p.Manager == null ? null : p.Manager.Id.ToString(),
+                orderDate=p.Bill.AssignDate.ToString(),
+                orderStatus=p.Bill.Status?"已处理":"未处理",
+            })
+            .ToList();
+
+            return Ok(projects);
+        }
     }
 
     public class UploadForm

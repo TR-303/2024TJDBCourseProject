@@ -41,7 +41,6 @@
                         <th>对接管理ID</th>
                         <th>订单日期</th>
                         <th>订单状态</th>
-                        <th>支付状态</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,7 +49,6 @@
                         <td>{{ project.managerID }}</td>
                         <td>{{ new Date(project.orderDate).toLocaleDateString() }}</td>
                         <td>{{ project.orderStatus }}</td>
-                        <td>{{ project.paymentStatus }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -120,9 +118,9 @@
             },
             getProjects() {
                 const userID = this.$route.query.id;
-                axios.post('/api/worker/projects', { userID })
+                axios.get(`/api/worker/projects/${userID}`)
                     .then(response => {
-                        this.projects = response.data.projects;
+                        this.projects = response.data;
                     })
                     .catch(error => {
                         console.error('Error fetching projects:', error);
