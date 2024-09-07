@@ -125,9 +125,10 @@
 
                     // 获取所有文件
                     const fileResponse = await axios.get('/api/worker/files');
-                    if (fileResponse.data.files) {
+                    console.log(fileResponse.data);
+                    if (fileResponse.data) {
                         // 根据当前 workerID 过滤文件
-                        fileList.value = fileResponse.data.files.filter(file => file.workerID === userID);
+                        fileList.value = fileResponse.data.filter(file => file.workerID.toString() === userID);
                         console.log("Filtered File List:", fileList.value); // 打印过滤后的文件列表
                         if (fileList.value.length === 0) {
                             alert("没有找到相关的文件");
