@@ -510,7 +510,7 @@
                 }
                 axios.get(path)
                     .then(response => {
-                        this.employee_list = response.data|| [];
+                        this.employee_list = response.data.employee_list || [];
                         if(this.employeeID == '2')
                         {
                             this.overview_employee_list = this.employee_list;
